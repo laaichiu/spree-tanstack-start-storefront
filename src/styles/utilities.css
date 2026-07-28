@@ -1,0 +1,51 @@
+@utility focus-ring {
+  @apply ring-2 ring-ring/50 outline-none;
+}
+
+@utility scrollbar-none {
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@utility link-underline-sweep {
+  position: relative;
+
+  &::after {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    content: '';
+    background-color: currentColor;
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 500ms ease-in-out;
+  }
+
+  &:hover::after,
+  &:focus-visible::after {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+
+  &[data-underline-active='true']::after {
+    transform: scaleX(1);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    &::after {
+      transition: none;
+    }
+  }
+}
+
+@utility min-h-checkout {
+  min-height: calc(100vh - 5.5rem);
+}
+
+@utility min-h-checkout-entry {
+  min-height: calc(100vh - 9.75rem);
+}
