@@ -109,7 +109,7 @@ export function DialogContent({
             </div>
             <DialogClose
               aria-label={closeLabel}
-              className="-mr-2 inline-flex h-9 w-9 shrink-0 items-center justify-center"
+              className="inline-flex shrink-0 items-center justify-center"
             >
               <X aria-hidden="true" className="h-5 w-5" />
             </DialogClose>
