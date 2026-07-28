@@ -5,7 +5,6 @@ import { getServerSpreeClientForMarket } from '@/lib/spree/client.server'
 
 import {
   completeCheckoutPaymentSessionOnServer,
-  completeCheckoutPaymentSessionResourceOnServer,
   createCheckoutPaymentSessionOnServer,
   createDirectCheckoutPaymentOnServer,
 } from './checkout-payment.server'
@@ -66,7 +65,7 @@ function setSpreeClient() {
   }))
   const getPaymentSession = vi.fn(async () => ({
     id: 'ps_123',
-    order_id: 'cart_123',
+    order_id: 'or_123',
   }))
   const createPayment = vi.fn(async () => ({ id: 'payment_123' }))
   const listCustomerCards = vi.fn(async () => ({
@@ -187,7 +186,7 @@ describe('checkout payment server helpers', () => {
     )
   })
 
-  it('completes a payment session with provider results', async () => {
+  it('completes a payment session without comparing cart and order ID namespaces', async () => {
     const { completePaymentSession, getPaymentSession } = setSpreeClient()
 
     await expect(
@@ -214,9 +213,7 @@ describe('checkout payment server helpers', () => {
       },
       { spreeToken: 'cart-token' },
     )
-    expect(getPaymentSession).toHaveBeenCalledWith('cart_123', 'ps_123', {
-      spreeToken: 'cart-token',
-    })
+    expect(getPaymentSession).not.toHaveBeenCalled()
     expect(getCheckoutCartRequestOptions).toHaveBeenCalledWith('cart-token')
   })
 
@@ -273,23 +270,5 @@ describe('checkout payment server helpers', () => {
       }),
     ).rejects.toThrow('Saved payment method is no longer available.')
     expect(createPaymentSession).not.toHaveBeenCalled()
-  })
-
-  it('rejects a payment session that belongs to another checkout', async () => {
-    const { getPaymentSession, completePaymentSession } = setSpreeClient()
-    getPaymentSession.mockResolvedValueOnce({
-      id: 'ps_123',
-      order_id: 'cart_other',
-    })
-
-    await expect(
-      completeCheckoutPaymentSessionResourceOnServer({
-        cartId: 'cart_123',
-        client: getServerSpreeClientForMarket(market),
-        requestOptions: { spreeToken: 'cart-token' },
-        sessionId: 'ps_123',
-      }),
-    ).rejects.toThrow('Payment session does not belong to this checkout.')
-    expect(completePaymentSession).not.toHaveBeenCalled()
   })
 })
