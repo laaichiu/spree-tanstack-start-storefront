@@ -279,4 +279,27 @@ describe('CheckoutReadyStateController', () => {
     expect(runtime.onMobileSummaryToggle).toHaveBeenCalledOnce()
     expect(runtime.handleSubmitPayment).toHaveBeenCalledOnce()
   })
+
+  it('does not repeat a global error already shown in a checkout section', () => {
+    const duplicateError = 'Fingerprint has already been taken'
+    runtime.value.current = {
+      ...createRuntimeValue(),
+      checkoutError: duplicateError,
+      sectionErrors: {
+        address: [],
+        payment: [duplicateError],
+        shipping: [],
+      },
+    }
+
+    render(
+      <CheckoutReadyStateController cart={checkoutOrder}>
+        {(controller) => (
+          <CheckoutReadyStateReferenceView controller={controller} />
+        )}
+      </CheckoutReadyStateController>,
+    )
+
+    expect(screen.queryByText(duplicateError)).toBeNull()
+  })
 })

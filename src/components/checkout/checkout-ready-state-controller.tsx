@@ -52,6 +52,13 @@ export function CheckoutReadyStateController({
     savedPaymentCards,
     sectionErrors,
   } = runtime
+  const visibleCheckoutError =
+    checkoutError &&
+    !Object.values(sectionErrors).some((errors) =>
+      errors.includes(checkoutError),
+    )
+      ? checkoutError
+      : null
   const {
     form: addressForm,
     isCheckoutPending,
@@ -96,7 +103,7 @@ export function CheckoutReadyStateController({
   } = addressForm
 
   return children({
-    checkoutError,
+    checkoutError: visibleCheckoutError,
     delivery: (
       <CheckoutDeliverySection
         address={{

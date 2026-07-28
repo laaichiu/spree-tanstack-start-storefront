@@ -87,6 +87,10 @@ export const CheckoutPaymentSection = forwardRef<
     savedPaymentCards,
     shippingReady,
   })
+  const visiblePaymentError =
+    payment.paymentError && !errors?.includes(payment.paymentError)
+      ? payment.paymentError
+      : null
 
   useImperativeHandle(
     ref,
@@ -120,6 +124,7 @@ export const CheckoutPaymentSection = forwardRef<
       <CheckoutPaymentMethodContent
         cart={cart}
         controlsDisabled={controlsDisabled}
+        paymentError={visiblePaymentError}
         payment={payment}
       />
       {billingAddressSection}

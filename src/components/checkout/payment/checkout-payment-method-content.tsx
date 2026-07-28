@@ -7,12 +7,14 @@ import type { useCheckoutPaymentSection } from './use-checkout-payment-section'
 type CheckoutPaymentMethodContentProps = {
   cart: CheckoutOrder
   controlsDisabled: boolean
+  paymentError: string | null
   payment: ReturnType<typeof useCheckoutPaymentSection>
 }
 
 export function CheckoutPaymentMethodContent({
   cart,
   controlsDisabled,
+  paymentError,
   payment,
 }: CheckoutPaymentMethodContentProps) {
   return (
@@ -34,7 +36,7 @@ export function CheckoutPaymentMethodContent({
           onStripeElementReady={payment.handleStripeElementReady}
           onStripeReady={payment.handleStripeReady}
           onRetryPaymentSession={payment.retryPaymentSession}
-          paymentError={payment.paymentError}
+          paymentError={paymentError}
           paymentSession={payment.paymentSession}
           savedPaymentCards={payment.savedStripePaymentCards}
           selectedSavedPaymentProfileId={

@@ -14,6 +14,7 @@ import { CheckoutPaymentSection } from './checkout-payment-section'
 
 const paymentSessionHookState = vi.hoisted(() => ({
   isCreatingPaymentSession: false,
+  paymentError: null as string | null,
 }))
 const paymentSubmitHookState = vi.hoisted(() => ({
   isSubmittingPayment: false,
@@ -45,7 +46,7 @@ vi.mock('./use-checkout-payment-session', () => ({
     clientSecret: undefined,
     isCreatingPaymentSession: paymentSessionHookState.isCreatingPaymentSession,
     isPaymentSessionRetryable: false,
-    paymentError: null,
+    paymentError: paymentSessionHookState.paymentError,
     paymentSession: null,
     resetPaymentSession: vi.fn(),
     retryPaymentSession: vi.fn(),
@@ -79,6 +80,7 @@ vi.mock('./use-checkout-stripe-payment-element', () => ({
 afterEach(() => {
   cleanup()
   paymentSessionHookState.isCreatingPaymentSession = false
+  paymentSessionHookState.paymentError = null
   paymentSubmitHookState.isSubmittingPayment = false
 })
 
@@ -192,5 +194,37 @@ describe('CheckoutPaymentSection', () => {
       screen.getByRole('status', { name: 'Initializing secure payment...' }),
     ).toBeTruthy()
     expect(screen.queryByText('Initializing secure payment...')).toBe(null)
+  })
+
+  it('shows a payment error only once when the section already contains it', () => {
+    const duplicateError = 'Fingerprint has already been taken'
+    paymentSessionHookState.paymentError = duplicateError
+
+    renderWithMarket(
+      <CheckoutPaymentSection
+        cart={checkoutOrder()}
+        errors={[duplicateError]}
+        shippingReady
+      />,
+    )
+
+    expect(screen.getAllByText(duplicateError)).toHaveLength(1)
+  })
+
+  it('keeps different payment and section errors visible', () => {
+    const paymentError = 'Card declined'
+    const sectionError = 'Review your billing address.'
+    paymentSessionHookState.paymentError = paymentError
+
+    renderWithMarket(
+      <CheckoutPaymentSection
+        cart={checkoutOrder()}
+        errors={[sectionError]}
+        shippingReady
+      />,
+    )
+
+    expect(screen.getAllByText(sectionError)).toHaveLength(1)
+    expect(screen.getAllByText(paymentError)).toHaveLength(1)
   })
 })
