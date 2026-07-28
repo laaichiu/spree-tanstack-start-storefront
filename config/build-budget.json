@@ -1,0 +1,34 @@
+{
+  "version": 1,
+  "entries": [
+    {
+      "name": "client eager index",
+      "directory": "dist/client/assets",
+      "pattern": "^index-[^/]+\\.js$",
+      "maxBytes": 360000,
+      "maxGzipBytes": 115000
+    },
+    {
+      "name": "client checkout entry",
+      "directory": "dist/client/assets",
+      "pattern": "^checkout-entry-state-[^/]+\\.js$",
+      "maxBytes": 145000,
+      "maxGzipBytes": 40000
+    },
+    {
+      "name": "client global CSS",
+      "directory": "dist/client/assets",
+      "pattern": "^globals-[^/]+\\.css$",
+      "maxBytes": 95000,
+      "maxGzipBytes": 16500,
+      "reason": "Approved Tailwind Typography styles for admin-authored PDP rich text"
+    },
+    {
+      "name": "server entry",
+      "directory": "dist/server",
+      "pattern": "^index\\.js$",
+      "maxBytes": 650000,
+      "maxGzipBytes": 140000
+    }
+  ]
+}
