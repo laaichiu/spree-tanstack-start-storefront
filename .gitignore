@@ -1,0 +1,31 @@
+# Dependencies
+/node_modules
+/.pnpm-store
+
+# Environment files
+.env*
+!.env.example
+*.local
+
+# Build and framework output
+/dist
+/dist-ssr
+/.nitro
+/.output
+/output
+/.tanstack
+/.vinxi
+/.wrangler
+/__unconfig*
+
+# Tests and local tooling
+/.playwright
+/.playwright-cli
+/blob-report
+/coverage
+/playwright-report
+/test-results
+/todos.json
+
+# Operating system files
+.DS_Store
