@@ -21,8 +21,8 @@ importers:
         specifier: ^5.4.0
         version: 5.4.0(react-hook-form@7.77.0(react@19.2.7))
       '@spree/sdk':
-        specifier: ^1.0.1
-        version: 1.0.1(typescript@6.0.3)(zod@4.4.3)
+        specifier: ^1.2.1
+        version: 1.2.1(typescript@6.0.3)(zod@4.4.3)
       '@stripe/react-stripe-js':
         specifier: ^6.6.0
         version: 6.6.0(@stripe/stripe-js@9.8.0)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
@@ -1044,8 +1044,8 @@ packages:
   '@speed-highlight/core@1.2.15':
     resolution: {integrity: sha512-BMq1K3DsElxDWawkX6eLg9+CKJrTVGCBAWVuHXVUV2u0s2711qiChLSId6ikYPfxhdYocLNt3wWwSvDiTvFabw==}
 
-  '@spree/sdk@1.0.1':
-    resolution: {integrity: sha512-Nywp5m0VZQRHJC5UIKkMBZgf4+9LPUteCaQCNKJ63mdSjpTi15IwuyCVFU/F1nikV9YBraWNoMoQkY6AKDWqdQ==}
+  '@spree/sdk@1.2.1':
+    resolution: {integrity: sha512-SetAz9PIIAGBaJmpTwbc9hjnscZ17pVLmyC9C6YdnRZEDRtbad0wral6NLfBZa2YPvxKAaPWLdU0gAdgVaAm2Q==}
     engines: {node: '>=18.0.0'}
     peerDependencies:
       typescript: '>=4.7.0'
@@ -3448,7 +3448,7 @@ snapshots:
 
   '@speed-highlight/core@1.2.15': {}
 
-  '@spree/sdk@1.0.1(typescript@6.0.3)(zod@4.4.3)':
+  '@spree/sdk@1.2.1(typescript@6.0.3)(zod@4.4.3)':
     optionalDependencies:
       typescript: 6.0.3
       zod: 4.4.3
