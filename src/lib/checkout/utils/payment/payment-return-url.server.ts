@@ -8,7 +8,7 @@ function getStorefrontOrigin() {
       throw new Error('VITE_STOREFRONT_URL is required for payment redirects.')
     }
 
-    return 'http://localhost:3002'
+    return 'http://localhost:3006'
   }
 
   let url: URL
