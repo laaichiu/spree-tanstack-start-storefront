@@ -3,6 +3,7 @@ import {
   Outlet,
   Scripts,
   createRootRoute,
+  useRouter,
   useRouterState,
 } from '@tanstack/react-router'
 
@@ -32,6 +33,10 @@ function getMarketParams(params: unknown) {
 }
 
 export const Route = createRootRoute({
+  beforeLoad: ({ context }) => ({
+    cspNonce: (context as { serverContext?: { cspNonce?: string } })
+      .serverContext?.cspNonce,
+  }),
   head: () => ({
     meta: [
       {
@@ -81,6 +86,21 @@ function useActiveLocale() {
 
 function RootDocument({ children }: { children: React.ReactNode }) {
   const locale = useActiveLocale()
+  const router = useRouter()
+  const { cspNonce: routeCspNonce } = Route.useRouteContext()
+  const additionalContext = router.options.additionalContext as
+    | {
+        serverContext?: { cspNonce?: string }
+      }
+    | undefined
+  const cspNonce = routeCspNonce ?? additionalContext?.serverContext?.cspNonce
+
+  if (cspNonce) {
+    router.options.ssr = {
+      ...router.options.ssr,
+      nonce: cspNonce,
+    }
+  }
 
   return (
     <html className="scheme-light" lang={locale}>

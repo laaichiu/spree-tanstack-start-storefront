@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest'
 
 import {
   applyStorefrontResponseHeaders,
-  CONTENT_SECURITY_POLICY_REPORT_ONLY,
+  CONTENT_SECURITY_POLICY,
   isPrivateStorefrontPath,
 } from './response-headers'
 
@@ -21,14 +21,26 @@ describe('storefront response headers', () => {
     expect(isPrivateStorefrontPath('/us/en/products')).toBe(false)
   })
 
+  it('adds the request nonce to the enforced script policy', () => {
+    const response = applyStorefrontResponseHeaders(new Response('ok'), {
+      cspNonce: 'request-nonce',
+      pathname: '/us/en',
+      requestUrl: 'https://shop.example.com/us/en',
+    })
+
+    expect(response.headers.get('Content-Security-Policy')).toContain(
+      "script-src 'self' 'nonce-request-nonce'",
+    )
+  })
+
   it('adds security headers and keeps HTTPS transport strict', () => {
     const response = applyStorefrontResponseHeaders(new Response('ok'), {
       pathname: '/us/en/products',
       requestUrl: 'https://shop.example.com/us/en/products',
     })
 
-    expect(response.headers.get('Content-Security-Policy-Report-Only')).toBe(
-      CONTENT_SECURITY_POLICY_REPORT_ONLY,
+    expect(response.headers.get('Content-Security-Policy')).toBe(
+      CONTENT_SECURITY_POLICY,
     )
     expect(response.headers.get('Permissions-Policy')).toBe(
       'camera=(), geolocation=(), microphone=()',

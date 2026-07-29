@@ -111,10 +111,12 @@ const csrfMiddleware = createCsrfMiddleware({
 
 const responseHeadersMiddleware = createMiddleware().server(
   async ({ next, request, serverFnMeta }) => {
-    const result = await next()
+    const cspNonce = crypto.randomUUID()
+    const result = await next({ context: { cspNonce } })
     const url = new URL(request.url)
 
     applyStorefrontResponseHeaders(result.response, {
+      cspNonce,
       isServerFunction: Boolean(serverFnMeta),
       pathname: url.pathname,
       requestUrl: request.url,

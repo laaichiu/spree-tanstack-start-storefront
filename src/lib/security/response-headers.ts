@@ -1,4 +1,4 @@
-export const CONTENT_SECURITY_POLICY_REPORT_ONLY = [
+export const CONTENT_SECURITY_POLICY = [
   "default-src 'self'",
   "base-uri 'self'",
   "frame-ancestors 'none'",
@@ -12,13 +12,29 @@ export const CONTENT_SECURITY_POLICY_REPORT_ONLY = [
   "frame-src 'self' https://js.stripe.com https://hooks.stripe.com https://*.stripe.com",
 ].join('; ')
 
+// Kept as an alias for callers that used the audit-only name before CSP was
+// enforced. The response middleware now emits the enforcing header below.
+export const CONTENT_SECURITY_POLICY_REPORT_ONLY = CONTENT_SECURITY_POLICY
+
 const PRIVATE_PATH_PATTERN =
   /(^|\/)\b(?:account|cart|checkout|confirm-payment|order-placed)\b(?:\/|$)/
 
 type ResponseHeaderContext = {
+  cspNonce?: string
   isServerFunction?: boolean
   pathname: string
   requestUrl: string
+}
+
+function getContentSecurityPolicy(cspNonce?: string) {
+  if (!cspNonce) {
+    return CONTENT_SECURITY_POLICY
+  }
+
+  return CONTENT_SECURITY_POLICY.replace(
+    "script-src 'self'",
+    `script-src 'self' 'nonce-${cspNonce}'`,
+  )
 }
 
 export function isPrivateStorefrontPath(pathname: string) {
@@ -27,11 +43,16 @@ export function isPrivateStorefrontPath(pathname: string) {
 
 export function applyStorefrontResponseHeaders(
   response: Response,
-  { isServerFunction = false, pathname, requestUrl }: ResponseHeaderContext,
+  {
+    cspNonce,
+    isServerFunction = false,
+    pathname,
+    requestUrl,
+  }: ResponseHeaderContext,
 ) {
   response.headers.set(
-    'Content-Security-Policy-Report-Only',
-    CONTENT_SECURITY_POLICY_REPORT_ONLY,
+    'Content-Security-Policy',
+    getContentSecurityPolicy(cspNonce),
   )
   response.headers.set(
     'Permissions-Policy',
