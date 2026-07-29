@@ -4,7 +4,7 @@ import {
   deleteCookie,
   getCookie,
   setCookie,
-} from '@tanstack/react-start/server'
+} from '@tanstack/start-server-core/request-response'
 
 const CUSTOMER_ACCESS_TOKEN_COOKIE = 'spree_storefront_customer_token'
 const CUSTOMER_REFRESH_TOKEN_COOKIE = 'spree_storefront_customer_refresh_token'

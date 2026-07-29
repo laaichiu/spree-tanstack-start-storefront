@@ -1,6 +1,6 @@
 import '@tanstack/react-start/server-only'
 
-import { setCookie } from '@tanstack/react-start/server'
+import { setCookie } from '@tanstack/start-server-core/request-response'
 
 import type { ResolvedMarket } from '@/lib/market/model/market'
 

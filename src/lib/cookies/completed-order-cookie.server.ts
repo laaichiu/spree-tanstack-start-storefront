@@ -1,6 +1,9 @@
 import '@tanstack/react-start/server-only'
 
-import { getCookie, setCookie } from '@tanstack/react-start/server'
+import {
+  getCookie,
+  setCookie,
+} from '@tanstack/start-server-core/request-response'
 
 const COMPLETED_ORDER_ACCESS_COOKIE = 'spree_storefront_completed_order_access'
 const COMPLETED_ORDER_ACCESS_MAX_AGE = 60 * 15

@@ -20,7 +20,7 @@ describe('readPublicBuildEnv', () => {
   it('uses the documented local origin when no storefront URL is configured', () => {
     expect(readPublicBuildEnv({})).toEqual({
       reviewsEnabled: false,
-      storefrontUrl: 'http://localhost:3002',
+      storefrontUrl: 'http://localhost:3006',
       stripePublishableKey: null,
     })
   })

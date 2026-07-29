@@ -138,7 +138,7 @@ describe('checkout payment server helpers', () => {
       {
         external_data: {
           ...externalData,
-          return_url: 'http://localhost:3002/us/en/confirm-payment/cart_123',
+          return_url: 'http://localhost:3006/us/en/confirm-payment/cart_123',
         },
         payment_method_id: 'pm_123',
       },
@@ -175,7 +175,7 @@ describe('checkout payment server helpers', () => {
       {
         external_data: {
           ...externalData,
-          return_url: 'http://localhost:3002/us/en/confirm-payment/cart_123',
+          return_url: 'http://localhost:3006/us/en/confirm-payment/cart_123',
         },
         payment_method_id: 'pm_123',
       },

@@ -10,7 +10,7 @@ describe('server checkout payment return URL', () => {
         country: 'us',
         locale: 'en',
       }),
-    ).toBe('http://localhost:3002/us/en/confirm-payment/cart_123')
+    ).toBe('http://localhost:3006/us/en/confirm-payment/cart_123')
   })
 
   it('encodes cart identity path segments', () => {
@@ -20,6 +20,6 @@ describe('server checkout payment return URL', () => {
         country: 'us',
         locale: 'en',
       }),
-    ).toBe('http://localhost:3002/us/en/confirm-payment/cart%2Fattacker')
+    ).toBe('http://localhost:3006/us/en/confirm-payment/cart%2Fattacker')
   })
 })

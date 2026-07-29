@@ -4,7 +4,7 @@ import {
   deleteCookie,
   getCookie,
   setCookie,
-} from '@tanstack/react-start/server'
+} from '@tanstack/start-server-core/request-response'
 
 const CART_ID_COOKIE = 'spree_storefront_cart_id'
 const CART_MARKET_COOKIE = 'spree_storefront_cart_market'

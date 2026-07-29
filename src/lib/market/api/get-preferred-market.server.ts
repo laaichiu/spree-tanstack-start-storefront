@@ -1,6 +1,6 @@
 import '@tanstack/react-start/server-only'
 
-import { getRequestHeader } from '@tanstack/react-start/server'
+import { getRequestHeader } from '@tanstack/start-server-core/request-response'
 
 import {
   getMarketPathFromCookieSource,
