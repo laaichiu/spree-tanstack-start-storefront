@@ -1,6 +1,5 @@
 import { createServerFn } from '@tanstack/react-start'
 
-import { getServerSpreeClient } from '@/lib/spree/client.server'
 import { normalizeNewsletterVerificationRedirectUrl } from '@/lib/newsletter/newsletter-url'
 import { isSpreeErrorStatus, readSpreeErrorCode } from '@/lib/spree/errors'
 
@@ -14,10 +13,6 @@ const NEWSLETTER_ACCEPTED_MESSAGE =
 const NEWSLETTER_VERIFIED_MESSAGE = 'Newsletter subscription verified.'
 const NEWSLETTER_UNSUPPORTED_STATUSES = [404, 405, 501] as const
 const NEWSLETTER_INVALID_TOKEN_STATUSES = [422] as const
-
-type NewsletterApiResponse = {
-  message?: string
-}
 
 export type NewsletterSubscribeResult =
   | {
@@ -87,20 +82,16 @@ export const subscribeToNewsletter = createServerFn({ method: 'POST' })
         throw new Error('Newsletter redirect URL is invalid.')
       }
 
-      const response =
-        await getServerSpreeClient().request<NewsletterApiResponse>(
-          'POST',
-          '/newsletter_subscribers',
-          {
-            body: {
-              email: input.email,
-              ...(redirectUrl ? { redirect_url: redirectUrl } : {}),
-            },
-          },
-        )
+      const { createNewsletterSubscriptionOnServer } =
+        await import('./subscribe-to-newsletter.server')
+
+      await createNewsletterSubscriptionOnServer({
+        email: input.email,
+        redirectUrl,
+      })
 
       return {
-        message: response.message ?? NEWSLETTER_ACCEPTED_MESSAGE,
+        message: NEWSLETTER_ACCEPTED_MESSAGE,
         status: 'accepted',
       }
     } catch (error) {
@@ -121,19 +112,13 @@ export const verifyNewsletterSubscription = createServerFn({ method: 'POST' })
       await import('../validation/newsletter-subscription')
     const input = newsletterVerificationSchema.parse(data)
     try {
-      const response =
-        await getServerSpreeClient().request<NewsletterApiResponse>(
-          'POST',
-          '/newsletter_subscribers/verify',
-          {
-            body: {
-              token: input.token,
-            },
-          },
-        )
+      const { verifyNewsletterSubscriptionOnServer } =
+        await import('./subscribe-to-newsletter.server')
+
+      await verifyNewsletterSubscriptionOnServer(input.token)
 
       return {
-        message: response.message ?? NEWSLETTER_VERIFIED_MESSAGE,
+        message: NEWSLETTER_VERIFIED_MESSAGE,
         status: 'verified',
       }
     } catch (error) {
