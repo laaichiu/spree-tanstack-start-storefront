@@ -110,11 +110,17 @@ export function buildProductStructuredData({
     name: product.name,
     offers: {
       '@type': 'Offer',
-      availability: product.inStock
-        ? 'https://schema.org/InStock'
-        : 'https://schema.org/OutOfStock',
-      price: product.price.amount,
-      priceCurrency: product.price.currencyCode,
+      availability: product.preorder
+        ? 'https://schema.org/PreOrder'
+        : product.inStock
+          ? 'https://schema.org/InStock'
+          : 'https://schema.org/OutOfStock',
+      ...(product.price
+        ? {
+            price: product.price.amount,
+            priceCurrency: product.price.currencyCode,
+          }
+        : {}),
       url: canonicalUrl,
     },
     ...(defaultVariant?.sku ? { sku: defaultVariant.sku } : {}),

@@ -162,6 +162,7 @@ describe('SearchDrawer', () => {
       id: 'product-air-purifier',
       image: null,
       inStock: true,
+      preorder: false,
       name: 'Air Purifier',
       price: { amount: 120, currencyCode: 'USD' },
       slug: 'air-purifier',

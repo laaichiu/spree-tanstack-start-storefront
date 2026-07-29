@@ -43,6 +43,7 @@ const page: HomePageModel = {
         id: 'product-mug',
         image: null,
         inStock: true,
+        preorder: false,
         name: 'Everyday Mug',
         price: { amount: 12, currencyCode: 'USD' },
         slug: 'everyday-mug',

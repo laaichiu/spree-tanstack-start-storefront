@@ -15,6 +15,7 @@ const product = {
   description: '',
   descriptionHtml: '',
   metaDescription: '',
+  metaTitle: null,
   price: {
     amount: 10,
     currencyCode: 'USD',
@@ -67,6 +68,8 @@ const product = {
     },
   ],
   purchasable: true,
+  preorder: false,
+  preorderShipsAt: null,
   specifications: [],
   variantCount: 3,
   variants: [
@@ -78,6 +81,8 @@ const product = {
         currencyCode: 'USD',
       },
       inStock: false,
+      preorder: false,
+      preorderShipsAt: null,
       optionValues: [
         {
           id: 'value-stone',
@@ -109,6 +114,8 @@ const product = {
         currencyCode: 'USD',
       },
       inStock: true,
+      preorder: false,
+      preorderShipsAt: null,
       optionValues: [
         {
           id: 'value-stone',
@@ -140,6 +147,8 @@ const product = {
         currencyCode: 'USD',
       },
       inStock: true,
+      preorder: false,
+      preorderShipsAt: null,
       optionValues: [
         {
           id: 'value-black',

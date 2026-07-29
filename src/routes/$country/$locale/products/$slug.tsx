@@ -54,7 +54,9 @@ export const Route = createFileRoute('/$country/$locale/products/$slug')({
       product?.description ||
       translateMessage(params.locale, 'product.productUnavailableDescription')
     const title =
-      product?.name ?? translateMessage(params.locale, 'product.products')
+      product?.metaTitle ||
+      product?.name ||
+      translateMessage(params.locale, 'product.products')
     const canonicalPath = product
       ? `/${params.country}/${params.locale}/products/${product.slug}`
       : null

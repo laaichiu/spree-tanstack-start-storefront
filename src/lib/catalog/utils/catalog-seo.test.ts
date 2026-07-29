@@ -31,6 +31,7 @@ const product = {
     },
   ],
   inStock: true,
+  metaTitle: null,
   metaDescription: 'A carefully made everyday bowl.',
   name: 'Everyday Bowl',
   options: [],
@@ -39,6 +40,8 @@ const product = {
     currencyCode: 'USD',
   },
   purchasable: true,
+  preorder: false,
+  preorderShipsAt: null,
   slug: 'everyday-bowl',
   specifications: [],
   variantCount: 1,
@@ -46,6 +49,8 @@ const product = {
     {
       id: 'variant-1',
       inStock: true,
+      preorder: false,
+      preorderShipsAt: null,
       optionValues: [],
       price: {
         amount: 24,

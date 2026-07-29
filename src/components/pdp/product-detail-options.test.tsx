@@ -15,6 +15,7 @@ const product = {
   description: '',
   descriptionHtml: '',
   metaDescription: '',
+  metaTitle: null,
   price: { amount: 34.99, currencyCode: 'USD' },
   defaultVariantId: 'variant-pink',
   images: [],
@@ -36,6 +37,8 @@ const product = {
     },
   ],
   purchasable: true,
+  preorder: false,
+  preorderShipsAt: null,
   specifications: [],
   variants: [
     {
@@ -43,6 +46,8 @@ const product = {
       sku: 'TRAVEL-HAIR-DRYER-PINK',
       price: { amount: 34.99, currencyCode: 'USD' },
       inStock: true,
+      preorder: false,
+      preorderShipsAt: null,
       optionValues: [
         {
           id: 'option-value-pink',

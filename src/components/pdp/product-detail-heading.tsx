@@ -15,8 +15,8 @@ const ProductRatingAnchor = lazy(async () => {
 })
 
 type ProductDetailHeadingProps = {
-  compareAtPrice?: Money
-  price: Money
+  compareAtPrice?: Money | null
+  price: Money | null
   product: Product
   reviewSummary: ProductReviewSummary | null
 }

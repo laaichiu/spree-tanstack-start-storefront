@@ -38,9 +38,11 @@ export function ProductPurchaseSection({
         >
           {purchase.isAddingToCart
             ? t('product.addingToBag')
-            : product.inStock
-              ? t('product.addToBag')
-              : t('product.addToBagUnavailable')}
+            : purchase.isPreorder
+              ? t('product.preorder')
+              : product.inStock
+                ? t('product.addToBag')
+                : t('product.addToBagUnavailable')}
         </Button>
         {purchase.hasAddToCartError ? (
           <p className="mt-3 text-sm leading-6 text-destructive">

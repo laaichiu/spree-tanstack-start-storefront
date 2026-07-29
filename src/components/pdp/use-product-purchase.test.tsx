@@ -19,6 +19,7 @@ const product = {
   id: 'product-1',
   images: [],
   inStock: true,
+  metaTitle: null,
   metaDescription: '',
   name: 'Everyday Mug',
   options: [
@@ -46,6 +47,8 @@ const product = {
   ],
   price: { amount: 10, currencyCode: 'USD' },
   purchasable: true,
+  preorder: false,
+  preorderShipsAt: null,
   slug: 'everyday-mug',
   specifications: [],
   variantCount: 2,
@@ -53,6 +56,8 @@ const product = {
     {
       id: 'variant-small',
       inStock: false,
+      preorder: false,
+      preorderShipsAt: null,
       optionValues: [
         {
           colorCode: null,
@@ -72,6 +77,8 @@ const product = {
       compareAtPrice: { amount: 16, currencyCode: 'USD' },
       id: 'variant-large',
       inStock: true,
+      preorder: false,
+      preorderShipsAt: null,
       optionValues: [
         {
           colorCode: null,

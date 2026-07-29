@@ -44,6 +44,7 @@ const page = {
       },
     ],
     inStock: true,
+    metaTitle: null,
     metaDescription: 'A useful mug.',
     name: 'Everyday Mug',
     options: [
@@ -64,6 +65,8 @@ const page = {
     ],
     price: { amount: 12, currencyCode: 'USD' },
     purchasable: true,
+    preorder: false,
+    preorderShipsAt: null,
     slug: 'everyday-mug',
     specifications: [{ label: 'Material', value: 'Stoneware' }],
     variantCount: 1,
@@ -72,6 +75,8 @@ const page = {
         compareAtPrice: { amount: 16, currencyCode: 'USD' },
         id: 'variant-large',
         inStock: true,
+        preorder: false,
+        preorderShipsAt: null,
         optionValues: [
           {
             colorCode: null,
@@ -95,6 +100,7 @@ const page = {
       id: 'product-cup',
       image: null,
       inStock: true,
+      preorder: false,
       name: 'Companion Cup',
       price: { amount: 8, currencyCode: 'USD' },
       slug: 'companion-cup',
@@ -154,6 +160,7 @@ function createController() {
       canAddToCart: true,
       hasAddToCartError: false,
       isAddingToCart: false,
+      isPreorder: false,
       selectedOptions: { 'option-size': 'value-large' },
       selectedVariant: page.product.variants[0],
       selectOption: vi.fn(),

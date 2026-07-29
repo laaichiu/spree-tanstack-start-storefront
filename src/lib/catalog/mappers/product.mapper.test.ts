@@ -1,110 +1,13 @@
-import type { Product as SpreeProduct } from '@spree/sdk'
 import { describe, expect, it } from 'vitest'
 
-import {
-  mapSpreeProductToProduct,
-  mapSpreeProductToSummary,
-} from './product.mapper'
+import { baseProduct } from './product.mapper.fixture'
+import { mapSpreeProductToProduct } from './product.mapper'
 
-const baseProduct = {
-  id: 'product-1',
-  name: 'Everyday Bowl',
-  slug: 'everyday-bowl',
-  meta_description: null,
-  meta_keywords: null,
-  variant_count: 1,
-  available_on: '2026-01-01',
-  purchasable: true,
-  in_stock: true,
-  backorderable: false,
-  available: true,
-  description: 'A useful bowl.',
-  description_html: '<p>A useful bowl.</p>',
-  default_variant_id: 'variant-1',
-  thumbnail_url: 'https://example.com/thumb.jpg',
-  tags: [],
-  price: {
-    id: 'price-1',
-    amount: '24.00',
-    amount_in_cents: 2400,
-    compare_at_amount: null,
-    compare_at_amount_in_cents: null,
-    currency: 'USD',
-    display_amount: '$24.00',
-    display_compare_at_amount: null,
-    price_list_id: null,
-  },
-  original_price: null,
-} satisfies SpreeProduct
-
-describe('mapSpreeProductToSummary', () => {
-  it('maps a Spree product into the storefront product summary model', () => {
-    const summary = mapSpreeProductToSummary({
-      ...baseProduct,
-      primary_media: {
-        id: 'media-1',
-        product_id: 'product-1',
-        variant_ids: [],
-        position: 1,
-        alt: 'Stoneware bowl on a table',
-        media_type: 'image',
-        focal_point_x: null,
-        focal_point_y: null,
-        external_video_url: null,
-        original_url: 'https://example.com/original.jpg',
-        mini_url: null,
-        small_url: null,
-        medium_url: 'https://example.com/medium.jpg',
-        large_url: 'https://example.com/large.jpg',
-        xlarge_url: null,
-        og_image_url: null,
-      },
-    })
-
-    expect(summary).toEqual({
-      id: 'product-1',
-      slug: 'everyday-bowl',
-      name: 'Everyday Bowl',
-      description: 'A useful bowl.',
-      price: {
-        amount: 24,
-        currencyCode: 'USD',
-      },
-      compareAtPrice: undefined,
-      image: {
-        id: 'media-1',
-        src: 'https://example.com/large.jpg',
-        alt: 'Stoneware bowl on a table',
-        variantIds: [],
-      },
-      inStock: true,
-    })
-  })
-
-  it('falls back to thumbnail image and product name alt text', () => {
-    const summary = mapSpreeProductToSummary(baseProduct)
-
-    expect(summary.image).toEqual({
-      id: 'product-1:thumbnail',
-      src: 'https://example.com/thumb.jpg',
-      alt: 'Everyday Bowl',
-      variantIds: [],
-    })
-  })
-
-  it('does not mark an unpurchasable product as in stock for UI purposes', () => {
-    const summary = mapSpreeProductToSummary({
-      ...baseProduct,
-      purchasable: false,
-      in_stock: true,
-    })
-
-    expect(summary.inStock).toBe(false)
-  })
-
+describe('mapSpreeProductToProduct', () => {
   it('maps a Spree product into the storefront product detail model', () => {
     const product = mapSpreeProductToProduct({
       ...baseProduct,
+      meta_title: 'Everyday Bowl | Spree',
       meta_description: 'A concise bowl description.',
       original_price: {
         ...baseProduct.price,
@@ -199,6 +102,7 @@ describe('mapSpreeProductToSummary', () => {
           key: 'custom.warranty',
           label: 'Warranty',
           type: 'Spree::Metafields::ShortText',
+          field_type: 'short_text',
           value: '2 Years',
         },
         {
@@ -206,6 +110,7 @@ describe('mapSpreeProductToSummary', () => {
           key: 'custom.capacity',
           label: 'Capacity',
           type: 'Spree::Metafields::ShortText',
+          field_type: 'short_text',
           value: '1.5L',
         },
       ],
@@ -230,6 +135,7 @@ describe('mapSpreeProductToSummary', () => {
       description: 'A useful bowl.',
       descriptionHtml: '<p>A useful bowl.</p>',
       metaDescription: 'A concise bowl description.',
+      metaTitle: 'Everyday Bowl | Spree',
       price: {
         amount: 24,
         currencyCode: 'USD',
@@ -248,6 +154,8 @@ describe('mapSpreeProductToSummary', () => {
         },
       ],
       inStock: true,
+      preorder: false,
+      preorderShipsAt: null,
       options: [],
       purchasable: true,
       specifications: [
@@ -279,6 +187,8 @@ describe('mapSpreeProductToSummary', () => {
           thumbnail_url: null,
           purchasable: true,
           in_stock: true,
+          preorder: false,
+          preorder_ships_at: null,
           backorderable: false,
           weight: null,
           height: null,
@@ -316,15 +226,79 @@ describe('mapSpreeProductToSummary', () => {
     })
   })
 
-  it('throws when Spree price data is incomplete', () => {
-    expect(() =>
-      mapSpreeProductToSummary({
-        ...baseProduct,
-        price: {
-          ...baseProduct.price,
-          amount_in_cents: null,
+  it('maps product option values when variants do not provide option values', () => {
+    const product = mapSpreeProductToProduct({
+      ...baseProduct,
+      option_values: [
+        {
+          id: 'option-value-stone',
+          option_type_id: 'option-type-color',
+          name: 'stone',
+          label: 'Stone',
+          position: 1,
+          color_code: '#d8cbb8',
+          option_type_name: 'color',
+          option_type_label: 'Color',
+          image_url: null,
         },
-      }),
-    ).toThrow('Spree price is missing amount or currency')
+      ],
+    })
+
+    expect(product.options).toEqual([
+      {
+        id: 'option-type-color',
+        name: 'color',
+        label: 'Color',
+        values: [
+          {
+            id: 'option-value-stone',
+            name: 'stone',
+            label: 'Stone',
+            colorCode: '#d8cbb8',
+            imageUrl: null,
+          },
+        ],
+      },
+    ])
+  })
+
+  it('keeps purchasable pre-order products and variants addable', () => {
+    const product = mapSpreeProductToProduct({
+      ...baseProduct,
+      in_stock: false,
+      preorder: true,
+      preorder_ships_at: '2026-10-01',
+      variants: [
+        {
+          id: 'variant-preorder',
+          product_id: 'product-1',
+          sku: 'BOWL-PREORDER',
+          options_text: '',
+          track_inventory: true,
+          media_count: 0,
+          thumbnail_url: null,
+          purchasable: true,
+          in_stock: false,
+          backorderable: false,
+          preorder: true,
+          preorder_ships_at: '2026-10-01',
+          weight: null,
+          height: null,
+          width: null,
+          depth: null,
+          price: baseProduct.price,
+          original_price: null,
+          option_values: [],
+        },
+      ],
+    })
+
+    expect(product.inStock).toBe(true)
+    expect(product.preorder).toBe(true)
+    expect(product.variants[0]).toMatchObject({
+      inStock: true,
+      preorder: true,
+      preorderShipsAt: '2026-10-01',
+    })
   })
 })

@@ -9,6 +9,7 @@ function product(id: string): ProductSummary {
     id,
     image: null,
     inStock: true,
+    preorder: false,
     name: id,
     price: { amount: 100, currencyCode: 'USD' },
     slug: id,

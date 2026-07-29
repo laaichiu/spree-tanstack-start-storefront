@@ -15,14 +15,15 @@ export type ProductPurchaseAvailability =
   | 'unavailable'
 
 export type ProductPurchaseController = {
-  activeCompareAtPrice?: Money
-  activePrice: Money
+  activeCompareAtPrice?: Money | null
+  activePrice: Money | null
   activeSku: string | null
   addSelectedVariantToCart: () => Promise<void>
   availability: ProductPurchaseAvailability
   canAddToCart: boolean
   hasAddToCartError: boolean
   isAddingToCart: boolean
+  isPreorder: boolean
   selectedOptions: SelectedProductOptions
   selectedVariant: ProductVariant | null
   selectOption: (optionId: string, valueId: string) => void
@@ -47,6 +48,7 @@ export function useProductPurchase(
       ?.sku ??
     product.variants[0]?.sku ??
     null
+  const isPreorder = selectedVariant?.preorder ?? product.preorder
   const addableVariantId = selectedVariant?.inStock
     ? selectedVariant.id
     : product.inStock && product.variantCount === 1
@@ -92,6 +94,7 @@ export function useProductPurchase(
     canAddToCart,
     hasAddToCartError: Boolean(addToCartMutation.error),
     isAddingToCart: addToCartMutation.isPending,
+    isPreorder,
     selectedOptions,
     selectedVariant,
     selectOption,

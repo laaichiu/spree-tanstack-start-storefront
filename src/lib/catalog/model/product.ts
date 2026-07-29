@@ -23,10 +23,11 @@ export type ProductSummary = {
   slug: string
   name: string
   description: string
-  price: Money
-  compareAtPrice?: Money
+  price: Money | null
+  compareAtPrice?: Money | null
   image: ProductImage | null
   inStock: boolean
+  preorder: boolean
 }
 
 export type ProductOptionValue = {
@@ -53,9 +54,11 @@ export type ProductVariantOptionValue = ProductOptionValue & {
 export type ProductVariant = {
   id: string
   sku: string | null
-  price: Money
-  compareAtPrice?: Money
+  price: Money | null
+  compareAtPrice?: Money | null
   inStock: boolean
+  preorder: boolean
+  preorderShipsAt: string | null
   optionValues: ProductVariantOptionValue[]
 }
 
@@ -67,11 +70,14 @@ export type Product = {
   description: string
   descriptionHtml: string
   metaDescription: string
-  price: Money
-  compareAtPrice?: Money
+  metaTitle: string | null
+  price: Money | null
+  compareAtPrice?: Money | null
   defaultVariantId: string | null
   images: ProductImage[]
   inStock: boolean
+  preorder: boolean
+  preorderShipsAt: string | null
   options: ProductOption[]
   purchasable: boolean
   specifications: ProductSpecification[]

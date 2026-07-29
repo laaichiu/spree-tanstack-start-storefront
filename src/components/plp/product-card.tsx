@@ -64,7 +64,7 @@ export function ProductCard({
               variant={isListing ? 'listing' : 'default'}
             />
           </div>
-          {!product.inStock ? (
+          {!product.inStock || product.preorder ? (
             <p
               className={
                 isListing
@@ -72,7 +72,9 @@ export function ProductCard({
                   : 'text-sm leading-4 font-normal uppercase mt-2 text-muted-foreground'
               }
             >
-              {t('product.outOfStock')}
+              {product.preorder
+                ? t('product.preorder')
+                : t('product.outOfStock')}
             </p>
           ) : null}
         </div>
