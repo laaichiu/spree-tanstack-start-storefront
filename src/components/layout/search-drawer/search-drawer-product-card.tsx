@@ -1,8 +1,8 @@
 import { Link } from '@tanstack/react-router'
 
 import { useMarket } from '@/components/layout/market-provider'
+import { ProductPrice } from '@/components/shared/product-price'
 import type { ProductSummary } from '@/lib/catalog/model/product'
-import { formatMoney } from '@/lib/money/format-money'
 
 export function SearchPreviewRow({
   onSelect,
@@ -98,16 +98,11 @@ export function SearchFeaturedProductCard({
 }
 
 function SearchProductPrice({ product }: { product: ProductSummary }) {
-  const { market } = useMarket()
-
   return (
-    <div className="flex flex-wrap items-center gap-2 text-sm leading-5 text-foreground">
-      <span>{formatMoney(product.price, market.locale)}</span>
-      {product.compareAtPrice ? (
-        <span className="text-sm text-muted-foreground line-through">
-          {formatMoney(product.compareAtPrice, market.locale)}
-        </span>
-      ) : null}
-    </div>
+    <ProductPrice
+      compareAtPrice={product.compareAtPrice}
+      price={product.price}
+      variant="listing"
+    />
   )
 }

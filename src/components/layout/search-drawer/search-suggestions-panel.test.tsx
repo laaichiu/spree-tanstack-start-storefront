@@ -63,6 +63,7 @@ vi.mock('@/components/layout/market-provider', () => ({
 }))
 
 const product: ProductSummary = {
+  defaultVariantId: null,
   description: 'A useful mug.',
   id: 'product-mug',
   image: null,
@@ -71,6 +72,7 @@ const product: ProductSummary = {
   name: 'Everyday Mug',
   price: { amount: 12, currencyCode: 'USD' },
   slug: 'everyday-mug',
+  variants: [],
 }
 
 function renderPanel(
@@ -115,6 +117,20 @@ describe('SearchSuggestionsPanel', () => {
       screen.getByRole('heading', { name: 'Suggested items' }),
     ).toBeTruthy()
     expect(screen.getByText('Everyday Mug')).toBeTruthy()
+  })
+
+  it('does not render an invalid zero compare-at price', () => {
+    renderPanel({
+      products: [
+        {
+          ...product,
+          compareAtPrice: { amount: 0, currencyCode: 'USD' },
+        },
+      ],
+    })
+
+    expect(screen.getByText('$12.00')).toBeTruthy()
+    expect(screen.queryByText('$0.00')).toBeNull()
   })
 
   it('navigates when a popular search is selected', () => {

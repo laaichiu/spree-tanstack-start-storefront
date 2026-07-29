@@ -158,6 +158,7 @@ describe('SearchDrawer', () => {
 
   it('clears the current query when a preview product is selected', async () => {
     searchPreviewProducts.push({
+      defaultVariantId: null,
       description: 'Quiet air purifier.',
       id: 'product-air-purifier',
       image: null,
@@ -166,6 +167,7 @@ describe('SearchDrawer', () => {
       name: 'Air Purifier',
       price: { amount: 120, currencyCode: 'USD' },
       slug: 'air-purifier',
+      variants: [],
     })
     const onOpenChange = vi.fn()
     const props: ComponentProps<typeof SearchDrawer> = {
