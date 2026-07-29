@@ -153,6 +153,35 @@ describe('CheckoutSummary', () => {
     expect(screen.getByText('2')).toBeTruthy()
   })
 
+  it('shows the compare-at total above the discounted line total', () => {
+    renderWithMarket(
+      <CheckoutSummary
+        cart={cartSummary({
+          items: [
+            lineItem({
+              compareAtTotalPrice: money(48),
+              totalPrice: money(40),
+            }),
+          ],
+        })}
+        isMobileOpen
+        onMobileToggle={vi.fn()}
+      />,
+    )
+
+    const compareAtPrice = screen.getByText('$48.00')
+    const discountedPrice = screen.getByText('$40.00')
+
+    expect(compareAtPrice.className).toContain('line-through')
+    expect(
+      Boolean(
+        compareAtPrice.compareDocumentPosition(discountedPrice) &
+        Node.DOCUMENT_POSITION_FOLLOWING,
+      ),
+    ).toBe(true)
+    expect(screen.queryByText(/% off/i)).toBeNull()
+  })
+
   it('renders discount breakdown and tax rows from the normalized cart', () => {
     renderWithMarket(
       <CheckoutSummary

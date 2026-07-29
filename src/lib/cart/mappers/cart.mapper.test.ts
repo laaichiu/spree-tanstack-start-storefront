@@ -258,6 +258,26 @@ describe('mapSpreeCartToSummary', () => {
     })
   })
 
+  it('maps a line item Compare-at amount for sale display', () => {
+    const cart = mapSpreeCartToSummary({
+      ...baseCart,
+      items: [
+        {
+          ...baseCart.items[0],
+          compare_at_amount: '48.00',
+          display_compare_at_amount: '$48.00',
+          price: '24.00',
+          display_price: '$24.00',
+        },
+      ],
+    })
+
+    expect(cart.items[0]?.compareAtTotalPrice).toEqual({
+      amount: 48,
+      currencyCode: 'USD',
+    })
+  })
+
   it('throws when a cart amount cannot be parsed', () => {
     expect(() =>
       mapSpreeCartToSummary({

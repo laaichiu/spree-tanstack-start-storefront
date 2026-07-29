@@ -1,6 +1,25 @@
 import { useMarket } from '@/components/layout/market-provider'
-import { ProductPrice } from '@/components/shared/product-price'
 import type { CartLineItem } from '@/lib/cart/model/cart'
+import { getDiscountPercent } from '@/lib/money/discount'
+import { formatMoney } from '@/lib/money/format-money'
+
+function CheckoutSummaryLineItemPrice({ item }: { item: CartLineItem }) {
+  const { market } = useMarket()
+  const compareAtPrice = item.compareAtTotalPrice
+  const hasDiscount =
+    getDiscountPercent(item.totalPrice, compareAtPrice) !== null
+
+  return (
+    <div className="flex shrink-0 flex-col items-end gap-0.5 pt-0.5 text-right text-sm leading-5 text-foreground">
+      {hasDiscount ? (
+        <span className="text-muted-foreground line-through">
+          {formatMoney(compareAtPrice, market.locale)}
+        </span>
+      ) : null}
+      <span>{formatMoney(item.totalPrice, market.locale)}</span>
+    </div>
+  )
+}
 
 function CheckoutSummaryLineItem({ item }: { item: CartLineItem }) {
   const { market, t } = useMarket()
@@ -47,9 +66,7 @@ function CheckoutSummaryLineItem({ item }: { item: CartLineItem }) {
         ) : null}
       </div>
 
-      <div className="shrink-0 pt-0.5 text-right text-sm leading-5 text-foreground">
-        <ProductPrice price={item.totalPrice} variant="listing" />
-      </div>
+      <CheckoutSummaryLineItemPrice item={item} />
     </li>
   )
 }

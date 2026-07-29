@@ -10,6 +10,7 @@ export type CartLineItem = {
   quantity: number
   imageUrl: string | null
   unitPrice: Money | null
+  compareAtTotalPrice?: Money | null
   totalPrice: Money | null
 }
 

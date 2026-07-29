@@ -18,6 +18,11 @@ import { mapSpreeAmountToMoney } from '@/lib/money/map-spree-amount'
 import type { Money } from '@/lib/money/money'
 
 function mapLineItem(item: SpreeLineItem): CartLineItem {
+  const compareAtTotalPrice = mapSpreeAmountToMoney(
+    item.compare_at_amount,
+    item.currency,
+  )
+
   return {
     id: item.id,
     variantId: item.variant_id,
@@ -28,6 +33,7 @@ function mapLineItem(item: SpreeLineItem): CartLineItem {
     quantity: item.quantity,
     imageUrl: item.thumbnail_url,
     unitPrice: mapSpreeAmountToMoney(item.price, item.currency),
+    ...(compareAtTotalPrice ? { compareAtTotalPrice } : {}),
     totalPrice: mapSpreeAmountToMoney(item.total, item.currency),
   }
 }

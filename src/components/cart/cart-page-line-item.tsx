@@ -105,7 +105,10 @@ export function CartPageLineItem({
                 {t('cart.total')}
               </p>
               <div className="mt-2">
-                <ProductPrice price={item.totalPrice} />
+                <ProductPrice
+                  compareAtPrice={item.compareAtTotalPrice}
+                  price={item.totalPrice}
+                />
               </div>
             </div>
           </div>

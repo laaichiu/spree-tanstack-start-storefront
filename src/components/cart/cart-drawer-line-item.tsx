@@ -51,7 +51,7 @@ export function CartDrawerLineItem({
   onUpdateQuantity,
   pending,
 }: CartDrawerLineItemProps) {
-  const { t } = useMarket()
+  const { market, t } = useMarket()
   const displayOptions = getCartDisplayOptions(item)
 
   return (
@@ -89,7 +89,7 @@ export function CartDrawerLineItem({
                 {item.name}
               </Link>
               {displayOptions.length > 0 ? (
-                <p className="mt-2 flex flex-wrap items-center gap-x-2.5 gap-y-1 text-sm leading-5 text-muted-foreground">
+                <p className="mt-1 flex flex-wrap items-center gap-x-2.5 gap-y-1 text-sm leading-5 text-muted-foreground">
                   {displayOptions.map((option, optionIndex) => {
                     const isColor = isColorOption(
                       option.optionTypeLabel || option.optionTypeName,
@@ -132,10 +132,17 @@ export function CartDrawerLineItem({
               ) : null}
             </div>
 
-            <CartMoney
-              className="shrink-0 text-right text-sm leading-5"
-              price={item.totalPrice}
-            />
+            <div className="flex shrink-0 flex-col items-end gap-1 text-right">
+              {item.compareAtTotalPrice ? (
+                <span className="text-sm leading-5 text-muted-foreground line-through">
+                  {formatMoney(item.compareAtTotalPrice, market.locale)}
+                </span>
+              ) : null}
+              <CartMoney
+                className="text-lg leading-6"
+                price={item.totalPrice}
+              />
+            </div>
           </div>
 
           <div className="mt-auto flex flex-wrap items-end gap-x-5 gap-y-4 pt-6">
