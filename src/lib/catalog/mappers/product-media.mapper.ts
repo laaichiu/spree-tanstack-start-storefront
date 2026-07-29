@@ -2,6 +2,30 @@ import type { Media as SpreeMedia, Product as SpreeProduct } from '@spree/sdk'
 
 import type { ProductImage } from '../model/product'
 
+export function mergeProductImages(images: ProductImage[]): ProductImage[] {
+  const imagesBySource = new Map<string, ProductImage>()
+
+  for (const image of images) {
+    const existingImage = imagesBySource.get(image.src)
+
+    if (!existingImage) {
+      imagesBySource.set(image.src, image)
+      continue
+    }
+
+    const variantIds = Array.from(
+      new Set([...existingImage.variantIds, ...image.variantIds]),
+    )
+
+    imagesBySource.set(image.src, {
+      ...existingImage,
+      variantIds,
+    })
+  }
+
+  return Array.from(imagesBySource.values())
+}
+
 export function mapProductImage(
   media: SpreeMedia | null | undefined,
   product: SpreeProduct,
@@ -37,10 +61,7 @@ export function mapProductImages(product: SpreeProduct): ProductImage[] {
         .map((media) => mapProductImage(media, product))
         .filter((image): image is ProductImage => image !== null)
 
-  const dedupedImages = images.filter(
-    (image, index, allImages) =>
-      allImages.findIndex((candidate) => candidate.src === image.src) === index,
-  )
+  const dedupedImages = mergeProductImages(images)
 
   return dedupedImages.length > 0
     ? dedupedImages

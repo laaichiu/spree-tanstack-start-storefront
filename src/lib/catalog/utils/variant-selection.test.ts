@@ -3,6 +3,7 @@ import { describe, expect, it } from 'vitest'
 import type { Product } from '../model/product'
 import {
   getDefaultSelectedOptions,
+  isCatalogItemPurchasable,
   isOptionValueSelectable,
   resolveSelectedVariant,
 } from './variant-selection'
@@ -213,5 +214,16 @@ describe('variant selection', () => {
         valueId: 'value-small',
       }),
     ).toBe(false)
+  })
+
+  it('treats a backorderable variant as purchasable without on-hand stock', () => {
+    expect(
+      isCatalogItemPurchasable({
+        backorderable: true,
+        inStock: false,
+        preorder: false,
+        purchasable: undefined,
+      }),
+    ).toBe(true)
   })
 })

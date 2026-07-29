@@ -25,7 +25,13 @@ export function ProductDetailEditorialView({
       </header>
 
       <div className="mt-10 grid items-start gap-12 lg:grid-cols-[minmax(0,1.6fr)_minmax(20rem,0.7fr)] lg:gap-16">
-        <ProductGallerySection gallery={gallery} productName={product.name} />
+        <ProductGallerySection
+          compareAtPrice={purchase.activeCompareAtPrice}
+          gallery={gallery}
+          isPreorder={purchase.isPreorder}
+          price={purchase.activePrice}
+          productName={product.name}
+        />
 
         <aside className="border-t border-border pt-8 lg:sticky lg:top-24">
           <ProductPurchaseSection

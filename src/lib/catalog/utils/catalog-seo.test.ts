@@ -112,6 +112,31 @@ describe('catalog SEO', () => {
     )
   })
 
+  it('uses the default variant availability instead of the product preorder aggregate', () => {
+    const productWithPreorderSibling = {
+      ...product,
+      preorder: true,
+      variants: [
+        product.variants[0],
+        {
+          ...product.variants[0],
+          id: 'variant-preorder',
+          inStock: false,
+          preorder: true,
+          preorderShipsAt: '2026-10-01',
+          sku: 'BOWL-PREORDER',
+        },
+      ],
+    }
+
+    expect(
+      buildProductStructuredData({
+        canonicalUrl: 'https://shop.example.com/us/en/products/everyday-bowl',
+        product: productWithPreorderSibling,
+      }).offers.availability,
+    ).toBe('https://schema.org/InStock')
+  })
+
   it('builds localized collection and product breadcrumb URLs', () => {
     expect(
       buildCatalogBreadcrumbStructuredData({

@@ -560,6 +560,7 @@
     "closeFilters": "フィルターを閉じる",
     "color": "カラー",
     "description": "説明",
+    "discount": "{percent}% OFF",
     "detail": "商品詳細",
     "details": "詳細",
     "filterAndSort": "フィルター",

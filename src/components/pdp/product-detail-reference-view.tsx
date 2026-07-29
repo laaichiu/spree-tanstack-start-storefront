@@ -27,7 +27,13 @@ export function ProductDetailReferenceView({
 
       <div className="mt-8 grid items-start gap-10 lg:mt-0 lg:grid-cols-3 lg:gap-8 xl:gap-10">
         <div className="lg:col-span-2">
-          <ProductGallerySection gallery={gallery} productName={product.name} />
+          <ProductGallerySection
+            compareAtPrice={purchase.activeCompareAtPrice}
+            gallery={gallery}
+            isPreorder={purchase.isPreorder}
+            price={purchase.activePrice}
+            productName={product.name}
+          />
         </div>
 
         <section className="space-y-8 lg:sticky lg:top-24 lg:self-start">

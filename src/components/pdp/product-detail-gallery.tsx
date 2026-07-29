@@ -1,5 +1,7 @@
 import type { ProductImage } from '@/lib/catalog/model/product'
 import type { MessageKey } from '@/lib/i18n/messages'
+import type { Money } from '@/lib/money/money'
+import { ProductOfferBadges } from '@/components/shared/product-offer-badges'
 
 import { ProductDetailGalleryImageButton } from './product-detail-gallery-image'
 import {
@@ -10,9 +12,13 @@ import {
 type ProductDetailGalleryProps = {
   hasMultipleImages: boolean
   images: ProductImage[]
+  isPreorder?: boolean
   onSelectImage: (index: number) => void
   onZoom: () => void
   productName: string
+  compareAtPrice?: Money | null
+  discountPercent?: number | null
+  price?: Money | null
   safeSelectedMediaIndex: number
   selectedImage: ProductImage | null
   t: (key: MessageKey) => string
@@ -21,14 +27,30 @@ type ProductDetailGalleryProps = {
 export function ProductDetailGallery({
   hasMultipleImages,
   images,
+  isPreorder = false,
   onSelectImage,
   onZoom,
   productName,
+  compareAtPrice,
+  discountPercent,
+  price,
   safeSelectedMediaIndex,
   selectedImage,
   t,
 }: ProductDetailGalleryProps) {
   const galleryLabel = t('product.gallery')
+  function renderBadgeOverlay() {
+    return (
+      <ProductOfferBadges
+        className="absolute top-2 left-2 z-10"
+        compareAtPrice={compareAtPrice}
+        discountPercent={discountPercent}
+        isPreorder={isPreorder}
+        price={price}
+        t={t}
+      />
+    )
+  }
 
   return (
     <section aria-label={galleryLabel} className="min-w-0">
@@ -40,6 +62,11 @@ export function ProductDetailGallery({
             onSelectImage={onSelectImage}
             onZoom={onZoom}
             productName={productName}
+            compareAtPrice={compareAtPrice}
+            discountPercent={discountPercent}
+            isPreorder={isPreorder}
+            price={price}
+            t={t}
             safeSelectedMediaIndex={safeSelectedMediaIndex}
           />
         ) : (
@@ -49,6 +76,7 @@ export function ProductDetailGallery({
             imageComingSoon={t('product.imageComingSoon')}
             label={galleryLabel}
             onZoom={onZoom}
+            overlay={renderBadgeOverlay()}
             sizes="100vw"
           />
         )}
@@ -87,6 +115,7 @@ export function ProductDetailGallery({
                     src={image.src}
                   />
                 </div>
+                {index === 0 ? renderBadgeOverlay() : null}
               </button>
             ))}
           </div>
@@ -97,6 +126,7 @@ export function ProductDetailGallery({
               imageComingSoon={t('product.imageComingSoon')}
               label={galleryLabel}
               onZoom={onZoom}
+              overlay={renderBadgeOverlay()}
               sizes="(min-width: 1024px) 34vw, 100vw"
             />
             <div aria-hidden="true" className="aspect-product bg-transparent" />

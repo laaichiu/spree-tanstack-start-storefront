@@ -38,6 +38,7 @@ export const getRelatedProductSummaries = createServerFn({ method: 'GET' })
         in_category: input.categoryId,
         limit: limit + 1,
       },
+      { includeVariants: true },
     )
 
     return selectRelatedProductSummaries({

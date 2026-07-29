@@ -1,13 +1,21 @@
 import type { UIEvent } from 'react'
 import { useEffect, useLayoutEffect, useRef } from 'react'
 
+import { ProductOfferBadges } from '@/components/shared/product-offer-badges'
 import type { ProductImage } from '@/lib/catalog/model/product'
+import type { MessageKey } from '@/lib/i18n/messages'
+import type { Money } from '@/lib/money/money'
 
 import { ProductDetailGalleryImageButton } from './product-detail-gallery-image'
 
 type ProductDetailMobileGalleryProps = {
   galleryLabel: string
   images: ProductImage[]
+  compareAtPrice?: Money | null
+  discountPercent?: number | null
+  isPreorder?: boolean
+  price?: Money | null
+  t: (key: MessageKey) => string
   onSelectImage: (index: number) => void
   onZoom: () => void
   productName: string
@@ -27,6 +35,11 @@ export function ProductDetailMobileGallery({
   onSelectImage,
   onZoom,
   productName,
+  compareAtPrice,
+  discountPercent,
+  isPreorder = false,
+  price,
+  t,
   safeSelectedMediaIndex,
 }: ProductDetailMobileGalleryProps) {
   const scrollerRef = useRef<HTMLDivElement>(null)
@@ -112,6 +125,18 @@ export function ProductDetailMobileGallery({
                 onSelectImage(index)
                 onZoom()
               }}
+              overlay={
+                index === 0 ? (
+                  <ProductOfferBadges
+                    className="absolute top-2 left-2 z-10"
+                    compareAtPrice={compareAtPrice}
+                    discountPercent={discountPercent}
+                    isPreorder={isPreorder}
+                    price={price}
+                    t={t}
+                  />
+                ) : null
+              }
               sizes="100vw"
             />
           </div>

@@ -19,6 +19,7 @@ export type ProductSpecification = {
 }
 
 export type ProductSummary = {
+  defaultVariantId: string | null
   id: string
   slug: string
   name: string
@@ -26,7 +27,12 @@ export type ProductSummary = {
   price: Money | null
   compareAtPrice?: Money | null
   image: ProductImage | null
+  /** Whether `variants` was included in the API projection. */
+  variantsLoaded?: boolean
+  variants: ProductVariant[]
   inStock: boolean
+  backorderable?: boolean
+  purchasable?: boolean
   preorder: boolean
 }
 
@@ -56,7 +62,10 @@ export type ProductVariant = {
   sku: string | null
   price: Money | null
   compareAtPrice?: Money | null
+  image?: ProductImage | null
   inStock: boolean
+  backorderable?: boolean
+  purchasable?: boolean
   preorder: boolean
   preorderShipsAt: string | null
   optionValues: ProductVariantOptionValue[]
@@ -76,6 +85,7 @@ export type Product = {
   defaultVariantId: string | null
   images: ProductImage[]
   inStock: boolean
+  backorderable?: boolean
   preorder: boolean
   preorderShipsAt: string | null
   options: ProductOption[]

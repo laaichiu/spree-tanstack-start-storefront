@@ -20,6 +20,7 @@ const listing = {
   },
   products: [
     {
+      defaultVariantId: null,
       description: 'A useful mug.',
       id: 'product-mug',
       image: null,
@@ -28,6 +29,7 @@ const listing = {
       name: 'Everyday Mug',
       price: { amount: 12, currencyCode: 'USD' },
       slug: 'everyday-mug',
+      variants: [],
     },
   ],
 }

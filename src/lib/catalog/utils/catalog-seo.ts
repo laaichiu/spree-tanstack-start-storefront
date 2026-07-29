@@ -4,6 +4,7 @@ import {
 } from '@/lib/catalog/model/product-listing'
 import type { ProductListingSearch } from '@/lib/catalog/model/product-listing'
 import type { Product } from '@/lib/catalog/model/product'
+import { isCatalogItemPurchasable } from '@/lib/catalog/utils/variant-selection'
 import { buildCanonicalUrl, buildSeoImageUrl } from '@/lib/seo/site-seo'
 
 type CatalogBreadcrumb = {
@@ -98,6 +99,20 @@ export function buildProductStructuredData({
     product.variants.find(
       (variant) => variant.id === product.defaultVariantId,
     ) ?? product.variants.at(0)
+  const offerPrice = defaultVariant?.price ?? product.price
+  const offerPreorder = defaultVariant?.preorder ?? product.preorder
+  const offerInStock = defaultVariant?.inStock ?? product.inStock
+  const offerPurchasable = defaultVariant
+    ? isCatalogItemPurchasable(defaultVariant)
+    : isCatalogItemPurchasable(product)
+
+  const availability = offerPreorder
+    ? 'https://schema.org/PreOrder'
+    : offerInStock
+      ? 'https://schema.org/InStock'
+      : offerPurchasable
+        ? 'https://schema.org/BackOrder'
+        : 'https://schema.org/OutOfStock'
 
   return {
     '@context': 'https://schema.org',
@@ -110,15 +125,11 @@ export function buildProductStructuredData({
     name: product.name,
     offers: {
       '@type': 'Offer',
-      availability: product.preorder
-        ? 'https://schema.org/PreOrder'
-        : product.inStock
-          ? 'https://schema.org/InStock'
-          : 'https://schema.org/OutOfStock',
-      ...(product.price
+      availability,
+      ...(offerPrice
         ? {
-            price: product.price.amount,
-            priceCurrency: product.price.currencyCode,
+            price: offerPrice.amount,
+            priceCurrency: offerPrice.currencyCode,
           }
         : {}),
       url: canonicalUrl,

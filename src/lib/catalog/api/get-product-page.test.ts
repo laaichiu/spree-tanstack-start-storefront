@@ -59,6 +59,7 @@ const product: Product = {
 }
 
 const relatedProduct: ProductSummary = {
+  defaultVariantId: null,
   description: 'A matching plate.',
   id: 'product-2',
   image: null,
@@ -67,6 +68,7 @@ const relatedProduct: ProductSummary = {
   name: 'Everyday Plate',
   price: { amount: 20, currencyCode: 'USD' },
   slug: 'everyday-plate',
+  variants: [],
 }
 
 function createLoaders(

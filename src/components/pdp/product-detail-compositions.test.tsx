@@ -96,6 +96,7 @@ const page = {
   },
   relatedProducts: [
     {
+      defaultVariantId: null,
       description: 'A companion cup.',
       id: 'product-cup',
       image: null,
@@ -104,6 +105,7 @@ const page = {
       name: 'Companion Cup',
       price: { amount: 8, currencyCode: 'USD' },
       slug: 'companion-cup',
+      variants: [],
     },
   ],
   reviews: {

@@ -4,14 +4,40 @@ import type {
   Variant as SpreeVariant,
 } from '@spree/sdk'
 
-import { mapSpreePriceToMoney } from '@/lib/money/map-spree-price'
+import {
+  mapSpreeCompareAtPriceToMoney,
+  mapSpreePriceToMoney,
+} from '@/lib/money/map-spree-price'
 
 import type {
   ProductOption,
   ProductOptionValue,
+  ProductImage,
   ProductVariant,
   ProductVariantOptionValue,
 } from '../model/product'
+
+function mapVariantImage(variant: SpreeVariant): ProductImage | null {
+  const media = variant.primary_media ?? variant.media?.[0]
+  const src =
+    media?.large_url ??
+    media?.medium_url ??
+    media?.small_url ??
+    media?.original_url ??
+    variant.thumbnail_url
+
+  if (!src) {
+    return null
+  }
+
+  return {
+    id: media?.id ?? `${variant.id}:thumbnail`,
+    src,
+    alt:
+      media?.alt ?? (variant.options_text || variant.sku || 'Product variant'),
+    variantIds: media?.variant_ids.length ? media.variant_ids : [variant.id],
+  }
+}
 
 function mapOptionValue(
   optionValue: SpreeOptionValue,
@@ -40,15 +66,23 @@ function mapOptionValueForProduct(
   }
 }
 
-function mapVariant(variant: SpreeVariant): ProductVariant {
+export function mapSpreeVariantToProductVariant(
+  variant: SpreeVariant,
+): ProductVariant {
+  const image = mapVariantImage(variant)
+
   return {
     id: variant.id,
     sku: variant.sku,
     price: mapSpreePriceToMoney(variant.price),
-    compareAtPrice: variant.original_price
-      ? mapSpreePriceToMoney(variant.original_price)
-      : undefined,
-    inStock: variant.purchasable && (variant.in_stock || variant.preorder),
+    compareAtPrice: mapSpreeCompareAtPriceToMoney(
+      variant.price,
+      variant.original_price,
+    ),
+    ...(image ? { image } : {}),
+    inStock: variant.in_stock,
+    backorderable: variant.backorderable,
+    purchasable: variant.purchasable,
     preorder: variant.preorder,
     preorderShipsAt: variant.preorder_ships_at,
     optionValues: variant.option_values.map(mapOptionValue),
@@ -58,7 +92,7 @@ function mapVariant(variant: SpreeVariant): ProductVariant {
 export function mapProductVariants(
   variants: SpreeVariant[] | null | undefined,
 ): ProductVariant[] {
-  return (variants ?? []).map(mapVariant)
+  return (variants ?? []).map(mapSpreeVariantToProductVariant)
 }
 
 export function mapProductOptions(

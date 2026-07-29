@@ -16,6 +16,7 @@ const input = {
 }
 
 const product: ProductSummary = {
+  defaultVariantId: null,
   description: 'A useful mug.',
   id: 'product-mug',
   image: null,
@@ -24,6 +25,7 @@ const product: ProductSummary = {
   name: 'Everyday Mug',
   price: { amount: 12, currencyCode: 'USD' },
   slug: 'everyday-mug',
+  variants: [],
 }
 
 const category: CategorySummary = {

@@ -4,6 +4,7 @@ import { useAddToCart } from '@/components/cart/use-cart'
 import type { Product, ProductVariant } from '@/lib/catalog/model/product'
 import {
   getDefaultSelectedOptions,
+  isCatalogItemPurchasable,
   resolveSelectedVariant,
 } from '@/lib/catalog/utils/variant-selection'
 import type { SelectedProductOptions } from '@/lib/catalog/utils/variant-selection'
@@ -49,11 +50,15 @@ export function useProductPurchase(
     product.variants[0]?.sku ??
     null
   const isPreorder = selectedVariant?.preorder ?? product.preorder
-  const addableVariantId = selectedVariant?.inStock
-    ? selectedVariant.id
-    : product.inStock && product.variantCount === 1
-      ? product.defaultVariantId
-      : null
+  const selectedVariantPurchasable = selectedVariant
+    ? isCatalogItemPurchasable(selectedVariant)
+    : false
+  const addableVariantId =
+    selectedVariant && selectedVariantPurchasable
+      ? selectedVariant.id
+      : product.purchasable && product.variantCount === 1
+        ? product.defaultVariantId
+        : null
   const canAddToCart = Boolean(addableVariantId)
   const availability: ProductPurchaseAvailability = canAddToCart
     ? 'ready'

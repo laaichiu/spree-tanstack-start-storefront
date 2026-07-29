@@ -40,7 +40,7 @@ export function ProductPurchaseSection({
             ? t('product.addingToBag')
             : purchase.isPreorder
               ? t('product.preorder')
-              : product.inStock
+              : purchase.canAddToCart
                 ? t('product.addToBag')
                 : t('product.addToBagUnavailable')}
         </Button>

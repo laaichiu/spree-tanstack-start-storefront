@@ -61,6 +61,7 @@ const page = createCollectionListingPage({
     },
     products: [
       {
+        defaultVariantId: null,
         description: 'A useful mug.',
         id: 'product-mug',
         image: null,
@@ -69,8 +70,10 @@ const page = createCollectionListingPage({
         name: 'Everyday Mug',
         price: { amount: 12, currencyCode: 'USD' },
         slug: 'everyday-mug',
+        variants: [],
       },
       {
+        defaultVariantId: null,
         description: 'A companion cup.',
         id: 'product-cup',
         image: null,
@@ -79,6 +82,7 @@ const page = createCollectionListingPage({
         name: 'Companion Cup',
         price: { amount: 8, currencyCode: 'USD' },
         slug: 'companion-cup',
+        variants: [],
       },
     ],
   },

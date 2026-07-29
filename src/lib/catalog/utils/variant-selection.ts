@@ -2,6 +2,22 @@ import type { Product, ProductVariant } from '../model/product'
 
 export type SelectedProductOptions = Record<string, string>
 
+type PurchasableCatalogItem = {
+  backorderable?: boolean
+  inStock: boolean
+  preorder?: boolean
+  purchasable?: boolean
+}
+
+export function isCatalogItemPurchasable(
+  item: PurchasableCatalogItem,
+): boolean {
+  return (
+    item.purchasable ??
+    (item.inStock || item.backorderable === true || item.preorder === true)
+  )
+}
+
 function variantMatchesSelection(
   variant: ProductVariant,
   selectedOptions: SelectedProductOptions,
@@ -17,8 +33,7 @@ export function getDefaultSelectedOptions(
   product: Product,
 ): SelectedProductOptions {
   const defaultVariant =
-    product.variants.find((variant) => variant.inStock) ??
-    product.variants.at(0)
+    product.variants.find(isCatalogItemPurchasable) ?? product.variants.at(0)
 
   if (!defaultVariant) {
     return {}
@@ -58,6 +73,7 @@ export function isOptionValueSelectable({
 
   return product.variants.some(
     (variant) =>
-      variant.inStock && variantMatchesSelection(variant, nextSelection),
+      isCatalogItemPurchasable(variant) &&
+      variantMatchesSelection(variant, nextSelection),
   )
 }

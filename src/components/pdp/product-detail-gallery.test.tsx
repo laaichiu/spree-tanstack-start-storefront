@@ -17,7 +17,12 @@ const images = Array.from({ length: 3 }, (_, index) => ({
   variantIds: [],
 })) satisfies ProductImage[]
 
-const translate = ((key: MessageKey) => key) as (key: MessageKey) => string
+const translate = ((key: MessageKey) =>
+  key === 'product.discount'
+    ? '{percent}% OFF'
+    : key === 'product.preorder'
+      ? 'Pre-order'
+      : key) as (key: MessageKey) => string
 
 function GalleryHarness() {
   const [selectedIndex, setSelectedIndex] = useState(0)
@@ -205,5 +210,77 @@ describe('ProductDetailGallery', () => {
             !image.className.includes('transition'),
         ),
     ).toBe(true)
+  })
+
+  it('places the sale badge on the first image in both responsive gallery layouts', () => {
+    render(
+      <ProductDetailGallery
+        discountPercent={40}
+        hasMultipleImages
+        images={images}
+        onSelectImage={() => undefined}
+        onZoom={() => undefined}
+        productName="Test product"
+        safeSelectedMediaIndex={0}
+        selectedImage={images[0]}
+        t={translate}
+      />,
+    )
+
+    expect(screen.getAllByLabelText('40% OFF')).toHaveLength(2)
+  })
+
+  it('places the preorder badge beside the sale badge on the first image', () => {
+    render(
+      <ProductDetailGallery
+        discountPercent={40}
+        hasMultipleImages
+        images={images}
+        isPreorder
+        onSelectImage={() => undefined}
+        onZoom={() => undefined}
+        productName="Test product"
+        safeSelectedMediaIndex={0}
+        selectedImage={images[0]}
+        t={translate}
+      />,
+    )
+
+    expect(screen.getAllByLabelText('40% OFF')).toHaveLength(2)
+    expect(screen.getAllByLabelText('Pre-order')).toHaveLength(2)
+  })
+
+  it('uses the preorder badge in the sale badge position when there is no sale', () => {
+    const view = render(
+      <ProductDetailGallery
+        hasMultipleImages
+        images={images}
+        isPreorder
+        onSelectImage={() => undefined}
+        onZoom={() => undefined}
+        productName="Test product"
+        safeSelectedMediaIndex={0}
+        selectedImage={images[0]}
+        t={translate}
+      />,
+    )
+
+    expect(screen.getAllByLabelText('Pre-order')).toHaveLength(2)
+    expect(screen.queryByLabelText(/% OFF/)).toBeNull()
+
+    view.rerender(
+      <ProductDetailGallery
+        hasMultipleImages
+        images={images}
+        onSelectImage={() => undefined}
+        onZoom={() => undefined}
+        productName="Test product"
+        safeSelectedMediaIndex={0}
+        selectedImage={images[0]}
+        t={translate}
+      />,
+    )
+
+    expect(screen.queryByLabelText('Pre-order')).toBeNull()
   })
 })

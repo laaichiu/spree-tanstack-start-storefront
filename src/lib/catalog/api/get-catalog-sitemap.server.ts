@@ -63,10 +63,14 @@ async function getAllProductSummaries(client: Client) {
   let pages = 1
 
   do {
-    const listing = await getProductListing(client, {
-      limit: SITEMAP_PAGE_SIZE,
-      page,
-    })
+    const listing = await getProductListing(
+      client,
+      {
+        limit: SITEMAP_PAGE_SIZE,
+        page,
+      },
+      { includeVariants: false },
+    )
 
     products.push(...listing.products)
     pages = listing.meta.pages

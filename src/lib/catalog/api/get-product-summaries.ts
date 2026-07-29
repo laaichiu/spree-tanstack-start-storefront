@@ -13,12 +13,22 @@ import type {
 } from '../model/product-listing'
 import { toProductFiltersParams } from './product-listing-params'
 
+const DISPLAY_VARIANT_EXPAND = ['primary_media', 'default_variant']
+const FULL_VARIANT_EXPAND = ['primary_media', 'default_variant', 'variants']
+
+type ProductSummaryRequestOptions = {
+  includeVariants?: boolean
+}
+
 export async function getProductSummaries(
   client: Client,
   params: ProductListParams = {},
+  options: ProductSummaryRequestOptions = {},
 ): Promise<ProductSummary[]> {
   const response = await client.products.list({
-    expand: ['primary_media'],
+    expand: options.includeVariants
+      ? FULL_VARIANT_EXPAND
+      : DISPLAY_VARIANT_EXPAND,
     ...params,
   })
 
@@ -28,12 +38,15 @@ export async function getProductSummaries(
 export async function getProductListing(
   client: Client,
   params: ProductListParams = {},
+  options: ProductSummaryRequestOptions = { includeVariants: true },
 ): Promise<{
   meta: ProductListingMeta
   products: ProductSummary[]
 }> {
   const response = await client.products.list({
-    expand: ['primary_media'],
+    expand: options.includeVariants
+      ? FULL_VARIANT_EXPAND
+      : DISPLAY_VARIANT_EXPAND,
     ...params,
   })
 

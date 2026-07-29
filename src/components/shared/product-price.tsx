@@ -1,4 +1,5 @@
 import { formatMoney } from '@/lib/money/format-money'
+import { getDiscountPercent } from '@/lib/money/discount'
 import type { Money } from '@/lib/money/money'
 import { useMarket } from '@/components/layout/market-provider'
 import { cn } from '@/lib/utils'
@@ -17,6 +18,7 @@ export function ProductPrice({
   const { market } = useMarket()
   const isListing = variant === 'listing'
   const isDetail = variant === 'detail'
+  const hasDiscount = getDiscountPercent(price, compareAtPrice) !== null
 
   return (
     <p
@@ -28,7 +30,7 @@ export function ProductPrice({
       )}
     >
       <span className="font-normal">{formatMoney(price, market.locale)}</span>
-      {compareAtPrice ? (
+      {hasDiscount ? (
         <span
           className={cn(
             'text-muted-foreground line-through',

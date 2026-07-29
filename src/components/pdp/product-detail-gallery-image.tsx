@@ -1,3 +1,5 @@
+import type { ReactNode } from 'react'
+
 import type { ProductImage } from '@/lib/catalog/model/product'
 import { cn } from '@/lib/utils'
 
@@ -9,6 +11,7 @@ type ProductDetailGalleryImageButtonProps = {
   isPriority?: boolean
   label: string
   onZoom: () => void
+  overlay?: ReactNode
   sizes: string
 }
 
@@ -20,13 +23,14 @@ export function ProductDetailGalleryImageButton({
   isPriority = true,
   label,
   onZoom,
+  overlay,
   sizes,
 }: ProductDetailGalleryImageButtonProps) {
   return (
     <button
       aria-current={isCurrent ? 'true' : undefined}
       aria-label={label}
-      className="block w-full max-w-full cursor-zoom-in bg-muted text-left focus-visible:focus-ring disabled:cursor-default"
+      className="relative block w-full max-w-full cursor-zoom-in bg-muted text-left focus-visible:focus-ring disabled:cursor-default"
       disabled={!image}
       onClick={() => {
         if (image) {
@@ -53,6 +57,7 @@ export function ProductDetailGalleryImageButton({
           </div>
         )}
       </div>
+      {overlay}
     </button>
   )
 }

@@ -5,6 +5,7 @@ import { selectRelatedProductSummaries } from './related-products'
 
 function product(id: string): ProductSummary {
   return {
+    defaultVariantId: null,
     description: '',
     id,
     image: null,
@@ -13,6 +14,7 @@ function product(id: string): ProductSummary {
     name: id,
     price: { amount: 100, currencyCode: 'USD' },
     slug: id,
+    variants: [],
   }
 }
 

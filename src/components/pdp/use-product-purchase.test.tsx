@@ -159,6 +159,30 @@ describe('useProductPurchase', () => {
     expect(mutateAsync).not.toHaveBeenCalled()
   })
 
+  it('allows a purchasable backorder variant even when it is not on hand', async () => {
+    const backorderProduct = {
+      ...product,
+      variants: product.variants.map((variant) =>
+        variant.id === 'variant-small'
+          ? { ...variant, purchasable: true }
+          : variant,
+      ),
+    }
+    const { result } = renderHook(() => useProductPurchase(backorderProduct))
+
+    act(() => result.current.selectOption('option-size', 'value-small'))
+
+    expect(result.current.selectedVariant?.id).toBe('variant-small')
+    expect(result.current.canAddToCart).toBe(true)
+
+    await act(() => result.current.addSelectedVariantToCart())
+
+    expect(mutateAsync).toHaveBeenCalledWith({
+      quantity: 1,
+      variantId: 'variant-small',
+    })
+  })
+
   it('distinguishes an invalid option combination from an unavailable variant', () => {
     const { result } = renderHook(() => useProductPurchase(product))
 

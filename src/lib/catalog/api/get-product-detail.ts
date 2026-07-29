@@ -96,6 +96,7 @@ export const getProductDetail = createServerFn({ method: 'GET' })
         'media',
         'default_variant',
         'variants',
+        'variants.media',
         'categories.ancestors',
         'custom_fields',
       ],

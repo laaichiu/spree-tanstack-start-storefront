@@ -117,6 +117,7 @@ describe('mapSpreeProductToProduct', () => {
     })
 
     expect(product).toEqual({
+      backorderable: false,
       categoryBreadcrumbs: [
         {
           id: 'parent-1',
@@ -226,6 +227,45 @@ describe('mapSpreeProductToProduct', () => {
     })
   })
 
+  it('maps Compare-at amounts for variants when no Price List price is active', () => {
+    const product = mapSpreeProductToProduct({
+      ...baseProduct,
+      variants: [
+        {
+          id: 'variant-sale',
+          product_id: 'product-1',
+          sku: 'BOWL-SALE',
+          options_text: 'Color: Stone',
+          track_inventory: true,
+          media_count: 0,
+          thumbnail_url: null,
+          purchasable: true,
+          in_stock: true,
+          backorderable: false,
+          preorder: false,
+          preorder_ships_at: null,
+          weight: null,
+          height: null,
+          width: null,
+          depth: null,
+          price: {
+            ...baseProduct.price,
+            compare_at_amount: '30.00',
+            compare_at_amount_in_cents: 3000,
+            display_compare_at_amount: '$30.00',
+          },
+          original_price: null,
+          option_values: [],
+        },
+      ],
+    })
+
+    expect(product.variants[0]?.compareAtPrice).toEqual({
+      amount: 30,
+      currencyCode: 'USD',
+    })
+  })
+
   it('maps product option values when variants do not provide option values', () => {
     const product = mapSpreeProductToProduct({
       ...baseProduct,
@@ -293,12 +333,14 @@ describe('mapSpreeProductToProduct', () => {
       ],
     })
 
-    expect(product.inStock).toBe(true)
+    expect(product.inStock).toBe(false)
     expect(product.preorder).toBe(true)
     expect(product.variants[0]).toMatchObject({
-      inStock: true,
+      backorderable: false,
+      inStock: false,
       preorder: true,
       preorderShipsAt: '2026-10-01',
+      purchasable: true,
     })
   })
 })

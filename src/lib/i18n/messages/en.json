@@ -560,6 +560,7 @@
     "closeFilters": "Close filters",
     "color": "Color",
     "description": "Description",
+    "discount": "{percent}% OFF",
     "detail": "Product detail",
     "details": "Details",
     "filterAndSort": "Filter",
