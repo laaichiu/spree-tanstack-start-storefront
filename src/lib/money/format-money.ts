@@ -8,10 +8,14 @@ type MoneyFormatOptions = Pick<
 >
 
 export function formatMoney(
-  money: Money,
+  money: Money | null | undefined,
   locale = 'en-US',
   options: MoneyFormatOptions = {},
 ): string {
+  if (!money) {
+    return '—'
+  }
+
   const formatterKey = [
     locale,
     money.currencyCode,

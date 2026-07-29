@@ -7,7 +7,7 @@ export type CheckoutSummaryAmountCart = Pick<
   CartSummary,
   'currencyCode' | 'total'
 > & {
-  amountDue?: Money
+  amountDue?: Money | null
 }
 
 export type CheckoutDiscountBreakdownItem = {
@@ -52,7 +52,7 @@ export function getAppliedCheckoutCreditAmount(
 ): Money | null {
   const amountDue = getCheckoutAmountDue(cart)
 
-  if (!amountDue || amountDue.amount >= cart.total.amount) {
+  if (!amountDue || !cart.total || amountDue.amount >= cart.total.amount) {
     return null
   }
 
@@ -68,6 +68,10 @@ export function getCheckoutDiscountBreakdown(
 ): CheckoutDiscountBreakdownItem[] {
   const breakdown: CheckoutDiscountBreakdownItem[] =
     cart.appliedDiscounts.flatMap((discount) => {
+      if (!discount.amount) {
+        return []
+      }
+
       const amount = roundMoneyAmount(discount.amount.amount)
 
       if (!hasMeaningfulAmount(amount)) {
@@ -88,6 +92,10 @@ export function getCheckoutDiscountBreakdown(
       ]
     })
 
+  if (!cart.discountTotal) {
+    return breakdown
+  }
+
   const discountTotal = roundMoneyAmount(cart.discountTotal.amount)
   const itemizedTotal = roundMoneyAmount(
     breakdown.reduce((total, item) => total + item.amount.amount, 0),
@@ -98,10 +106,11 @@ export function getCheckoutDiscountBreakdown(
     return breakdown
   }
 
-  const shippingDiscountTotal = roundMoneyAmount(
-    cart.shippingDiscountTotal.amount,
-  )
+  const shippingDiscountTotal = cart.shippingDiscountTotal
+    ? roundMoneyAmount(cart.shippingDiscountTotal.amount)
+    : null
   const isShippingRemainder =
+    shippingDiscountTotal !== null &&
     hasMeaningfulAmount(shippingDiscountTotal) &&
     Math.abs(remainder - shippingDiscountTotal) < MONEY_EPSILON
 

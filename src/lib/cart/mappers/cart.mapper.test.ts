@@ -6,6 +6,7 @@ import { mapSpreeCartToSummary } from './cart.mapper'
 const baseCart = {
   id: 'cart-1',
   market_id: 'market-1',
+  channel_id: null,
   number: 'R123',
   token: 'cart-token',
   email: null,
@@ -137,6 +138,8 @@ const baseCart = {
       id: 'line-1',
       variant_id: 'variant-1',
       quantity: 2,
+      preorder: false,
+      preorder_ships_at: null,
       currency: 'USD',
       name: 'Everyday Bowl',
       slug: 'everyday-bowl',
@@ -261,7 +264,33 @@ describe('mapSpreeCartToSummary', () => {
         ...baseCart,
         item_total: 'not-a-number',
       }),
-    ).toThrow('Spree cart amount is invalid')
+    ).toThrow('Spree money amount is invalid')
+  })
+
+  it('preserves unavailable nullable cart money as null', () => {
+    const cart = {
+      ...baseCart,
+      item_total: null,
+      discount_total: null,
+      delivery_total: null,
+      tax_total: null,
+      total: null,
+      fulfillments: [
+        {
+          ...baseCart.fulfillments[0],
+          discount_total: null,
+        },
+      ],
+    } satisfies SpreeCart
+
+    expect(mapSpreeCartToSummary(cart)).toMatchObject({
+      itemTotal: null,
+      discountTotal: null,
+      deliveryTotal: null,
+      shippingDiscountTotal: null,
+      taxTotal: null,
+      total: null,
+    })
   })
 
   it('maps line item option values for cart option swatches', () => {

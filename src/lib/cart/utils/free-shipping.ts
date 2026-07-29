@@ -28,8 +28,9 @@ export function getCartFreeShippingProgress(
   promotion: CartFreeShippingPromotion,
 ): CartFreeShippingProgress | null {
   if (
+    !cart.itemTotal ||
     cart.itemTotal.currencyCode.toUpperCase() !==
-    promotion.threshold.currencyCode.toUpperCase()
+      promotion.threshold.currencyCode.toUpperCase()
   ) {
     return null
   }

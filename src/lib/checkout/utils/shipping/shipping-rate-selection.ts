@@ -30,6 +30,7 @@ export function shouldRefreshCheckoutOrderWithUpdate(order: CheckoutOrder) {
   }
 
   return (
+    order.amountDue !== null &&
     order.amountDue.amount > 0 &&
     order.paymentMethods.length === 0 &&
     hasCheckoutSelectedShippingRate(order)
@@ -92,10 +93,10 @@ export function getCheckoutPaymentStateKey(order: CheckoutOrder) {
     order.currencyCode,
     selectedRate?.fulfillmentId ?? '',
     selectedRate?.id ?? '',
-    order.itemTotal.amount,
-    order.deliveryTotal.amount,
-    order.taxTotal.amount,
-    order.total.amount,
-    order.amountDue.amount,
+    order.itemTotal?.amount ?? '',
+    order.deliveryTotal?.amount ?? '',
+    order.taxTotal?.amount ?? '',
+    order.total?.amount ?? '',
+    order.amountDue?.amount ?? '',
   ].join(':')
 }

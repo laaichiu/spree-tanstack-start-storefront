@@ -79,7 +79,7 @@ export function OrderHeaderCard({ order }: { order: OrderDetail }) {
         />
         <OrderMetaStat
           label={t('account.amountDue')}
-          value={order.displayAmountDue}
+          value={order.displayAmountDue ?? '—'}
         />
       </div>
 
@@ -122,46 +122,52 @@ export function OrderSummaryCard({ order }: { order: OrderDetail }) {
           {t('cart.total')}
         </p>
         <p className="mt-2 text-2xl leading-none font-normal text-foreground">
-          {order.displayTotal}
+          {order.displayTotal ?? '—'}
         </p>
         <p className="mt-3 text-sm leading-6 text-muted-foreground">
           {hasMeaningfulMoney(order.amountDue)
-            ? `${t('account.amountDue')}: ${order.displayAmountDue}`
+            ? `${t('account.amountDue')}: ${order.displayAmountDue ?? '—'}`
             : t('account.orderPaidInFull')}
         </p>
       </div>
       <div className="mt-5 space-y-3 text-sm">
-        <SummaryRow label={t('cart.subtotal')} value={order.displayItemTotal} />
+        <SummaryRow
+          label={t('cart.subtotal')}
+          value={order.displayItemTotal ?? '—'}
+        />
         <SummaryRow
           label={t('cart.shipping')}
-          value={order.displayDeliveryTotal}
+          value={order.displayDeliveryTotal ?? '—'}
         />
         {hasMeaningfulMoney(order.discountTotal) ? (
           <SummaryRow
             label={t('account.discount')}
-            value={order.displayDiscountTotal}
+            value={order.displayDiscountTotal ?? '—'}
           />
         ) : null}
         {hasMeaningfulMoney(order.taxTotal) ? (
-          <SummaryRow label={t('cart.tax')} value={order.displayTaxTotal} />
+          <SummaryRow
+            label={t('cart.tax')}
+            value={order.displayTaxTotal ?? '—'}
+          />
         ) : null}
         {hasMeaningfulMoney(order.giftCardTotal) ? (
           <SummaryRow
             label={t('account.giftCardLabel')}
-            value={order.displayGiftCardTotal}
+            value={order.displayGiftCardTotal ?? '—'}
           />
         ) : null}
         {hasMeaningfulMoney(order.storeCreditTotal) ? (
           <SummaryRow
             label={t('account.storeCredit')}
-            value={order.displayStoreCreditTotal}
+            value={order.displayStoreCreditTotal ?? '—'}
           />
         ) : null}
         <div className="border-t border-border pt-3">
           <SummaryRow
             label={t('cart.total')}
             strong
-            value={order.displayTotal}
+            value={order.displayTotal ?? '—'}
           />
         </div>
       </div>

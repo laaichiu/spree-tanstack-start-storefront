@@ -14,20 +14,8 @@ import type {
   CartShippingRate,
   CartSummary,
 } from '@/lib/cart/model/cart'
+import { mapSpreeAmountToMoney } from '@/lib/money/map-spree-amount'
 import type { Money } from '@/lib/money/money'
-
-export function mapAmountToMoney(amount: string, currencyCode: string): Money {
-  const parsedAmount = Number.parseFloat(amount)
-
-  if (!Number.isFinite(parsedAmount)) {
-    throw new Error('Spree cart amount is invalid')
-  }
-
-  return {
-    amount: parsedAmount,
-    currencyCode,
-  }
-}
 
 function mapLineItem(item: SpreeLineItem): CartLineItem {
   return {
@@ -39,8 +27,8 @@ function mapLineItem(item: SpreeLineItem): CartLineItem {
     optionValues: mapLineItemOptionValues(item),
     quantity: item.quantity,
     imageUrl: item.thumbnail_url,
-    unitPrice: mapAmountToMoney(item.price, item.currency),
-    totalPrice: mapAmountToMoney(item.total, item.currency),
+    unitPrice: mapSpreeAmountToMoney(item.price, item.currency),
+    totalPrice: mapSpreeAmountToMoney(item.total, item.currency),
   }
 }
 
@@ -86,8 +74,8 @@ function mapShippingRate({
     fulfillmentId: fulfillment.id,
     name: rate.name,
     selected: rate.selected,
-    displayPrice: mapAmountToMoney(rate.cost, currencyCode),
-    price: mapAmountToMoney(rate.total, currencyCode),
+    displayPrice: mapSpreeAmountToMoney(rate.cost, currencyCode),
+    price: mapSpreeAmountToMoney(rate.total, currencyCode),
   }
 }
 
@@ -113,7 +101,7 @@ function mapAppliedDiscount(
     name: discount.name,
     description: discount.description,
     code: discount.code,
-    amount: mapAmountToMoney(discount.amount, currencyCode),
+    amount: mapSpreeAmountToMoney(discount.amount, currencyCode),
   }
 }
 
@@ -126,17 +114,22 @@ function mapAppliedGiftCard(
     return null
   }
 
-  const appliedAmount = mapAmountToMoney(cart.gift_card_total, cart.currency)
+  const appliedAmount = mapSpreeAmountToMoney(
+    cart.gift_card_total,
+    cart.currency,
+  )
 
   return {
     id: giftCard.id,
     code: giftCard.code,
     status: giftCard.status,
-    appliedAmount: {
-      amount: -Math.abs(appliedAmount.amount),
-      currencyCode: appliedAmount.currencyCode,
-    },
-    amountRemaining: mapAmountToMoney(
+    appliedAmount: appliedAmount
+      ? {
+          amount: -Math.abs(appliedAmount.amount),
+          currencyCode: appliedAmount.currencyCode,
+        }
+      : null,
+    amountRemaining: mapSpreeAmountToMoney(
       giftCard.amount_remaining,
       giftCard.currency,
     ),
@@ -146,13 +139,27 @@ function mapAppliedGiftCard(
   }
 }
 
-function mapShippingDiscountTotal(cart: SpreeCart | SpreeOrder): Money {
-  return readFulfillments(cart).reduce(
+function mapShippingDiscountTotal(cart: SpreeCart | SpreeOrder): Money | null {
+  const fulfillments = readFulfillments(cart)
+
+  if (fulfillments.some((fulfillment) => fulfillment.discount_total === null)) {
+    return null
+  }
+
+  return fulfillments.reduce<Money | null>(
     (total, fulfillment) => {
-      const discountTotal = mapAmountToMoney(
+      if (!total) {
+        return null
+      }
+
+      const discountTotal = mapSpreeAmountToMoney(
         fulfillment.discount_total,
         cart.currency,
       )
+
+      if (!discountTotal) {
+        return null
+      }
 
       return {
         amount: total.amount + discountTotal.amount,
@@ -181,11 +188,11 @@ export function mapSpreeCartToSummary(
       mapAppliedDiscount(discount, cart.currency),
     ),
     appliedGiftCard: mapAppliedGiftCard(cart),
-    itemTotal: mapAmountToMoney(cart.item_total, cart.currency),
-    discountTotal: mapAmountToMoney(cart.discount_total, cart.currency),
-    deliveryTotal: mapAmountToMoney(cart.delivery_total, cart.currency),
+    itemTotal: mapSpreeAmountToMoney(cart.item_total, cart.currency),
+    discountTotal: mapSpreeAmountToMoney(cart.discount_total, cart.currency),
+    deliveryTotal: mapSpreeAmountToMoney(cart.delivery_total, cart.currency),
     shippingDiscountTotal: mapShippingDiscountTotal(cart),
-    taxTotal: mapAmountToMoney(cart.tax_total, cart.currency),
-    total: mapAmountToMoney(cart.total, cart.currency),
+    taxTotal: mapSpreeAmountToMoney(cart.tax_total, cart.currency),
+    total: mapSpreeAmountToMoney(cart.total, cart.currency),
   }
 }

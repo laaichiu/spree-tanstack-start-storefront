@@ -65,7 +65,7 @@ export function useCheckoutPaymentSubmit({
   const submitPayment = useCallback(
     () =>
       submitCheckoutPayment({
-        amountDue: cart.amountDue.amount,
+        amountDue: cart.amountDue?.amount ?? null,
         cartId: cart.id,
         clientSecret,
         completeOrder: completeOrderAsync,
@@ -88,7 +88,7 @@ export function useCheckoutPaymentSubmit({
         t,
       }),
     [
-      cart.amountDue.amount,
+      cart.amountDue?.amount,
       cart.id,
       clientSecret,
       completeOrderAsync,

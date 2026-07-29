@@ -101,7 +101,7 @@ export function AccountOrdersList({
 
               <div className="flex flex-col items-start gap-3 lg:items-end">
                 <p className="text-lg font-normal text-foreground">
-                  {order.displayTotal}
+                  {order.displayTotal ?? '—'}
                 </p>
                 <Link
                   className={accountTextLinkClassName}

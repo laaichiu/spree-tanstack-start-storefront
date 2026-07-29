@@ -14,12 +14,12 @@ import { cn } from '@/lib/utils'
 
 import { CheckoutDiscountCodeForm } from '../code/checkout-discount-code-form'
 
-function hasNegativeAmount(price: Money) {
-  return price.amount < 0
+function hasNegativeAmount(price: Money | null) {
+  return price?.amount != null && price.amount < 0
 }
 
-function hasPositiveAmount(price: Money) {
-  return price.amount > 0
+function hasPositiveAmount(price: Money | null) {
+  return price?.amount != null && price.amount > 0
 }
 
 function CheckoutSummaryRow({
@@ -143,7 +143,7 @@ export function CheckoutSummaryTotals({ cart }: { cart: CartSummary }) {
               </span>
             </div>
           </div>
-          {amountDue && amountDue.amount !== cart.total.amount ? (
+          {amountDue && cart.total && amountDue.amount !== cart.total.amount ? (
             <div className="mt-3 flex items-baseline justify-between gap-4 text-sm leading-5">
               <span className="text-muted-foreground">
                 {t('checkout.amountDue')}

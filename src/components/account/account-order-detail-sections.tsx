@@ -67,7 +67,7 @@ function FulfillmentCard({ fulfillment }: { fulfillment: OrderFulfillment }) {
       <div className="mt-4 grid gap-4 sm:grid-cols-2">
         <InfoBlock
           label={t('account.shippingCost')}
-          value={fulfillment.displayCost}
+          value={fulfillment.displayCost ?? '—'}
         />
         <InfoBlock
           label={t('account.trackingNumber')}
@@ -128,7 +128,7 @@ function PaymentCard({ payment }: { payment: OrderPayment }) {
       <div className="mt-4 grid gap-4 sm:grid-cols-2">
         <InfoBlock
           label={t('account.paymentAmount')}
-          value={payment.displayAmount}
+          value={payment.displayAmount ?? '—'}
         />
         {payment.number ? (
           <InfoBlock

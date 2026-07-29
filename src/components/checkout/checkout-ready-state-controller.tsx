@@ -188,7 +188,7 @@ export function CheckoutReadyStateController({
       <>
         <CheckoutConsentNotice />
         <CheckoutSubmitButton
-          amountDueAmount={cart.amountDue.amount}
+          amountDueAmount={cart.amountDue?.amount ?? null}
           disabled={isSubmitDisabled}
           hasSessionPaymentMethod={hasSessionPaymentMethod}
           isPending={

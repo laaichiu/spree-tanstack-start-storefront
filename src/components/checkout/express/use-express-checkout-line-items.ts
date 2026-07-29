@@ -71,7 +71,13 @@ export function useExpressCheckoutLineItems({ cart }: { cart: CheckoutOrder }) {
   )
 
   useEffect(() => {
-    updateElementsAmount(getExpressCheckoutAmount(cart))
+    const amount = getExpressCheckoutAmount(cart)
+
+    if (amount === null) {
+      return
+    }
+
+    updateElementsAmount(amount)
   }, [cart, updateElementsAmount])
 
   return {

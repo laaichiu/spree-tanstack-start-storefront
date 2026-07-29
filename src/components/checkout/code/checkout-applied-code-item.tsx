@@ -12,7 +12,7 @@ export function CheckoutAppliedCodeItem({
   removeLabel,
   removing,
 }: {
-  amount: Money
+  amount: Money | null
   label: string
   onRemove?: () => void
   removeLabel?: string

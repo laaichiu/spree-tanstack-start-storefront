@@ -87,6 +87,10 @@ export function buildExpressCheckoutLineItems({
   subtotalLabel: string
   taxLabel: string
 }): ExpressCheckoutLineItem[] {
+  if (!order.itemTotal || !order.discountTotal || !order.taxTotal) {
+    return []
+  }
+
   const lineItems: ExpressCheckoutLineItem[] = [
     {
       amount: toStripeMinorUnit(order.itemTotal),
@@ -138,7 +142,7 @@ export function buildExpressCheckoutLineItems({
 }
 
 function getExpressCheckoutAmountDue(order: CheckoutOrder) {
-  if (order.amountDue.currencyCode !== order.currencyCode) {
+  if (!order.amountDue || order.amountDue.currencyCode !== order.currencyCode) {
     return null
   }
 
@@ -150,10 +154,14 @@ export function getExpressCheckoutSelectedShippingAmount(order: CheckoutOrder) {
     return null
   }
 
-  return toStripeMinorUnit(order.deliveryTotal)
+  return order.deliveryTotal ? toStripeMinorUnit(order.deliveryTotal) : null
 }
 
 export function getExpressCheckoutAmount(order: CheckoutOrder) {
+  if (!order.itemTotal || !order.discountTotal || !order.taxTotal) {
+    return null
+  }
+
   const shippingAmount = getExpressCheckoutSelectedShippingAmount(order)
 
   return buildExpressCheckoutLineItems({

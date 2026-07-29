@@ -1,6 +1,7 @@
 import type { CheckoutPaymentMethod } from '../../model/checkout'
 
 export type CheckoutPaymentBlockReason =
+  | 'payment_amount_unavailable'
   | 'payment_busy'
   | 'payment_form_incomplete'
   | 'payment_form_loading'
@@ -38,7 +39,7 @@ export function getCheckoutPaymentReadiness({
 }: {
   clientSecretAvailable: boolean
   isBusy: boolean
-  orderTotalAmount: number
+  orderTotalAmount: number | null
   paymentSessionAvailable: boolean
   savedPaymentMethodAvailable?: boolean
   selectedPaymentMethod: CheckoutPaymentMethod | null
@@ -50,6 +51,13 @@ export function getCheckoutPaymentReadiness({
     return {
       ready: false,
       reason: 'payment_busy',
+    }
+  }
+
+  if (orderTotalAmount === null) {
+    return {
+      ready: false,
+      reason: 'payment_amount_unavailable',
     }
   }
 

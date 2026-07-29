@@ -97,7 +97,7 @@ export function useCheckoutPaymentSection({
   const paymentReadiness = getCheckoutPaymentReadiness({
     clientSecretAvailable: Boolean(clientSecret),
     isBusy,
-    orderTotalAmount: cart.amountDue.amount,
+    orderTotalAmount: cart.amountDue?.amount ?? null,
     paymentSessionAvailable: Boolean(paymentSession),
     selectedPaymentMethod,
     savedPaymentMethodAvailable: Boolean(

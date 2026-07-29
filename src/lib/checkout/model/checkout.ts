@@ -63,7 +63,7 @@ export type CheckoutAddress = {
 }
 
 export type CheckoutFulfillment = {
-  displayCost: string
+  displayCost: string | null
   fulfilledAt: string | null
   id: string
   itemQuantity: number
@@ -75,7 +75,7 @@ export type CheckoutFulfillment = {
 }
 
 export type CheckoutPayment = {
-  displayAmount: string
+  displayAmount: string | null
   id: string
   methodName: string | null
   number: string | null
@@ -85,7 +85,7 @@ export type CheckoutPayment = {
 }
 
 export type CheckoutOrder = CartSummary & {
-  amountDue: Money
+  amountDue: Money | null
   billingAddress: CheckoutAddress | null
   completedAt?: string | null
   email: string | null

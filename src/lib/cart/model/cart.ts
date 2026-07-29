@@ -9,8 +9,8 @@ export type CartLineItem = {
   optionValues: CartLineItemOptionValue[]
   quantity: number
   imageUrl: string | null
-  unitPrice: Money
-  totalPrice: Money
+  unitPrice: Money | null
+  totalPrice: Money | null
 }
 
 export type CartLineItemOptionValue = {
@@ -40,15 +40,15 @@ export type CartAppliedDiscount = {
   name: string
   description: string | null
   code: string | null
-  amount: Money
+  amount: Money | null
 }
 
 export type CartAppliedGiftCard = {
   id: string
   code: string
   status: string
-  appliedAmount: Money
-  amountRemaining: Money
+  appliedAmount: Money | null
+  amountRemaining: Money | null
   expiresAt: string | null
   expired: boolean
   active: boolean
@@ -69,10 +69,10 @@ export type CartSummary = {
   shippingRates: CartShippingRate[]
   appliedDiscounts: CartAppliedDiscount[]
   appliedGiftCard: CartAppliedGiftCard | null
-  itemTotal: Money
-  discountTotal: Money
-  deliveryTotal: Money
-  shippingDiscountTotal: Money
-  taxTotal: Money
-  total: Money
+  itemTotal: Money | null
+  discountTotal: Money | null
+  deliveryTotal: Money | null
+  shippingDiscountTotal: Money | null
+  taxTotal: Money | null
+  total: Money | null
 }

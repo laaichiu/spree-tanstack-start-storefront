@@ -3,7 +3,7 @@ import { buttonClassName } from '@/components/ui/button'
 import type { MessageKey } from '@/lib/i18n/messages'
 
 type CheckoutSubmitButtonLabelOptions = {
-  amountDueAmount: number
+  amountDueAmount: number | null
   hasSessionPaymentMethod: boolean
   isPending: boolean
 }
@@ -17,7 +17,11 @@ export function getCheckoutSubmitButtonLabelKey({
     return 'checkout.processingPayment'
   }
 
-  if (amountDueAmount > 0 && hasSessionPaymentMethod) {
+  if (
+    amountDueAmount !== null &&
+    amountDueAmount > 0 &&
+    hasSessionPaymentMethod
+  ) {
     return 'checkout.payNow'
   }
 

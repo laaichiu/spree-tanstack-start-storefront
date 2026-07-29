@@ -17,8 +17,8 @@ const ACTIVE_GIFT_CARD_STATUSES = new Set(['active', 'partially_used'])
 function GiftCardSurface({ card }: { card: CustomerGiftCard }) {
   const { market, t } = useMarket()
   const details = [
-    `${t('account.giftCardTotalAmount')} ${card.displayAmount}`,
-    `${t('account.giftCardUsedAmount')} ${card.displayAmountUsed}`,
+    `${t('account.giftCardTotalAmount')} ${card.displayAmount ?? '—'}`,
+    `${t('account.giftCardUsedAmount')} ${card.displayAmountUsed ?? '—'}`,
     card.expiresAt
       ? `${t('account.giftCardExpiresOn')} ${formatDate(
           card.expiresAt,
@@ -49,7 +49,7 @@ function GiftCardSurface({ card }: { card: CustomerGiftCard }) {
         </div>
         <div className="shrink-0">
           <p className="text-xl font-normal text-foreground">
-            {card.displayAmountRemaining}
+            {card.displayAmountRemaining ?? '—'}
           </p>
           <p className="mt-1 text-sm tracking-wider text-muted-foreground uppercase">
             {t('account.giftCardRemaining')}

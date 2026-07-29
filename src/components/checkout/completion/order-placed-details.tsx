@@ -152,7 +152,7 @@ export function OrderPlacedDetails({ order }: { order: CheckoutOrder }) {
                         {formatStatusLabel(fulfillment.status)}
                       </p>
                       <p>
-                        {t('checkout.cost')}: {fulfillment.displayCost}
+                        {t('checkout.cost')}: {fulfillment.displayCost ?? '—'}
                       </p>
                       {fulfillment.tracking ? (
                         <p>
@@ -199,7 +199,8 @@ export function OrderPlacedDetails({ order }: { order: CheckoutOrder }) {
                       {formatStatusLabel(payment.status)}
                     </p>
                     <p>
-                      {t('checkout.paymentAmount')}: {payment.displayAmount}
+                      {t('checkout.paymentAmount')}:{' '}
+                      {payment.displayAmount ?? '—'}
                     </p>
                   </div>
                 ))}

@@ -22,7 +22,13 @@ type CartDrawerLineItemProps = {
   pending: boolean
 }
 
-function CartMoney({ className, price }: { className?: string; price: Money }) {
+function CartMoney({
+  className,
+  price,
+}: {
+  className?: string
+  price: Money | null
+}) {
   const { market } = useMarket()
 
   return (

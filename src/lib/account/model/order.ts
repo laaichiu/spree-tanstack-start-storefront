@@ -1,6 +1,6 @@
 export type OrderSummary = {
   completedAt: string
-  displayTotal: string
+  displayTotal: string | null
   fulfillmentStatus: string | null
   id: string
   number: string
@@ -21,8 +21,8 @@ export type OrderAddress = {
 }
 
 export type OrderLineItem = {
-  displayPrice: string
-  displayTotal: string
+  displayPrice: string | null
+  displayTotal: string | null
   id: string
   imageUrl: string | null
   name: string
@@ -33,7 +33,7 @@ export type OrderLineItem = {
 }
 
 export type OrderFulfillment = {
-  displayCost: string
+  displayCost: string | null
   fulfilledAt: string | null
   id: string
   itemQuantity: number
@@ -46,7 +46,7 @@ export type OrderFulfillment = {
 }
 
 export type OrderPayment = {
-  displayAmount: string
+  displayAmount: string | null
   id: string
   methodName: string | null
   number: string
@@ -56,22 +56,22 @@ export type OrderPayment = {
 }
 
 export type OrderDetail = OrderSummary & {
-  amountDue: string
+  amountDue: string | null
   billingAddress: OrderAddress | null
   customerNote: string | null
-  discountTotal: string
-  displayAmountDue: string
-  displayDeliveryTotal: string
-  displayDiscountTotal: string
-  displayGiftCardTotal: string
-  displayItemTotal: string
-  displayStoreCreditTotal: string
-  displayTaxTotal: string
+  discountTotal: string | null
+  displayAmountDue: string | null
+  displayDeliveryTotal: string | null
+  displayDiscountTotal: string | null
+  displayGiftCardTotal: string | null
+  displayItemTotal: string | null
+  displayStoreCreditTotal: string | null
+  displayTaxTotal: string | null
   fulfillments: Array<OrderFulfillment>
-  giftCardTotal: string
+  giftCardTotal: string | null
   items: Array<OrderLineItem>
   payments: Array<OrderPayment>
   shippingAddress: OrderAddress | null
-  storeCreditTotal: string
-  taxTotal: string
+  storeCreditTotal: string | null
+  taxTotal: string | null
 }

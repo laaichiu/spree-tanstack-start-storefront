@@ -16,7 +16,7 @@ import type { StripePaymentElementHandle } from './stripe-payment-element.types'
 import type { CheckoutPaymentSubmitResult } from './checkout-payment-submit-result'
 
 type CheckoutPaymentSubmitFlowOptions = {
-  amountDue: number
+  amountDue: number | null
   cartId: string
   clientSecret?: string
   completeOrder: (input: {
@@ -71,6 +71,12 @@ export async function submitCheckoutPayment({
   stripePaymentHandle,
   t,
 }: CheckoutPaymentSubmitFlowOptions): Promise<CheckoutPaymentSubmitResult> {
+  if (amountDue === null) {
+    return {
+      error: t('checkout.paymentSessionNotReady'),
+    }
+  }
+
   if (!shippingReady) {
     return {
       error: t('checkout.selectShippingBeforePayment'),

@@ -1,14 +1,14 @@
 export type CustomerGiftCard = {
   active: boolean
-  amount: string
-  amountAuthorized: string
-  amountRemaining: string
-  amountUsed: string
+  amount: string | null
+  amountAuthorized: string | null
+  amountRemaining: string | null
+  amountUsed: string | null
   code: string
   currency: string
-  displayAmount: string
-  displayAmountRemaining: string
-  displayAmountUsed: string
+  displayAmount: string | null
+  displayAmountRemaining: string | null
+  displayAmountUsed: string | null
   expired: boolean
   expiresAt: string | null
   id: string

@@ -7,10 +7,8 @@ import type {
   PaymentSession as SpreePaymentSession,
 } from '@spree/sdk'
 
-import {
-  mapAmountToMoney,
-  mapSpreeCartToSummary,
-} from '@/lib/cart/mappers/cart.mapper'
+import { mapSpreeCartToSummary } from '@/lib/cart/mappers/cart.mapper'
+import { mapSpreeAmountToMoney } from '@/lib/money/map-spree-amount'
 
 import type {
   CheckoutAddress,
@@ -208,7 +206,7 @@ export function mapSpreeCheckoutToOrder(
 
   return {
     ...mapSpreeCartToSummary(order),
-    amountDue: mapAmountToMoney(order.amount_due, order.currency),
+    amountDue: mapSpreeAmountToMoney(order.amount_due, order.currency),
     billingAddress: mapAddress(order.billing_address),
     completedAt: readOrderTextField(order, 'completed_at'),
     email: order.email,
@@ -240,7 +238,7 @@ export function mapSpreePaymentSession(
   session: SpreePaymentSession,
 ): CheckoutPaymentSession {
   return {
-    amount: mapAmountToMoney(session.amount, session.currency),
+    amount: mapSpreeAmountToMoney(session.amount, session.currency),
     currencyCode: session.currency,
     customerExternalId: session.customer_external_id,
     expiresAt: session.expires_at,

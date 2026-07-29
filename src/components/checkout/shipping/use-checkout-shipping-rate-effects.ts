@@ -63,6 +63,7 @@ export function useCheckoutShippingRateEffects({
   useEffect(() => {
     if (
       !hasCurrentShippingSelection ||
+      cart.amountDue === null ||
       cart.amountDue.amount <= 0 ||
       cart.paymentMethods.length > 0 ||
       isAddressPending ||
@@ -96,7 +97,7 @@ export function useCheckoutShippingRateEffects({
         setSingleCheckoutSectionError('shipping', message)
       })
   }, [
-    cart.amountDue.amount,
+    cart.amountDue?.amount,
     cart.paymentMethods.length,
     hasCurrentShippingSelection,
     isAddressPending,

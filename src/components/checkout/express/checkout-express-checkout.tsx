@@ -36,11 +36,18 @@ export function getCheckoutExpressCheckoutState({
   paymentMethods,
   stripeConfigured,
 }: {
-  amountDue: number
+  amountDue: number | null
   hasWalletAction: boolean
   paymentMethods: CheckoutPaymentMethod[]
   stripeConfigured: boolean
 }): CheckoutExpressCheckoutState {
+  if (amountDue === null) {
+    return {
+      reason: 'wallet_action_missing',
+      status: 'disabled',
+    }
+  }
+
   if (amountDue <= 0) {
     return {
       reason: 'no_payment_due',
@@ -187,7 +194,8 @@ function CheckoutExpressCheckoutWithElements({
 }: {
   cart: CheckoutOrder
 }) {
-  const initialAmountRef = useRef(getExpressCheckoutAmount(cart))
+  const initialAmount = getExpressCheckoutAmount(cart)
+  const initialAmountRef = useRef(initialAmount ?? 0)
   const currencyRef = useRef(cart.currencyCode.toLowerCase())
   const options = useMemo<StripeElementsOptions>(
     () => ({
@@ -198,6 +206,10 @@ function CheckoutExpressCheckoutWithElements({
     }),
     [],
   )
+
+  if (initialAmount === null) {
+    return null
+  }
 
   return (
     <Elements options={options} stripe={stripePromise}>
@@ -218,7 +230,7 @@ export function CheckoutExpressCheckout({
   }
 
   const state = getCheckoutExpressCheckoutState({
-    amountDue: cart.amountDue.amount,
+    amountDue: cart.amountDue?.amount ?? null,
     hasWalletAction: true,
     paymentMethods: cart.paymentMethods,
     stripeConfigured: isStripeConfigured,

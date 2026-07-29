@@ -4,8 +4,8 @@ import { useMarket } from '@/components/layout/market-provider'
 import { cn } from '@/lib/utils'
 
 type ProductPriceProps = {
-  price: Money
-  compareAtPrice?: Money
+  price: Money | null
+  compareAtPrice?: Money | null
   variant?: 'default' | 'detail' | 'listing'
 }
 

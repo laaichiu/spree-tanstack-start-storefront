@@ -161,7 +161,7 @@ export function useCheckoutReadyStateRuntime({
     isMobileSummaryOpen,
     isPaymentBusy,
     isPaymentSubmitQueued,
-    isSubmitDisabled: !submitReadiness.ready,
+    isSubmitDisabled: !submitReadiness.ready || cart.amountDue === null,
     onMobileSummaryToggle: () =>
       setIsMobileSummaryOpen((currentOpen) => !currentOpen),
     onPaymentBusyChange: setIsPaymentBusy,

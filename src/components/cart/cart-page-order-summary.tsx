@@ -28,7 +28,7 @@ export function CartPageOrderSummary({ cart }: CartPageOrderSummaryProps) {
             <span>{t('cart.subtotal')}</span>
             <ProductPrice price={cart.itemTotal} />
           </div>
-          {cart.discountTotal.amount < 0 ? (
+          {cart.discountTotal && cart.discountTotal.amount < 0 ? (
             <div className="flex items-center justify-between gap-4 text-foreground">
               <span>{t('cart.discount')}</span>
               <ProductPrice price={cart.discountTotal} />
@@ -47,7 +47,7 @@ export function CartPageOrderSummary({ cart }: CartPageOrderSummaryProps) {
           <div className="flex items-center justify-between gap-4">
             <span>{t('cart.tax')}</span>
             <div className="text-right">
-              {cart.taxTotal.amount > 0 ? (
+              {cart.taxTotal && cart.taxTotal.amount > 0 ? (
                 <ProductPrice price={cart.taxTotal} />
               ) : (
                 t('cart.shippingCalculatedAtCheckout')

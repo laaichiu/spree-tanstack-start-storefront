@@ -6,7 +6,9 @@ export function getConfirmedCartDeliveryTotal(cart: CartSummary): Money | null {
     (rate) => rate.selected,
   )
 
-  return cart.deliveryTotal.amount !== 0 || hasSelectedShippingRate
-    ? cart.deliveryTotal
-    : null
+  return !cart.deliveryTotal
+    ? null
+    : cart.deliveryTotal.amount !== 0 || hasSelectedShippingRate
+      ? cart.deliveryTotal
+      : null
 }

@@ -156,11 +156,11 @@ export function getCheckoutPaymentSessionKey({
     order.currencyCode,
     selectedShippingRate?.fulfillmentId ?? '',
     selectedShippingRate?.id ?? '',
-    order.itemTotal.amount,
-    order.deliveryTotal.amount,
-    order.taxTotal.amount,
-    order.total.amount,
-    order.amountDue.amount,
+    order.itemTotal?.amount ?? '',
+    order.deliveryTotal?.amount ?? '',
+    order.taxTotal?.amount ?? '',
+    order.total?.amount ?? '',
+    order.amountDue?.amount ?? '',
     savedPaymentMethodId?.trim() ?? '',
   ].join(':')
 }
