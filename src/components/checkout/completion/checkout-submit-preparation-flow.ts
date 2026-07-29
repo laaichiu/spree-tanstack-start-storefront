@@ -42,8 +42,8 @@ export type CheckoutSubmitPreparationResult =
 
 export type CheckoutSubmitPreparationOptions = {
   cart: CheckoutOrder
-  form: UseFormReturn<CheckoutAddressInput>
-  billingForm: UseFormReturn<CheckoutBillingAddressInput>
+  form: Pick<UseFormReturn<CheckoutAddressInput>, 'trigger'>
+  billingForm: Pick<UseFormReturn<CheckoutBillingAddressInput>, 'trigger'>
   billingMode: 'same' | 'different'
   selectedShippingRate: CartShippingRate | null
   paymentStateKey: string

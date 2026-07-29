@@ -1,11 +1,6 @@
-import type { UseFormReturn } from 'react-hook-form'
 import { describe, expect, it, vi } from 'vitest'
 
 import type { CheckoutOrder } from '@/lib/checkout/model/checkout'
-import type {
-  CheckoutAddressInput,
-  CheckoutBillingAddressInput,
-} from '@/lib/checkout/validation/address'
 
 import { prepareCheckoutPaymentSubmission } from './checkout-submit-preparation-flow'
 
@@ -35,13 +30,13 @@ describe('prepareCheckoutPaymentSubmission', () => {
     const result = await prepareCheckoutPaymentSubmission({
       billingForm: {
         trigger: vi.fn().mockResolvedValue(true),
-      } as unknown as UseFormReturn<CheckoutBillingAddressInput>,
+      },
       billingMode: 'same',
       cart: {} as CheckoutOrder,
       ensureSelectedCheckoutShippingRate: vi.fn(),
       form: {
         trigger,
-      } as unknown as UseFormReturn<CheckoutAddressInput>,
+      },
       handleSyncedBillingFields: vi.fn(),
       paymentStateKey: 'cart_123:current',
       persistBillingAddress: vi.fn(),
