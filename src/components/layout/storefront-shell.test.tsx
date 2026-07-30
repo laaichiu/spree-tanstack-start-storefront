@@ -1,9 +1,25 @@
 import { readFileSync } from 'node:fs'
-import { cleanup, render, screen } from '@testing-library/react'
+import { act, cleanup, fireEvent, render, screen } from '@testing-library/react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 
-import { StorefrontShell } from '@/components/layout/storefront-shell'
+import {
+  NEWSLETTER_POPUP_DEFER_MS,
+  StorefrontShell,
+} from '@/components/layout/storefront-shell'
 import type { StorefrontShellCapabilities } from '@/components/layout/storefront-shell.model'
+
+const shellMocks = vi.hoisted(() => ({
+  dismissed: false,
+  pathname: '/us/en',
+}))
+
+vi.mock('@tanstack/react-router', () => ({
+  useRouterState: ({
+    select,
+  }: {
+    select: (state: { location: { pathname: string } }) => string
+  }) => select({ location: { pathname: shellMocks.pathname } }),
+}))
 
 vi.mock('@/components/layout/header', () => ({
   Header: ({ capabilities }: { capabilities: StorefrontShellCapabilities }) => (
@@ -18,7 +34,26 @@ vi.mock('@/components/layout/footer', () => ({
 }))
 
 vi.mock('@/components/layout/newsletter-popup', () => ({
-  NewsletterPopup: () => <div data-testid="newsletter-popup" />,
+  NewsletterPopup: ({
+    onAccepted,
+    onDismiss,
+  }: {
+    onAccepted: () => void
+    onDismiss: () => void
+  }) => (
+    <div data-testid="newsletter-popup">
+      <button onClick={onAccepted} type="button">
+        Accept
+      </button>
+      <button onClick={onDismiss} type="button">
+        Dismiss
+      </button>
+    </div>
+  ),
+}))
+
+vi.mock('@/components/layout/newsletter-popup-dismissal', () => ({
+  isNewsletterPopupDismissed: () => shellMocks.dismissed,
 }))
 
 const capabilities: StorefrontShellCapabilities = {
@@ -40,10 +75,17 @@ const capabilities: StorefrontShellCapabilities = {
   },
 }
 
-afterEach(cleanup)
+afterEach(() => {
+  cleanup()
+  shellMocks.dismissed = false
+  shellMocks.pathname = '/us/en'
+  vi.useRealTimers()
+})
 
 describe('StorefrontShell', () => {
   it('composes shared layout from normalized capability inputs', async () => {
+    vi.useFakeTimers()
+
     render(
       <StorefrontShell capabilities={capabilities}>
         <div>Page content</div>
@@ -53,9 +95,113 @@ describe('StorefrontShell', () => {
     expect(screen.getByTestId('header').textContent).toBe('1 categories')
     expect(screen.getByRole('main').textContent).toBe('Page content')
     expect(screen.getByTestId('footer')).toBeTruthy()
-    expect(
-      await screen.findByTestId('newsletter-popup', {}, { timeout: 2_000 }),
-    ).toBeTruthy()
+    expect(screen.queryByTestId('newsletter-popup')).toBeNull()
+
+    await act(async () => {
+      await vi.advanceTimersByTimeAsync(NEWSLETTER_POPUP_DEFER_MS - 1)
+    })
+    expect(screen.queryByTestId('newsletter-popup')).toBeNull()
+
+    await act(async () => {
+      await vi.advanceTimersByTimeAsync(1)
+    })
+    expect(screen.getByTestId('newsletter-popup')).toBeTruthy()
+  })
+
+  it('does not load a dismissed popup', async () => {
+    vi.useFakeTimers()
+    shellMocks.dismissed = true
+
+    render(
+      <StorefrontShell capabilities={capabilities}>
+        <div>Page content</div>
+      </StorefrontShell>,
+    )
+
+    await act(async () => {
+      await vi.advanceTimersByTimeAsync(NEWSLETTER_POPUP_DEFER_MS)
+    })
+
+    expect(screen.queryByTestId('newsletter-popup')).toBeNull()
+  })
+
+  it('cancels and reschedules popup loading across route eligibility changes', async () => {
+    vi.useFakeTimers()
+    const view = render(
+      <StorefrontShell capabilities={capabilities}>
+        <div>Page content</div>
+      </StorefrontShell>,
+    )
+
+    await act(async () => {
+      await vi.advanceTimersByTimeAsync(NEWSLETTER_POPUP_DEFER_MS / 2)
+    })
+
+    shellMocks.pathname = '/us/en/checkout'
+    view.rerender(
+      <StorefrontShell capabilities={capabilities}>
+        <div>Page content</div>
+      </StorefrontShell>,
+    )
+
+    await act(async () => {
+      await vi.advanceTimersByTimeAsync(NEWSLETTER_POPUP_DEFER_MS)
+    })
+    expect(screen.queryByTestId('newsletter-popup')).toBeNull()
+
+    shellMocks.pathname = '/us/en/products'
+    view.rerender(
+      <StorefrontShell capabilities={capabilities}>
+        <div>Page content</div>
+      </StorefrontShell>,
+    )
+
+    await act(async () => {
+      await vi.advanceTimersByTimeAsync(NEWSLETTER_POPUP_DEFER_MS)
+    })
+    expect(screen.getByTestId('newsletter-popup')).toBeTruthy()
+  })
+
+  it('unmounts the popup after dismissal', async () => {
+    vi.useFakeTimers()
+
+    render(
+      <StorefrontShell capabilities={capabilities}>
+        <div>Page content</div>
+      </StorefrontShell>,
+    )
+
+    await act(async () => {
+      await vi.advanceTimersByTimeAsync(NEWSLETTER_POPUP_DEFER_MS)
+    })
+    fireEvent.click(screen.getByRole('button', { name: 'Dismiss' }))
+
+    expect(screen.queryByTestId('newsletter-popup')).toBeNull()
+  })
+
+  it('keeps the accepted state visible until navigation', async () => {
+    vi.useFakeTimers()
+    const view = render(
+      <StorefrontShell capabilities={capabilities}>
+        <div>Page content</div>
+      </StorefrontShell>,
+    )
+
+    await act(async () => {
+      await vi.advanceTimersByTimeAsync(NEWSLETTER_POPUP_DEFER_MS)
+    })
+    fireEvent.click(screen.getByRole('button', { name: 'Accept' }))
+
+    expect(screen.getByTestId('newsletter-popup')).toBeTruthy()
+
+    shellMocks.pathname = '/us/en/products'
+    view.rerender(
+      <StorefrontShell capabilities={capabilities}>
+        <div>Page content</div>
+      </StorefrontShell>,
+    )
+
+    expect(screen.queryByTestId('newsletter-popup')).toBeNull()
   })
 
   it('keeps the shell contract outside session and commerce infrastructure', () => {

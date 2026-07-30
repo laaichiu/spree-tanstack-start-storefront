@@ -1,8 +1,10 @@
-import { lazy, Suspense, useEffect, useState } from 'react'
+import { useRouterState } from '@tanstack/react-router'
+import { lazy, Suspense, useCallback, useEffect, useState } from 'react'
 import type { ReactNode } from 'react'
 
 import { Footer } from '@/components/layout/footer'
 import { Header } from '@/components/layout/header'
+import { isNewsletterPopupDismissed } from '@/components/layout/newsletter-popup-dismissal'
 import { isNewsletterPopupRouteExcluded } from '@/components/layout/newsletter-popup-eligibility'
 import type { StorefrontShellCapabilities } from '@/components/layout/storefront-shell.model'
 
@@ -11,29 +13,44 @@ const NewsletterPopup = lazy(async () => {
   return { default: module.NewsletterPopup }
 })
 
+export const NEWSLETTER_POPUP_DEFER_MS = 15_000
+
 function DeferredNewsletterPopup() {
-  const [pathname, setPathname] = useState<string | null>(null)
-  const [isEligible, setIsEligible] = useState(false)
+  const pathname = useRouterState({
+    select: (state) => state.location.pathname,
+  })
+  const [shouldMount, setShouldMount] = useState(false)
+  const [acceptedPathname, setAcceptedPathname] = useState<string | null>(null)
+  const isRouteEligible = !isNewsletterPopupRouteExcluded(pathname)
+  const unmountNewsletterPopup = useCallback(() => setShouldMount(false), [])
+  const recordNewsletterAcceptance = useCallback(
+    () => setAcceptedPathname(pathname),
+    [pathname],
+  )
 
   useEffect(() => {
-    setPathname(window.location.pathname)
-  }, [])
-
-  useEffect(() => {
-    if (!pathname || isNewsletterPopupRouteExcluded(pathname)) {
+    if (!isRouteEligible || shouldMount || isNewsletterPopupDismissed()) {
       return
     }
 
     const timeoutId = window.setTimeout(() => {
-      setIsEligible(true)
-    }, 900)
+      if (!isNewsletterPopupDismissed()) {
+        setShouldMount(true)
+      }
+    }, NEWSLETTER_POPUP_DEFER_MS)
 
     return () => window.clearTimeout(timeoutId)
-  }, [pathname])
+  }, [isRouteEligible, shouldMount])
 
-  return isEligible ? (
+  const canShowAcceptedState =
+    acceptedPathname === null || acceptedPathname === pathname
+
+  return isRouteEligible && shouldMount && canShowAcceptedState ? (
     <Suspense fallback={null}>
-      <NewsletterPopup />
+      <NewsletterPopup
+        onAccepted={recordNewsletterAcceptance}
+        onDismiss={unmountNewsletterPopup}
+      />
     </Suspense>
   ) : null
 }

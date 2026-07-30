@@ -1,22 +1,20 @@
-import { useRouterState } from '@tanstack/react-router'
 import { ArrowRight, X } from 'lucide-react'
 import { useEffect, useState } from 'react'
 
 import { DialogClose, DialogContent, DialogRoot } from '@/components/ui/dialog'
 import { useMarket } from '@/components/layout/market-provider'
-import {
-  isNewsletterPopupDismissed,
-  markNewsletterPopupDismissed,
-} from '@/components/layout/newsletter-popup-dismissal'
+import { markNewsletterPopupDismissed } from '@/components/layout/newsletter-popup-dismissal'
 import { useNewsletterSubscriptionForm } from '@/components/newsletter/use-newsletter-subscription-form'
-import { isNewsletterPopupRouteExcluded } from '@/components/layout/newsletter-popup-eligibility'
 
-export function NewsletterPopup() {
+export function NewsletterPopup({
+  onAccepted,
+  onDismiss,
+}: {
+  onAccepted: () => void
+  onDismiss: () => void
+}) {
   const { market, t } = useMarket()
-  const pathname = useRouterState({
-    select: (state) => state.location.pathname,
-  })
-  const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState(true)
   const {
     errors,
     isSubmitting,
@@ -35,31 +33,16 @@ export function NewsletterPopup() {
   const submitted = status === 'accepted'
 
   useEffect(() => {
-    if (
-      isNewsletterPopupRouteExcluded(pathname) ||
-      isNewsletterPopupDismissed()
-    ) {
-      return
-    }
-
-    const timeoutId = window.setTimeout(() => {
-      if (!isNewsletterPopupDismissed()) {
-        setOpen(true)
-      }
-    }, 900)
-
-    return () => window.clearTimeout(timeoutId)
-  }, [pathname])
-
-  useEffect(() => {
     if (submitted) {
       markNewsletterPopupDismissed()
+      onAccepted()
     }
-  }, [submitted])
+  }, [onAccepted, submitted])
 
   function handleOpenChange(nextOpen: boolean) {
     if (!nextOpen) {
       markNewsletterPopupDismissed()
+      onDismiss()
     }
 
     setOpen(nextOpen)
@@ -68,6 +51,7 @@ export function NewsletterPopup() {
   function dismissPopup() {
     markNewsletterPopupDismissed()
     setOpen(false)
+    onDismiss()
   }
 
   return (
@@ -87,13 +71,20 @@ export function NewsletterPopup() {
 
         <div className="grid md:grid-cols-[0.92fr_1.08fr]">
           <div className="relative h-44 overflow-hidden bg-muted sm:h-52 md:h-auto md:min-h-full">
-            <img
-              alt=""
-              className="absolute inset-0 h-full w-full object-cover"
-              decoding="async"
-              loading="eager"
-              src="/newsletter-popup-bg.jpg"
-            />
+            {open ? (
+              <img
+                alt=""
+                className="absolute inset-0 h-full w-full object-cover"
+                decoding="async"
+                fetchPriority="low"
+                height={801}
+                loading="lazy"
+                sizes="(min-width: 768px) 25rem, calc(100vw - 2rem)"
+                src="/newsletter-popup-bg-800.webp"
+                srcSet="/newsletter-popup-bg-800.webp 800w, /newsletter-popup-bg-1200.webp 1200w"
+                width={1200}
+              />
+            ) : null}
           </div>
 
           <div className="px-5 pt-5 pb-8">
@@ -119,10 +110,7 @@ export function NewsletterPopup() {
                 </button>
               </div>
             ) : (
-              <form
-                className="mt-2 space-y-2"
-                onSubmit={submit}
-              >
+              <form className="mt-2 space-y-2" onSubmit={submit}>
                 <label className="block">
                   <input
                     autoComplete="email"
