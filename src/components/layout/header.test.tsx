@@ -1,11 +1,11 @@
 import {
-  act,
   cleanup,
   fireEvent,
   render,
   screen,
   waitFor,
 } from '@testing-library/react'
+import { useEffect } from 'react'
 import type { ComponentProps, ReactNode } from 'react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 
@@ -86,13 +86,19 @@ vi.mock('./search-drawer', () => {
   return {
     SearchDrawer: ({
       onOpenChange,
+      onReady,
       open,
       triggerId,
     }: {
       onOpenChange: MockSheetOpenChange
+      onReady: () => void
       open: boolean
       triggerId: string | null
     }) => {
+      useEffect(() => {
+        onReady()
+      }, [onReady])
+
       return (
         <div
           data-open={open}
@@ -114,13 +120,19 @@ vi.mock('@/components/cart/cart-drawer', () => {
   return {
     CartDrawer: ({
       onOpenChange,
+      onReady,
       open,
       triggerId,
     }: {
       onOpenChange: MockSheetOpenChange
+      onReady: () => void
       open: boolean
       triggerId: string | null
     }) => {
+      useEffect(() => {
+        onReady()
+      }, [onReady])
+
       return (
         <div
           data-open={open}
@@ -167,16 +179,13 @@ async function expectDrawerClosed(testId: string) {
 }
 
 describe('Header drawers', () => {
-  it('preloads on intent and mounts closed drawers after hydration', async () => {
-    let scheduledPreload: (() => void) | null = null
-    const setTimeoutSpy = vi
-      .spyOn(window, 'setTimeout')
-      .mockImplementationOnce((handler: () => void) => {
-        scheduledPreload = handler
-        return 1 as unknown as ReturnType<typeof setTimeout>
-      })
+  it('defers drawer modules until interaction intent', async () => {
     renderHeader()
-    setTimeoutSpy.mockRestore()
+
+    expect(screen.queryByTestId('search-drawer')).toBeNull()
+    expect(screen.queryByTestId('cart-drawer')).toBeNull()
+    expect(drawerModuleMocks.searchLoaded).not.toHaveBeenCalled()
+    expect(drawerModuleMocks.cartLoaded).not.toHaveBeenCalled()
 
     fireEvent.mouseEnter(screen.getByText('Search'))
 
@@ -185,17 +194,8 @@ describe('Header drawers', () => {
     })
     expect(drawerModuleMocks.cartLoaded).not.toHaveBeenCalled()
 
-    await act(async () => {
-      if (typeof scheduledPreload === 'function') {
-        scheduledPreload()
-      }
-    })
-
-    await waitFor(() => {
-      expect(drawerModuleMocks.cartLoaded).toHaveBeenCalledTimes(1)
-    })
-    await expectDrawerClosed('search-drawer')
-    await expectDrawerClosed('cart-drawer')
+    fireEvent.click(screen.getByText('Bag'))
+    await expectDrawerOpen('cart-drawer')
   })
 
   it('keeps the search drawer mounted so its detached trigger can reopen it', async () => {

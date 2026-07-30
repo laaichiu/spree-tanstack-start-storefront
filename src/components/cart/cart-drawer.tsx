@@ -1,3 +1,5 @@
+import { useEffect } from 'react'
+
 import { useMarket } from '@/components/layout/market-provider'
 import { Sheet, SheetContent } from '@/components/ui/sheet'
 import type { SheetHandle } from '@/components/ui/sheet'
@@ -20,6 +22,7 @@ type CartDrawerProps = {
   handle: SheetHandle
   initialCart?: CartSummary | null
   onOpenChange: (open: boolean, triggerId?: string | null) => void
+  onReady: () => void
   open: boolean
   triggerId: string | null
 }
@@ -29,6 +32,7 @@ export function CartDrawer({
   handle,
   initialCart,
   onOpenChange,
+  onReady,
   open,
   triggerId,
 }: CartDrawerProps) {
@@ -71,6 +75,10 @@ export function CartDrawer({
         : formatMoney(confirmedDeliveryTotal, market.locale)
       : t('cart.calculatedAtCheckout')
     : null
+
+  useEffect(() => {
+    onReady()
+  }, [onReady])
 
   return (
     <Sheet

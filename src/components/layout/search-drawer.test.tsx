@@ -98,6 +98,7 @@ describe('SearchDrawer', () => {
       categories: [],
       handle: {} as ComponentProps<typeof SearchDrawer>['handle'],
       onOpenChange: vi.fn(),
+      onReady: vi.fn(),
       open: true,
       triggerId: 'search-trigger',
     }
@@ -127,6 +128,7 @@ describe('SearchDrawer', () => {
       categories: [],
       handle: {} as ComponentProps<typeof SearchDrawer>['handle'],
       onOpenChange,
+      onReady: vi.fn(),
       open: true,
       triggerId: 'search-trigger',
     }
@@ -174,6 +176,7 @@ describe('SearchDrawer', () => {
       categories: [],
       handle: {} as ComponentProps<typeof SearchDrawer>['handle'],
       onOpenChange,
+      onReady: vi.fn(),
       open: true,
       triggerId: 'search-trigger',
     }

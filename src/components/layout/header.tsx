@@ -35,10 +35,6 @@ function preloadSearchDrawer() {
   }
 }
 
-function preloadHeaderDrawers() {
-  return Promise.all([loadCartDrawer(), loadSearchDrawer()])
-}
-
 const CartDrawer = lazy(async () => {
   const module = await loadCartDrawer()
   return { default: module.CartDrawer }
@@ -128,26 +124,6 @@ export function Header({
     }
   }, [cartDrawer.openProgrammatically])
 
-  useEffect(() => {
-    let cancelled = false
-    const timeoutId = window.setTimeout(() => {
-      void preloadHeaderDrawers().then(
-        () => {
-          if (!cancelled) {
-            cartDrawer.mountClosed()
-            searchDrawer.mountClosed()
-          }
-        },
-        () => undefined,
-      )
-    }, 0)
-
-    return () => {
-      cancelled = true
-      window.clearTimeout(timeoutId)
-    }
-  }, [cartDrawer.mountClosed, searchDrawer.mountClosed])
-
   return (
     <>
       <header className="sticky top-0 z-30 bg-background lg:backdrop-blur">
@@ -168,6 +144,8 @@ export function Header({
                 alt="Spree Storefront"
                 className="h-8 w-auto object-contain lg:h-7"
                 src="/spree.png"
+                width={189}
+                height={76}
               />
             </Link>
 
@@ -250,6 +228,7 @@ export function Header({
           <SearchDrawer
             categories={desktopCategories}
             handle={searchDrawer.handle}
+            onReady={searchDrawer.handleMount}
             onOpenChange={searchDrawer.handleOpenChange}
             open={searchDrawer.open}
             triggerId={searchDrawer.triggerId}
@@ -262,6 +241,7 @@ export function Header({
             freeShippingPromotion={freeShippingPromotion}
             handle={cartDrawer.handle}
             initialCart={initialCart}
+            onReady={cartDrawer.handleMount}
             onOpenChange={cartDrawer.handleOpenChange}
             open={cartDrawer.open}
             triggerId={cartDrawer.triggerId}

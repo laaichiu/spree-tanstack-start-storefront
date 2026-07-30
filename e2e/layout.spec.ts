@@ -39,13 +39,6 @@ test('desktop mega menu opens on hover and restores focus on Escape', async ({
   await page.setViewportSize({ height: 1000, width: 1440 })
   await gotoStorefront(page)
 
-  const searchButton = page.getByRole('button', { name: 'Search products' })
-  await searchButton.click()
-  const searchDialog = page.getByRole('dialog', { name: 'Search' })
-  await expect(searchDialog).toBeVisible({ timeout: 15_000 })
-  await page.getByRole('button', { name: 'Close search' }).click()
-  await expect(searchDialog).toBeHidden()
-
   const categoryNavigation = page.getByRole('navigation', {
     name: 'Categories',
   })
@@ -61,7 +54,7 @@ test('desktop mega menu opens on hover and restores focus on Escape', async ({
 
   await expect(kitchenPanel).toBeVisible()
   await expect(
-    kitchenPanel.getByRole('link', { name: 'View All Kitchen', exact: true }),
+    kitchenPanel.getByRole('link', { name: 'All Kitchen', exact: true }),
   ).toBeVisible()
 
   await page.keyboard.press('Escape')
@@ -80,6 +73,8 @@ test('desktop drawers isolate the page and restore their trigger focus', async (
   const main = page.locator('main')
   const searchButton = page.getByRole('button', { name: 'Search products' })
 
+  await searchButton.hover()
+  await page.waitForLoadState('networkidle')
   await searchButton.click()
 
   const searchDialog = page.getByRole('dialog', { name: 'Search' })

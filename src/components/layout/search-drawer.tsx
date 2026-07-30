@@ -28,6 +28,7 @@ type SearchDrawerProps = {
   categories: CategoryNavigationItem[]
   handle: SheetHandle
   onOpenChange: (open: boolean, triggerId?: string | null) => void
+  onReady: () => void
   open: boolean
   triggerId: string | null
 }
@@ -36,6 +37,7 @@ export function SearchDrawer({
   categories,
   handle,
   onOpenChange,
+  onReady,
   open,
   triggerId,
 }: SearchDrawerProps) {
@@ -60,6 +62,10 @@ export function SearchDrawer({
   const suggestionsQuery = useSearchSuggestions({
     enabled: open && !hasSearchPreview,
   })
+
+  useEffect(() => {
+    onReady()
+  }, [onReady])
 
   useEffect(() => {
     if (!open) {
