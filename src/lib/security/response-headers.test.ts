@@ -3,6 +3,7 @@ import { describe, expect, it } from 'vitest'
 import {
   applyStorefrontResponseHeaders,
   CONTENT_SECURITY_POLICY,
+  getPublicAssetCacheControl,
   isPrivateStorefrontPath,
 } from './response-headers'
 
@@ -19,6 +20,22 @@ describe('storefront response headers', () => {
 
   it('does not mark public catalog paths as private', () => {
     expect(isPrivateStorefrontPath('/us/en/products')).toBe(false)
+  })
+
+  it('uses immutable caching for build-hashed assets', () => {
+    expect(getPublicAssetCacheControl('/assets/index-Cv8JUAGl.js')).toBe(
+      'public, max-age=31536000, immutable',
+    )
+  })
+
+  it('uses revalidated caching for non-hashed public assets', () => {
+    expect(getPublicAssetCacheControl('/spree.png')).toBe(
+      'public, max-age=3600, stale-while-revalidate=86400',
+    )
+    expect(getPublicAssetCacheControl('/us/en')).toBeNull()
+    expect(
+      getPublicAssetCacheControl('/us/en/products/example.webp'),
+    ).toBeNull()
   })
 
   it('adds the request nonce to the enforced script policy', () => {
@@ -52,6 +69,40 @@ describe('storefront response headers', () => {
       'max-age=31536000; includeSubDomains',
     )
     expect(response.headers.get('Cache-Control')).toBeNull()
+  })
+
+  it('caches public assets while preserving private response policy', () => {
+    const assetResponse = applyStorefrontResponseHeaders(new Response('ok'), {
+      pathname: '/assets/index-Cv8JUAGl.js',
+      requestUrl: 'https://shop.example.com/assets/index-Cv8JUAGl.js',
+    })
+
+    expect(assetResponse.headers.get('Cache-Control')).toBe(
+      'public, max-age=31536000, immutable',
+    )
+
+    const privateResponse = applyStorefrontResponseHeaders(new Response('ok'), {
+      pathname: '/us/en/cart',
+      requestUrl: 'https://shop.example.com/us/en/cart',
+    })
+
+    expect(privateResponse.headers.get('Cache-Control')).toBe(
+      'private, no-store',
+    )
+  })
+
+  it('marks personalized storefront HTML as private', () => {
+    const response = applyStorefrontResponseHeaders(
+      new Response('<main>Storefront</main>', {
+        headers: { 'Content-Type': 'text/html; charset=utf-8' },
+      }),
+      {
+        pathname: '/us/en/products',
+        requestUrl: 'https://shop.example.com/us/en/products',
+      },
+    )
+
+    expect(response.headers.get('Cache-Control')).toBe('private, no-store')
   })
 
   it('does not emit HSTS on local HTTP and disables private caching', () => {

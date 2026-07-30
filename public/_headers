@@ -1,0 +1,20 @@
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/favicon.ico
+  Cache-Control: public, max-age=3600, stale-while-revalidate=86400
+
+/flags/*
+  Cache-Control: public, max-age=3600, stale-while-revalidate=86400
+
+/hero.jpg
+  Cache-Control: public, max-age=3600, stale-while-revalidate=86400
+
+/hero-*.webp
+  Cache-Control: public, max-age=3600, stale-while-revalidate=86400
+
+/newsletter-popup-bg-*.webp
+  Cache-Control: public, max-age=3600, stale-while-revalidate=86400
+
+/spree.png
+  Cache-Control: public, max-age=3600, stale-while-revalidate=86400
