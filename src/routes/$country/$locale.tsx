@@ -17,34 +17,67 @@ import {
   resolveMarketSelection,
 } from '@/lib/market/utils/market'
 import { loadMessages } from '@/lib/i18n/messages'
-import { loadStorefrontShell } from '@/lib/storefront/api/load-storefront-shell'
+import {
+  loadStorefrontShell,
+  loadStorefrontShellForResolutionOnServer,
+  resolveStorefrontShellOnServer,
+} from '@/lib/storefront/api/load-storefront-shell'
 
 export const Route = createFileRoute('/$country/$locale')({
-  loader: async ({ location, params }) => {
-    const messagesPromise = loadMessages(params.locale)
-    const shell = await loadStorefrontShell({
-      data: {
-        country: params.country,
-        locale: params.locale,
-        useCheckoutShell: isCheckoutShellPath(location.pathname),
-      },
+  beforeLoad: async ({ location, params }) => {
+    if (!import.meta.env.SSR) {
+      return {}
+    }
+
+    const shellResolution = await resolveStorefrontShellOnServer({
+      country: params.country,
+      locale: params.locale,
     })
 
-    if (shell.shouldRedirect) {
-      const searchSuffix =
-        'searchStr' in location && typeof location.searchStr === 'string'
-          ? location.searchStr
-          : ''
-      const hashSuffix =
-        'hash' in location && typeof location.hash === 'string'
-          ? location.hash
-          : ''
-
+    if (shellResolution.shouldRedirect) {
       throw redirect({
-        href: `${replaceMarketPrefix(
-          location.pathname,
-          shell.market,
-        )}${searchSuffix}${hashSuffix}`,
+        href: buildResolvedMarketHref({
+          hash: location.hash,
+          pathname: location.pathname,
+          searchStr:
+            'searchStr' in location && typeof location.searchStr === 'string'
+              ? location.searchStr
+              : '',
+          market: shellResolution.market,
+        }),
+      })
+    }
+
+    return { shellResolution }
+  },
+  loader: async ({ context, location, params }) => {
+    const messagesPromise = loadMessages(params.locale)
+    const useCheckoutShell = isCheckoutShellPath(location.pathname)
+    const shell =
+      import.meta.env.SSR && context.shellResolution
+        ? await loadStorefrontShellForResolutionOnServer({
+            resolution: context.shellResolution,
+            useCheckoutShell,
+          })
+        : await loadStorefrontShell({
+            data: {
+              country: params.country,
+              locale: params.locale,
+              useCheckoutShell,
+            },
+          })
+
+    if (shell.shouldRedirect) {
+      throw redirect({
+        href: buildResolvedMarketHref({
+          hash: location.hash,
+          pathname: location.pathname,
+          searchStr:
+            'searchStr' in location && typeof location.searchStr === 'string'
+              ? location.searchStr
+              : '',
+          market: shell.market,
+        }),
       })
     }
 
@@ -72,6 +105,20 @@ export const Route = createFileRoute('/$country/$locale')({
   component: MarketRouteLayout,
   notFoundComponent: MarketNotFound,
 })
+
+function buildResolvedMarketHref({
+  hash,
+  market,
+  pathname,
+  searchStr,
+}: {
+  hash: string
+  market: Parameters<typeof replaceMarketPrefix>[1]
+  pathname: string
+  searchStr: string
+}) {
+  return `${replaceMarketPrefix(pathname, market)}${searchStr}${hash}`
+}
 
 function MarketRouteLayout() {
   const { capabilities, market, marketOptions, messages } =

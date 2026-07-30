@@ -1,10 +1,6 @@
 import { createServerFn } from '@tanstack/react-start'
 
-import { resolveServerMarket } from '@/lib/market/api/resolve-server-market'
 import type { MarketSelectionInput } from '@/lib/market/model/market'
-import { getServerSpreeClientForMarket } from '@/lib/spree/client.server'
-
-import { mapSpreeCategoriesToHomeSummaries } from '../mappers/category.mapper'
 
 type HomeCategorySummariesInput = {
   market: MarketSelectionInput
@@ -23,12 +19,13 @@ export const getHomeCategorySummaries = createServerFn({ method: 'GET' })
         limit: z.number().int().min(1).max(12).optional(),
       })
       .parse(data)
-    const market = await resolveServerMarket(input.market)
-    const response = await getServerSpreeClientForMarket(
-      market,
-    ).categories.list({
-      limit: 48,
-    })
+    const { resolveServerMarket } =
+      await import('@/lib/market/api/resolve-server-market')
+    const { getHomeCategorySummariesForMarket } =
+      await import('./get-home-category-summaries.server')
 
-    return mapSpreeCategoriesToHomeSummaries(response.data, input.limit ?? 6)
+    return getHomeCategorySummariesForMarket({
+      limit: input.limit ?? 6,
+      market: await resolveServerMarket(input.market),
+    })
   })

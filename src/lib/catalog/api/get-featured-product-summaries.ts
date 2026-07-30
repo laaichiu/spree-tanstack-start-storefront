@@ -1,10 +1,6 @@
 import { createServerFn } from '@tanstack/react-start'
 
-import { resolveServerMarket } from '@/lib/market/api/resolve-server-market'
 import type { MarketSelectionInput } from '@/lib/market/model/market'
-import { getServerSpreeClientForMarket } from '@/lib/spree/client.server'
-
-import { getProductSummaries } from './get-product-summaries'
 
 type FeaturedProductSummariesInput = {
   market: MarketSelectionInput
@@ -23,10 +19,13 @@ export const getFeaturedProductSummaries = createServerFn({ method: 'GET' })
         limit: z.number().int().min(1).max(12).optional(),
       })
       .parse(data)
-    const market = await resolveServerMarket(input.market)
+    const { resolveServerMarket } =
+      await import('@/lib/market/api/resolve-server-market')
+    const { getFeaturedProductSummariesForMarket } =
+      await import('./get-featured-product-summaries.server')
 
-    return getProductSummaries(getServerSpreeClientForMarket(market), {
+    return getFeaturedProductSummariesForMarket({
       limit: input.limit ?? 4,
-      sort: 'best_selling',
+      market: await resolveServerMarket(input.market),
     })
   })

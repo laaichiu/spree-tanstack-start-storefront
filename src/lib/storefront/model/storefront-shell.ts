@@ -25,3 +25,8 @@ export type StorefrontShellData = {
   marketOptions: StorefrontMarket[]
   shouldRedirect: boolean
 }
+
+export type StorefrontShellResolution = Omit<
+  StorefrontShellData,
+  'capabilities'
+>

@@ -15,6 +15,7 @@ import { translateMessage } from '@/lib/i18n/messages'
 import type {
   StorefrontShellCapabilities,
   StorefrontShellData,
+  StorefrontShellResolution,
 } from '../model/storefront-shell'
 
 type LoadStorefrontShellInput = MarketSelectionInput & {
@@ -42,12 +43,36 @@ export async function loadStorefrontShellForRequest({
   locale,
   useCheckoutShell,
 }: LoadStorefrontShellInput): Promise<StorefrontShellData> {
+  const resolution = await resolveStorefrontShellForRequest({
+    country,
+    locale,
+  })
+
+  return loadStorefrontShellForResolution({ resolution, useCheckoutShell })
+}
+
+export async function resolveStorefrontShellForRequest({
+  country,
+  locale,
+}: MarketSelectionInput): Promise<StorefrontShellResolution> {
   const marketOptions = await getStorefrontMarketsForRequest({
     country,
     locale,
   })
   const selection = resolveMarketSelection(marketOptions, { country, locale })
   const { market, shouldRedirect } = selection
+
+  return { market, marketOptions, shouldRedirect }
+}
+
+export async function loadStorefrontShellForResolution({
+  resolution,
+  useCheckoutShell,
+}: {
+  resolution: StorefrontShellResolution
+  useCheckoutShell: boolean
+}): Promise<StorefrontShellData> {
+  const { market, marketOptions, shouldRedirect } = resolution
 
   if (shouldRedirect || useCheckoutShell) {
     return {

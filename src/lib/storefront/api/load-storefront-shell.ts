@@ -1,6 +1,11 @@
-import { createServerFn } from '@tanstack/react-start'
+import { createServerFn, createServerOnlyFn } from '@tanstack/react-start'
 
-import type { StorefrontShellData } from '../model/storefront-shell'
+import type { MarketSelectionInput } from '@/lib/market/model/market'
+
+import type {
+  StorefrontShellData,
+  StorefrontShellResolution,
+} from '../model/storefront-shell'
 
 type LoadStorefrontShellInput = {
   country: string
@@ -25,3 +30,27 @@ export const loadStorefrontShell = createServerFn({ method: 'GET' })
 
     return loadStorefrontShellForRequest(input)
   })
+
+export const resolveStorefrontShellOnServer = createServerOnlyFn(
+  async (input: MarketSelectionInput) => {
+    const { resolveStorefrontShellForRequest } =
+      await import('./load-storefront-shell.server')
+
+    return resolveStorefrontShellForRequest(input)
+  },
+)
+
+export const loadStorefrontShellForResolutionOnServer = createServerOnlyFn(
+  async ({
+    resolution,
+    useCheckoutShell,
+  }: {
+    resolution: StorefrontShellResolution
+    useCheckoutShell: boolean
+  }) => {
+    const { loadStorefrontShellForResolution } =
+      await import('./load-storefront-shell.server')
+
+    return loadStorefrontShellForResolution({ resolution, useCheckoutShell })
+  },
+)
