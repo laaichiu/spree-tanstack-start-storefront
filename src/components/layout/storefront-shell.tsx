@@ -7,6 +7,7 @@ import { Header } from '@/components/layout/header'
 import { isNewsletterPopupDismissed } from '@/components/layout/newsletter-popup-dismissal'
 import { isNewsletterPopupRouteExcluded } from '@/components/layout/newsletter-popup-eligibility'
 import type { StorefrontShellCapabilities } from '@/components/layout/storefront-shell.model'
+import type { StorefrontBranding } from '@/lib/storefront/model/storefront-branding'
 
 const NewsletterPopup = lazy(async () => {
   const module = await import('@/components/layout/newsletter-popup')
@@ -56,17 +57,19 @@ function DeferredNewsletterPopup() {
 }
 
 export function StorefrontShell({
+  branding,
   capabilities,
   children,
 }: {
+  branding: StorefrontBranding
   capabilities: StorefrontShellCapabilities
   children: ReactNode
 }) {
   return (
     <>
-      <Header capabilities={capabilities} />
+      <Header branding={branding} capabilities={capabilities} />
       <main>{children}</main>
-      <Footer />
+      <Footer branding={branding} />
       <DeferredNewsletterPopup />
     </>
   )

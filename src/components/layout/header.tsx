@@ -7,6 +7,7 @@ import { useCart } from '@/components/cart/use-cart'
 import { useMarket } from '@/components/layout/market-provider'
 import type { StorefrontShellCapabilities } from '@/components/layout/storefront-shell.model'
 import type { CategoryNavigationItem } from '@/lib/catalog/model/category'
+import type { StorefrontBranding } from '@/lib/storefront/model/storefront-branding'
 import { cn } from '@/lib/utils'
 
 import { AnnouncementBanner } from './announcement-banner'
@@ -78,8 +79,10 @@ function sortNavigationCategories(categories: CategoryNavigationItem[]) {
 }
 
 export function Header({
+  branding,
   capabilities,
 }: {
+  branding: StorefrontBranding
   capabilities: StorefrontShellCapabilities
 }) {
   const { market, t } = useMarket()
@@ -135,18 +138,24 @@ export function Header({
             <MobileNav categories={desktopCategories} />
 
             <Link
-              aria-label="Spree Storefront home"
+              aria-label={`${branding.name} home`}
               className="absolute left-1/2 inline-flex -translate-x-1/2 items-center justify-center focus-visible:focus-ring lg:static lg:translate-x-0 lg:justify-self-center"
               params={marketParams}
               to="/$country/$locale"
             >
-              <img
-                alt="Spree Storefront"
-                className="h-8 w-auto object-contain lg:h-7"
-                src="/spree.png"
-                width={189}
-                height={76}
-              />
+              {branding.logoUrl ? (
+                <img
+                  alt={branding.name}
+                  className="h-8 w-auto object-contain lg:h-7"
+                  src={branding.logoUrl}
+                  width={189}
+                  height={76}
+                />
+              ) : (
+                <span className="text-base leading-none font-semibold uppercase tracking-[0.16em]">
+                  {branding.name}
+                </span>
+              )}
             </Link>
 
             <div className="ml-auto flex items-center justify-end lg:ml-0 lg:justify-self-end">

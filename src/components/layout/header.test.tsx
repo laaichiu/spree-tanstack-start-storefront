@@ -11,6 +11,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest'
 
 import { Header } from './header'
 import type { StorefrontShellCapabilities } from './storefront-shell.model'
+import type { StorefrontBranding } from '@/lib/storefront/model/storefront-branding'
 
 const drawerModuleMocks = vi.hoisted(() => ({
   baseUiHandlerPrevented: vi.fn(),
@@ -153,7 +154,15 @@ afterEach(() => {
   vi.clearAllMocks()
 })
 
-function renderHeader() {
+function renderHeader(
+  branding: StorefrontBranding = {
+    locale: 'en',
+    logoUrl: null,
+    metaDescription: 'Store description',
+    name: 'Shop',
+    seoTitle: null,
+  },
+) {
   const capabilities: StorefrontShellCapabilities = {
     cart: {
       freeShippingPromotion: null,
@@ -163,7 +172,7 @@ function renderHeader() {
     navigation: { categories: [] },
   }
 
-  return render(<Header capabilities={capabilities} />)
+  return render(<Header branding={branding} capabilities={capabilities} />)
 }
 
 async function expectDrawerOpen(testId: string) {
@@ -236,5 +245,28 @@ describe('Header drawers', () => {
     fireEvent.click(screen.getByText('Bag'))
     await expectDrawerOpen('cart-drawer')
     expect(drawerModuleMocks.baseUiHandlerPrevented).toHaveBeenCalledTimes(2)
+  })
+})
+
+describe('Header branding', () => {
+  it('renders the normalized local logo asset when available', () => {
+    renderHeader({
+      locale: 'en',
+      logoUrl: '/spree.png',
+      metaDescription: 'Store description',
+      name: 'Shop',
+      seoTitle: null,
+    })
+
+    expect(screen.getByRole('img', { name: 'Shop' }).getAttribute('src')).toBe(
+      '/spree.png',
+    )
+  })
+
+  it('renders the store name when no logo is available', () => {
+    renderHeader()
+
+    expect(screen.getByText('Shop')).toBeTruthy()
+    expect(screen.queryByRole('img', { name: 'Shop' })).toBeNull()
   })
 })

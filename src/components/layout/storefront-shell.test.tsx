@@ -7,6 +7,7 @@ import {
   StorefrontShell,
 } from '@/components/layout/storefront-shell'
 import type { StorefrontShellCapabilities } from '@/components/layout/storefront-shell.model'
+import type { StorefrontBranding } from '@/lib/storefront/model/storefront-branding'
 
 const shellMocks = vi.hoisted(() => ({
   dismissed: false,
@@ -75,6 +76,14 @@ const capabilities: StorefrontShellCapabilities = {
   },
 }
 
+const branding: StorefrontBranding = {
+  locale: 'en',
+  logoUrl: null,
+  metaDescription: 'Store description',
+  name: 'Shop',
+  seoTitle: null,
+}
+
 afterEach(() => {
   cleanup()
   shellMocks.dismissed = false
@@ -87,7 +96,7 @@ describe('StorefrontShell', () => {
     vi.useFakeTimers()
 
     render(
-      <StorefrontShell capabilities={capabilities}>
+      <StorefrontShell branding={branding} capabilities={capabilities}>
         <div>Page content</div>
       </StorefrontShell>,
     )
@@ -113,7 +122,7 @@ describe('StorefrontShell', () => {
     shellMocks.dismissed = true
 
     render(
-      <StorefrontShell capabilities={capabilities}>
+      <StorefrontShell branding={branding} capabilities={capabilities}>
         <div>Page content</div>
       </StorefrontShell>,
     )
@@ -128,7 +137,7 @@ describe('StorefrontShell', () => {
   it('cancels and reschedules popup loading across route eligibility changes', async () => {
     vi.useFakeTimers()
     const view = render(
-      <StorefrontShell capabilities={capabilities}>
+      <StorefrontShell branding={branding} capabilities={capabilities}>
         <div>Page content</div>
       </StorefrontShell>,
     )
@@ -139,7 +148,7 @@ describe('StorefrontShell', () => {
 
     shellMocks.pathname = '/us/en/checkout'
     view.rerender(
-      <StorefrontShell capabilities={capabilities}>
+      <StorefrontShell branding={branding} capabilities={capabilities}>
         <div>Page content</div>
       </StorefrontShell>,
     )
@@ -151,7 +160,7 @@ describe('StorefrontShell', () => {
 
     shellMocks.pathname = '/us/en/products'
     view.rerender(
-      <StorefrontShell capabilities={capabilities}>
+      <StorefrontShell branding={branding} capabilities={capabilities}>
         <div>Page content</div>
       </StorefrontShell>,
     )
@@ -166,7 +175,7 @@ describe('StorefrontShell', () => {
     vi.useFakeTimers()
 
     render(
-      <StorefrontShell capabilities={capabilities}>
+      <StorefrontShell branding={branding} capabilities={capabilities}>
         <div>Page content</div>
       </StorefrontShell>,
     )
@@ -182,7 +191,7 @@ describe('StorefrontShell', () => {
   it('keeps the accepted state visible until navigation', async () => {
     vi.useFakeTimers()
     const view = render(
-      <StorefrontShell capabilities={capabilities}>
+      <StorefrontShell branding={branding} capabilities={capabilities}>
         <div>Page content</div>
       </StorefrontShell>,
     )
@@ -196,7 +205,7 @@ describe('StorefrontShell', () => {
 
     shellMocks.pathname = '/us/en/products'
     view.rerender(
-      <StorefrontShell capabilities={capabilities}>
+      <StorefrontShell branding={branding} capabilities={capabilities}>
         <div>Page content</div>
       </StorefrontShell>,
     )

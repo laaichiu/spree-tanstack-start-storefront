@@ -7,11 +7,13 @@ describe('readPublicBuildEnv', () => {
     expect(
       readPublicBuildEnv({
         VITE_STOREFRONT_REVIEWS_ENABLED: ' YES ',
+        VITE_STOREFRONT_NAME: ' Shop ',
         VITE_STOREFRONT_URL: 'https://shop.example.com/',
         VITE_STRIPE_PUBLISHABLE_KEY: 'pk_test_storefront',
       }),
     ).toEqual({
       reviewsEnabled: true,
+      storefrontName: 'Shop',
       storefrontUrl: 'https://shop.example.com',
       stripePublishableKey: 'pk_test_storefront',
     })
@@ -20,6 +22,7 @@ describe('readPublicBuildEnv', () => {
   it('uses the documented local origin when no storefront URL is configured', () => {
     expect(readPublicBuildEnv({})).toEqual({
       reviewsEnabled: false,
+      storefrontName: null,
       storefrontUrl: 'http://localhost:3006',
       stripePublishableKey: null,
     })

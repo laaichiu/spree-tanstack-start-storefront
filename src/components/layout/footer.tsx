@@ -5,6 +5,7 @@ import {
   DeferredFooterNewsletterSignup,
 } from '@/components/layout/footer-interactive'
 import { useMarket } from '@/components/layout/market-provider'
+import type { StorefrontBranding } from '@/lib/storefront/model/storefront-branding'
 
 const footerColumns = [
   {
@@ -72,7 +73,7 @@ const footerNavLinkClass =
 const footerLegalLinkClass =
   'link-underline-sweep text-sm leading-4 font-normal uppercase inline-block w-fit text-foreground after:bottom-0 focus-visible:focus-ring'
 
-export function Footer() {
+export function Footer({ branding }: { branding: StorefrontBranding }) {
   const { market, t } = useMarket()
   const marketParams = {
     country: market.country,
@@ -167,7 +168,7 @@ export function Footer() {
             </div>
 
             <p className="text-sm leading-4 font-normal uppercase text-muted-foreground">
-              © {new Date().getFullYear()} Spree Storefront.{' '}
+              © {new Date().getFullYear()} {branding.name}.{' '}
               {t('footer.allRightsReserved')}
             </p>
           </div>

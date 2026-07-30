@@ -53,9 +53,13 @@ Set the local Spree API URL and publishable key in `.env`. The `pnpm dev` script
 | `SPREE_API_URL`                                  | Build validation and Worker runtime | Yes             | Spree Store API URL. Production builds require HTTPS.                                                                     |
 | `SPREE_PUBLISHABLE_KEY`                          | Build validation and Worker runtime | Yes             | Spree publishable key beginning with `pk_`.                                                                               |
 | `VITE_STOREFRONT_URL`                            | Build time and browser bundle       | Production      | Public origin used for canonical URLs, social metadata, sitemap, and payment return URLs.                                 |
+| `VITE_STOREFRONT_NAME`                           | Build time and browser bundle       | No              | Public store name used until Spree exposes a public Store branding resource.                                              |
 | `VITE_STRIPE_PUBLISHABLE_KEY`                    | Build time and browser bundle       | If using Stripe | Stripe publishable key. Never use a Stripe secret key here.                                                               |
 | `VITE_STOREFRONT_REVIEWS_ENABLED`                | Build time and browser bundle       | No              | Set to `true` to enable the optional reviews feature.                                                                     |
 | `VITE_STOREFRONT_FREE_SHIPPING_THRESHOLD_AMOUNT` | Build time and browser bundle       | No              | Optional announcement/progress threshold, for example `USD=100,EUR=95`. Spree still determines the actual shipping total. |
+
+The reference storefront currently uses the local `/spree.png` asset for its logo. Do not add a logo environment
+variable; a future public Spree branding API can replace this asset through the normalized branding contract.
 
 `VITE_*` values are baked into the client bundle during the Vite build. They are not runtime Worker configuration. Do not put customer, cart, order, refresh, or payment secret tokens in any `VITE_*` variable. Keep `.env` and other local environment files out of version control.
 
@@ -141,6 +145,7 @@ The production build must receive these values before `pnpm deploy` runs:
 SPREE_API_URL=https://api.example.com
 SPREE_PUBLISHABLE_KEY=pk_live_...
 VITE_STOREFRONT_URL=https://shop.example.com
+VITE_STOREFRONT_NAME=Shop
 ```
 
 Add these optional values when the corresponding features are enabled:

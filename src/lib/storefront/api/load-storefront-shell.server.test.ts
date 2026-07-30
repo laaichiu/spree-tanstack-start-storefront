@@ -6,6 +6,7 @@ import { getCartForMarket } from '@/lib/cart/api/cart-read.server'
 import { getConfiguredCartFreeShippingPromotion } from '@/lib/cart/config/free-shipping'
 import { getNavigationCategoriesForMarket } from '@/lib/catalog/api/get-navigation-categories.server'
 import { getStorefrontMarketsForRequest } from '@/lib/market/api/get-storefront-markets.server'
+import { getStorefrontBrandingForRequest } from './get-storefront-branding.server'
 import {
   isBrowserFetchFailureError,
   reportError,
@@ -25,6 +26,9 @@ vi.mock('@/lib/catalog/api/get-navigation-categories.server', () => ({
 }))
 vi.mock('@/lib/market/api/get-storefront-markets.server', () => ({
   getStorefrontMarketsForRequest: vi.fn(),
+}))
+vi.mock('./get-storefront-branding.server', () => ({
+  getStorefrontBrandingForRequest: vi.fn(),
 }))
 vi.mock('@/lib/observability/report-error', () => ({
   isBrowserFetchFailureError: vi.fn(),
@@ -72,12 +76,21 @@ const freeShippingPromotion = {
   threshold: { amount: 100, currencyCode: 'USD' },
 }
 
+const branding = {
+  locale: 'en',
+  logoUrl: null,
+  metaDescription: 'Shop description',
+  name: 'Shop',
+  seoTitle: null,
+}
+
 beforeEach(() => {
   vi.clearAllMocks()
   vi.mocked(getStorefrontMarketsForRequest).mockResolvedValue(marketOptions)
   vi.mocked(getConfiguredCartFreeShippingPromotion).mockReturnValue(
     freeShippingPromotion,
   )
+  vi.mocked(getStorefrontBrandingForRequest).mockResolvedValue(branding)
   vi.mocked(getNavigationCategoriesForMarket).mockResolvedValue(categories)
   vi.mocked(getCartForMarket).mockResolvedValue(null)
   vi.mocked(isBrowserFetchFailureError).mockReturnValue(false)
@@ -95,6 +108,7 @@ describe('loadStorefrontShellForRequest', () => {
     expect(getNavigationCategoriesForMarket).not.toHaveBeenCalled()
     expect(getCartForMarket).not.toHaveBeenCalled()
     expect(shell).toEqual({
+      branding,
       capabilities: {
         cart: {
           freeShippingPromotion,

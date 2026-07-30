@@ -12,6 +12,7 @@ import {
 } from '@/lib/observability/report-error'
 import { translateMessage } from '@/lib/i18n/messages'
 
+import { getStorefrontBrandingForRequest } from './get-storefront-branding.server'
 import type {
   StorefrontShellCapabilities,
   StorefrontShellData,
@@ -73,9 +74,13 @@ export async function loadStorefrontShellForResolution({
   useCheckoutShell: boolean
 }): Promise<StorefrontShellData> {
   const { market, marketOptions, shouldRedirect } = resolution
+  const brandingPromise = getStorefrontBrandingForRequest({
+    locale: market.locale,
+  })
 
   if (shouldRedirect || useCheckoutShell) {
     return {
+      branding: await brandingPromise,
       capabilities: createEmptyCapabilities(market.currencyCode),
       market,
       marketOptions,
@@ -83,7 +88,8 @@ export async function loadStorefrontShellForResolution({
     }
   }
 
-  const [navigationCategories, cartResult] = await Promise.all([
+  const [branding, navigationCategories, cartResult] = await Promise.all([
+    brandingPromise,
     getNavigationCategoriesForMarket({ market, limit: 7 }).catch(
       (error: unknown) => {
         if (!isBrowserFetchFailureError(error)) {
@@ -119,6 +125,7 @@ export async function loadStorefrontShellForResolution({
   ])
 
   return {
+    branding,
     capabilities: {
       cart: {
         freeShippingPromotion: getConfiguredCartFreeShippingPromotion(

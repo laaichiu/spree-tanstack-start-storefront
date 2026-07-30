@@ -8,6 +8,8 @@ import type {
   StorefrontMarket,
 } from '@/lib/market/model/market'
 
+import type { StorefrontBranding } from './storefront-branding'
+
 export type StorefrontShellCapabilities = {
   cart: {
     freeShippingPromotion: CartFreeShippingPromotion | null
@@ -20,13 +22,14 @@ export type StorefrontShellCapabilities = {
 }
 
 export type StorefrontShellData = {
+  branding: StorefrontBranding
   capabilities: StorefrontShellCapabilities
   market: ResolvedMarket
   marketOptions: StorefrontMarket[]
   shouldRedirect: boolean
 }
 
-export type StorefrontShellResolution = Omit<
+export type StorefrontShellResolution = Pick<
   StorefrontShellData,
-  'capabilities'
+  'market' | 'marketOptions' | 'shouldRedirect'
 >

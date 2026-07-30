@@ -96,6 +96,7 @@ export const Route = createFileRoute('/$country/$locale')({
     ])
 
     return {
+      branding: shell.branding,
       capabilities: shell.capabilities,
       market,
       marketOptions: shell.marketOptions,
@@ -121,7 +122,7 @@ function buildResolvedMarketHref({
 }
 
 function MarketRouteLayout() {
-  const { capabilities, market, marketOptions, messages } =
+  const { branding, capabilities, market, marketOptions, messages } =
     Route.useLoaderData()
   const isCheckoutShell = useRouterState({
     select: (state) =>
@@ -131,6 +132,7 @@ function MarketRouteLayout() {
   return (
     <MarketLayout
       capabilities={capabilities}
+      branding={branding}
       isCheckout={isCheckoutShell}
       market={market}
       marketOptions={marketOptions}

@@ -4,6 +4,7 @@ import { CheckoutLayoutShell } from '@/components/layout/checkout-layout-shell'
 import { MarketProvider } from '@/components/layout/market-provider'
 import { StorefrontShell } from '@/components/layout/storefront-shell'
 import type { StorefrontShellCapabilities } from '@/components/layout/storefront-shell.model'
+import type { StorefrontBranding } from '@/lib/storefront/model/storefront-branding'
 import type { MessageDictionary } from '@/lib/i18n/messages'
 import type {
   ResolvedMarket,
@@ -12,6 +13,7 @@ import type {
 
 export function MarketLayout({
   capabilities,
+  branding,
   children,
   isCheckout,
   market,
@@ -19,6 +21,7 @@ export function MarketLayout({
   messages,
 }: {
   capabilities: StorefrontShellCapabilities
+  branding: StorefrontBranding
   children: ReactNode
   isCheckout: boolean
   market: ResolvedMarket
@@ -32,9 +35,11 @@ export function MarketLayout({
       messages={messages}
     >
       {isCheckout ? (
-        <CheckoutLayoutShell>{children}</CheckoutLayoutShell>
+        <CheckoutLayoutShell branding={branding}>
+          {children}
+        </CheckoutLayoutShell>
       ) : (
-        <StorefrontShell capabilities={capabilities}>
+        <StorefrontShell branding={branding} capabilities={capabilities}>
           {children}
         </StorefrontShell>
       )}
