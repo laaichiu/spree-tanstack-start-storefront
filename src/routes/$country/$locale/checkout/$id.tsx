@@ -10,7 +10,7 @@ import { CART_MARKET_MISMATCH_MESSAGE } from '@/lib/cart/utils/cart-market'
 import { parseCheckoutPaymentErrorSearch } from '@/lib/checkout/utils/completion/checkout-completion-error'
 import { translateMessage } from '@/lib/i18n/messages'
 import { reportError } from '@/lib/observability/report-error'
-import { buildSeoMeta } from '@/lib/seo/site-seo'
+import { buildStorefrontSeoHead } from '@/lib/seo/site-seo'
 
 export const Route = createFileRoute('/$country/$locale/checkout/$id')({
   validateSearch: parseCheckoutPaymentErrorSearch,
@@ -75,16 +75,17 @@ export const Route = createFileRoute('/$country/$locale/checkout/$id')({
       }
     }
   },
-  head: ({ params }) => ({
-    meta: buildSeoMeta({
-      description: translateMessage(
+  head: ({ matches, params }) =>
+    buildStorefrontSeoHead({
+      fallbackDescription: translateMessage(
         params.locale,
-        'checkout.checkoutDescription',
+        'branding.defaultDescription',
       ),
+      locale: params.locale,
+      matches,
       noIndex: true,
       title: translateMessage(params.locale, 'checkout.checkout'),
     }),
-  }),
   component: CheckoutDetailPage,
   errorComponent: CheckoutDetailError,
 })

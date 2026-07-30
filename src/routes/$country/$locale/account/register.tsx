@@ -4,8 +4,21 @@ import { AccountAuthShell } from '@/components/account/account-auth-shell'
 import { AccountRegisterForm } from '@/components/account/account-register-form'
 import { accountInlineLinkClassName } from '@/components/account/account-ui'
 import { useMarket } from '@/components/layout/market-provider'
+import { translateMessage } from '@/lib/i18n/messages'
+import { buildStorefrontSeoHead } from '@/lib/seo/site-seo'
 
 export const Route = createFileRoute('/$country/$locale/account/register')({
+  head: ({ matches, params }) =>
+    buildStorefrontSeoHead({
+      fallbackDescription: translateMessage(
+        params.locale,
+        'branding.defaultDescription',
+      ),
+      locale: params.locale,
+      matches,
+      noIndex: true,
+      title: translateMessage(params.locale, 'account.createAccount'),
+    }),
   component: AccountRegisterPage,
 })
 

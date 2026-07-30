@@ -14,8 +14,8 @@ import { buildAlternateLocaleLinks } from '@/lib/seo/alternate-locale'
 import { getStorefrontMarketOptionsFromMatches } from '@/lib/seo/alternate-locale-loader'
 import {
   buildCanonicalUrl,
-  buildSeoHead,
   buildSeoImageUrl,
+  buildStorefrontSeoHead,
   siteSeo,
 } from '@/lib/seo/site-seo'
 
@@ -83,7 +83,7 @@ export const Route = createFileRoute('/$country/$locale/products/$slug')({
           ]
         : []
 
-    return buildSeoHead({
+    return buildStorefrontSeoHead({
       alternateLinks: canonicalPath
         ? buildAlternateLocaleLinks({
             marketOptions: getStorefrontMarketOptionsFromMatches(matches),
@@ -92,6 +92,10 @@ export const Route = createFileRoute('/$country/$locale/products/$slug')({
         : [],
       canonicalUrl,
       description,
+      fallbackDescription: translateMessage(
+        params.locale,
+        'product.productUnavailableDescription',
+      ),
       image: imageUrl
         ? { alt: primaryImage?.alt ?? title, url: imageUrl }
         : null,
@@ -99,6 +103,8 @@ export const Route = createFileRoute('/$country/$locale/products/$slug')({
       ogType: product ? 'product' : 'website',
       structuredData,
       title,
+      locale: params.locale,
+      matches,
     })
   },
   component: ProductPage,

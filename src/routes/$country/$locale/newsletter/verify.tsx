@@ -7,7 +7,7 @@ import { AccountAuthShell } from '@/components/account/account-auth-shell'
 import { accountInlineLinkClassName } from '@/components/account/account-ui'
 import { useMarket } from '@/components/layout/market-provider'
 import { translateMessage } from '@/lib/i18n/messages'
-import { buildSeoMeta } from '@/lib/seo/site-seo'
+import { buildStorefrontSeoHead } from '@/lib/seo/site-seo'
 
 type NewsletterVerificationPageState =
   | {
@@ -59,16 +59,17 @@ export const Route = createFileRoute('/$country/$locale/newsletter/verify')({
       }
     }
   },
-  head: ({ params }) => ({
-    meta: buildSeoMeta({
-      description: translateMessage(
+  head: ({ matches, params }) =>
+    buildStorefrontSeoHead({
+      fallbackDescription: translateMessage(
         params.locale,
-        'newsletterVerification.description',
+        'branding.defaultDescription',
       ),
+      locale: params.locale,
+      matches,
       noIndex: true,
       title: translateMessage(params.locale, 'newsletterVerification.title'),
     }),
-  }),
   component: NewsletterVerificationPage,
 })
 

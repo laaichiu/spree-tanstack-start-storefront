@@ -5,7 +5,7 @@ import { CheckoutEntryState } from '@/components/checkout/checkout-entry-state'
 import { CheckoutRouteErrorState } from '@/components/checkout/checkout-route-error-state'
 import { translateMessage } from '@/lib/i18n/messages'
 import { reportError } from '@/lib/observability/report-error'
-import { buildSeoMeta } from '@/lib/seo/site-seo'
+import { buildStorefrontSeoHead } from '@/lib/seo/site-seo'
 
 export const Route = createFileRoute('/$country/$locale/checkout/')({
   loader: async ({ params }) => {
@@ -46,16 +46,17 @@ export const Route = createFileRoute('/$country/$locale/checkout/')({
 
     return cartResult
   },
-  head: ({ params }) => ({
-    meta: buildSeoMeta({
-      description: translateMessage(
+  head: ({ matches, params }) =>
+    buildStorefrontSeoHead({
+      fallbackDescription: translateMessage(
         params.locale,
-        'checkout.checkoutDescription',
+        'branding.defaultDescription',
       ),
+      locale: params.locale,
+      matches,
       noIndex: true,
       title: translateMessage(params.locale, 'checkout.checkout'),
     }),
-  }),
   component: CheckoutIndexPage,
   errorComponent: CheckoutIndexError,
 })

@@ -1,4 +1,8 @@
 {
+  "branding": {
+    "defaultDescription": "Entdecken Sie Produkte, aufmerksamen Service und ein einfaches Einkaufserlebnis.",
+    "defaultName": "Shop"
+  },
   "account": {
     "account": "Account",
     "accountDescription": "Manage your profile, orders, and saved addresses.",
@@ -188,8 +192,7 @@
     "specialInstructions": "Besondere Hinweise",
     "trackShipment": "Track shipment",
     "trackingNumber": "Tracking number",
-    "viewOrder": "View order",
-    "welcomeBack": "Willkommen zuruck"
+    "viewOrder": "View order"
   },
   "cart": {
     "cart": "Warenkorb",
@@ -398,7 +401,7 @@
     "joinList": "Join the list",
     "liveChat": "Live-Chat",
     "manageAccount": "Konto verwalten",
-    "newsletterConsent": "By signing up, you agree to receive marketing emails from Spree Storefront.",
+    "newsletterConsent": "Mit Ihrer Anmeldung stimmen Sie dem Erhalt von Marketing-E-Mails aus unserem Shop zu.",
     "newsletterFailed": "Newsletter signup failed. Please try again.",
     "newsletterHeading": "Melden Sie sich an und erhalten Sie 20% Rabatt auf Ihre erste Bestellung.",
     "newsletterHint": "We'll keep this email preference aligned if you create an account later.",
@@ -503,6 +506,7 @@
     "heroCta": "Shop the collection",
     "heroDescription": "Eine produktionsreife, quelloffene Storefront mit TanStack Start, React und dem Spree TypeScript SDK. Selbst hosten. Eigener Stack. Kein Vendor Lock-in. Keine Plattformgebühren.",
     "heroEyebrow": "Neu eingetroffen",
+    "seoTitle": "TanStack Start E-Commerce-Storefront",
     "heroTitle": "Vom Sonnenlicht geformt",
     "newIn": "New In",
     "newProductsLoadFailed": "New products could not be loaded",
@@ -538,6 +542,9 @@
     "primaryAction": "Return home",
     "secondaryAction": "Shop products",
     "title": "Seite nicht gefunden"
+  },
+  "policy": {
+    "pendingContent": "Die store-spezifischen Richtlinientexte werden hier veröffentlicht, bevor diese Seite indexierbar wird."
   },
   "product": {
     "addToBag": "Add to Cart",

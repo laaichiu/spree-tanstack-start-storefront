@@ -5,10 +5,23 @@ import { AccountAuthShell } from '@/components/account/account-auth-shell'
 import { AccountResetPasswordForm } from '@/components/account/account-reset-password-form'
 import { accountInlineLinkClassName } from '@/components/account/account-ui'
 import { useMarket } from '@/components/layout/market-provider'
+import { translateMessage } from '@/lib/i18n/messages'
+import { buildStorefrontSeoHead } from '@/lib/seo/site-seo'
 
 export const Route = createFileRoute(
   '/$country/$locale/account/reset-password',
 )({
+  head: ({ matches, params }) =>
+    buildStorefrontSeoHead({
+      fallbackDescription: translateMessage(
+        params.locale,
+        'branding.defaultDescription',
+      ),
+      locale: params.locale,
+      matches,
+      noIndex: true,
+      title: translateMessage(params.locale, 'account.resetPassword'),
+    }),
   validateSearch: (search: Record<string, unknown>): { token?: string } => ({
     token: getOptionalTrimmedSearchValue(search.token),
   }),

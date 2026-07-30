@@ -1,4 +1,8 @@
 {
+  "branding": {
+    "defaultDescription": "Descubre productos, un servicio atento y una tienda pensada para comprar fácilmente.",
+    "defaultName": "Tienda"
+  },
   "account": {
     "account": "Cuenta",
     "accountDescription": "Gestiona tu perfil, pedidos y direcciones guardadas.",
@@ -188,8 +192,7 @@
     "specialInstructions": "Instrucciones especiales",
     "trackShipment": "Seguir envio",
     "trackingNumber": "Numero de seguimiento",
-    "viewOrder": "Ver pedido",
-    "welcomeBack": "Bienvenido de nuevo"
+    "viewOrder": "Ver pedido"
   },
   "cart": {
     "cart": "Carrito",
@@ -398,7 +401,7 @@
     "joinList": "Unete a la lista",
     "liveChat": "Chat en vivo",
     "manageAccount": "Gestionar cuenta",
-    "newsletterConsent": "Al registrarte, aceptas recibir correos de marketing de Spree Storefront.",
+    "newsletterConsent": "Al registrarte, aceptas recibir correos de marketing de nuestra tienda.",
     "newsletterFailed": "No se pudo iniciar la suscripcion. Intentalo de nuevo.",
     "newsletterHeading": "Mantente cerca de novedades, selecciones discretas y actualizaciones.",
     "newsletterHint": "Mantendremos esta preferencia si creas una cuenta despues.",
@@ -503,6 +506,7 @@
     "heroCta": "Comprar la coleccion",
     "heroDescription": "Una seleccion sencilla de capas refinadas, siluetas limpias y piezas diarias que se sienten mas ligeras al ponertelas.",
     "heroEyebrow": "Novedades",
+    "seoTitle": "Storefront de comercio electrónico con TanStack Start",
     "heroTitle": "Moldeado por la luz",
     "newIn": "Novedades",
     "newProductsLoadFailed": "No se pudieron cargar los nuevos productos",
@@ -538,6 +542,9 @@
     "primaryAction": "Volver al inicio",
     "secondaryAction": "Ver productos",
     "title": "Esta pagina no esta disponible."
+  },
+  "policy": {
+    "pendingContent": "El contenido de las políticas específicas de la tienda se publicará aquí antes de que esta página pueda indexarse."
   },
   "product": {
     "addToBag": "Agregar al carrito",

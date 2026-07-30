@@ -1,11 +1,72 @@
 import { describe, expect, it } from 'vitest'
 
 import {
+  buildPageTitle,
   buildCanonicalUrl,
   buildSeoHead,
   buildSeoImageUrl,
   buildSeoMeta,
+  buildStorefrontSeoHead,
+  resolveSeoDescription,
 } from './site-seo'
+
+const shopMatches = [
+  {
+    loaderData: {
+      branding: {
+        locale: 'en',
+        logoUrl: null,
+        metaDescription: 'A store description.',
+        name: 'Shop',
+        seoTitle: null,
+      },
+    },
+  },
+]
+
+describe('storefront SEO branding', () => {
+  it('adds the store name once and preserves explicit branded titles', () => {
+    expect(buildPageTitle('Account', 'Shop')).toBe('Account | Shop')
+    expect(buildPageTitle('Everyday Bowl | Shop', 'Shop')).toBe(
+      'Everyday Bowl | Shop',
+    )
+  })
+
+  it('cleans descriptions and follows page, store, then fallback priority', () => {
+    expect(
+      resolveSeoDescription({
+        fallbackDescription: 'Fallback',
+        pageDescription: '<p>Page   description</p>',
+        storeDescription: 'Store description',
+      }),
+    ).toBe('Page description')
+    expect(
+      resolveSeoDescription({
+        fallbackDescription: 'Fallback',
+        storeDescription: 'Store description',
+      }),
+    ).toBe('Store description')
+  })
+
+  it('builds a branded noindex head from the shared shell contract', () => {
+    const head = buildStorefrontSeoHead({
+      description: null,
+      fallbackDescription: 'Fallback description',
+      locale: 'en',
+      matches: shopMatches,
+      noIndex: true,
+      title: 'Account',
+    })
+
+    expect(head.meta).toEqual(
+      expect.arrayContaining([
+        { title: 'Account | Shop' },
+        { content: 'A store description.', name: 'description' },
+        { content: 'noindex, nofollow', name: 'robots' },
+      ]),
+    )
+  })
+})
 
 describe('buildSeoMeta', () => {
   it('builds shared search and social metadata', () => {

@@ -1,4 +1,8 @@
 {
+  "branding": {
+    "defaultDescription": "商品と心のこもったサービスを、快適にお買い物いただけるストアでお楽しみください。",
+    "defaultName": "ストア"
+  },
   "account": {
     "account": "アカウント",
     "accountDescription": "プロフィール、注文、保存した住所を管理できます。",
@@ -188,8 +192,7 @@
     "specialInstructions": "特記事項",
     "trackShipment": "配送を追跡",
     "trackingNumber": "追跡番号",
-    "viewOrder": "注文を見る",
-    "welcomeBack": "おかえりなさい"
+    "viewOrder": "注文を見る"
   },
   "cart": {
     "cart": "カート",
@@ -398,7 +401,7 @@
     "joinList": "ニュースを受け取る",
     "liveChat": "ライブチャット",
     "manageAccount": "アカウント管理",
-    "newsletterConsent": "登録すると、Spree Storefront からのマーケティングメールを受け取ることに同意したものとします。",
+    "newsletterConsent": "登録すると、当ストアからのマーケティングメールを受け取ることに同意したものとします。",
     "newsletterFailed": "ニュースレター登録に失敗しました。もう一度お試しください。",
     "newsletterHeading": "新着、静かな編集、ストアのお知らせをお届けします。",
     "newsletterHint": "後でアカウントを作成した場合も、このメール設定を引き継ぎます。",
@@ -503,6 +506,7 @@
     "heroCta": "コレクションを見る",
     "heroDescription": "洗練されたレイヤー、すっきりしたシルエット、日常を軽やかにするアイテム。",
     "heroEyebrow": "新着",
+    "seoTitle": "TanStack Start ECストアフロント",
     "heroTitle": "光にかたどられて",
     "newIn": "新着",
     "newProductsLoadFailed": "新着商品を読み込めませんでした",
@@ -538,6 +542,9 @@
     "primaryAction": "ホームに戻る",
     "secondaryAction": "商品を見る",
     "title": "このページは利用できません。"
+  },
+  "policy": {
+    "pendingContent": "このページをインデックス可能にする前に、ストア固有のポリシー内容をここに掲載します。"
   },
   "product": {
     "addToBag": "カートに追加",

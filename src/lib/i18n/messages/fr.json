@@ -1,4 +1,8 @@
 {
+  "branding": {
+    "defaultDescription": "Découvrez des produits, un service attentionné et une boutique conçue pour faciliter vos achats.",
+    "defaultName": "Boutique"
+  },
   "account": {
     "account": "Compte",
     "accountDescription": "Gerez votre profil, vos commandes et vos adresses.",
@@ -188,8 +192,7 @@
     "specialInstructions": "Instructions speciales",
     "trackShipment": "Suivre l'expedition",
     "trackingNumber": "Numero de suivi",
-    "viewOrder": "Voir la commande",
-    "welcomeBack": "Bon retour"
+    "viewOrder": "Voir la commande"
   },
   "cart": {
     "cart": "Panier",
@@ -398,7 +401,7 @@
     "joinList": "Rejoindre la liste",
     "liveChat": "Chat en direct",
     "manageAccount": "Gerer le compte",
-    "newsletterConsent": "En vous inscrivant, vous acceptez de recevoir les e-mails marketing de Spree Storefront.",
+    "newsletterConsent": "En vous inscrivant, vous acceptez de recevoir les e-mails marketing de notre boutique.",
     "newsletterFailed": "L'inscription a la newsletter a echoue. Veuillez reessayer.",
     "newsletterHeading": "Restez proche des nouveautes, selections discretes et actualites.",
     "newsletterHint": "Nous garderons cette preference si vous creez un compte plus tard.",
@@ -503,6 +506,7 @@
     "heroCta": "Voir la collection",
     "heroDescription": "Une selection facile de superpositions raffinees, de lignes nettes et de pieces du quotidien qui semblent plus legeres des que vous les portez.",
     "heroEyebrow": "Nouveautes",
+    "seoTitle": "Storefront e-commerce TanStack Start",
     "heroTitle": "Faconne par la lumiere",
     "newIn": "Nouveautes",
     "newProductsLoadFailed": "Les nouveaux produits n'ont pas pu etre charges",
@@ -538,6 +542,9 @@
     "primaryAction": "Retour a l'accueil",
     "secondaryAction": "Voir les produits",
     "title": "Cette page n'est pas disponible."
+  },
+  "policy": {
+    "pendingContent": "Le contenu des politiques propres à la boutique sera publié ici avant l'indexation de cette page."
   },
   "product": {
     "addToBag": "Ajouter au panier",

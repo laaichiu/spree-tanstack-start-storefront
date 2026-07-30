@@ -3,7 +3,21 @@ import { resolveMessageLocale } from './message-catalog'
 
 const seoMessages = {
   en: {
+    'account.account': 'Account',
+    'account.accountDescription':
+      'Manage your profile, orders, and saved addresses.',
+    'account.addresses': 'Addresses',
+    'account.createAccount': 'Create account',
+    'account.giftCards': 'Gift cards',
     'account.order': 'Order',
+    'account.orders': 'Orders',
+    'account.paymentMethods': 'Payment methods',
+    'account.resetPassword': 'Reset password',
+    'account.resetPasswordDescription':
+      "Enter your email address and we'll send instructions for returning to your account.",
+    'branding.defaultDescription':
+      'Discover products, thoughtful service, and a storefront built for easy shopping.',
+    'branding.defaultName': 'Store',
     'cart.cart': 'Cart',
     'cart.emptyCartDescription':
       'Start with new arrivals or browse the full catalog.',
@@ -27,7 +41,13 @@ const seoMessages = {
       'We could not load this collection right now.',
     'home.heroDescription':
       'An easy edit of refined layers, clean silhouettes, and everyday pieces that feel lighter the moment you put them on.',
+    'home.seoTitle': 'TanStack Start Ecommerce Storefront',
     'home.heroTitle': 'Shaped by sunlight',
+    'footer.getHelp': 'Get help',
+    'footer.privacyPolicy': 'Privacy policy',
+    'footer.returnPolicy': 'Return policy',
+    'footer.shippingPolicy': 'Shipping policy',
+    'footer.termsOfService': 'Terms of service',
     'newsletterVerification.description':
       'Confirm and review the status of your newsletter subscription.',
     'newsletterVerification.title': 'Newsletter confirmation',
@@ -37,6 +57,8 @@ const seoMessages = {
     'notFound.primaryAction': 'Return home',
     'notFound.secondaryAction': 'Shop products',
     'notFound.title': 'This page is not available.',
+    'policy.pendingContent':
+      'Store-specific policy content will be published here before this page is made indexable.',
     'product.breadcrumbHome': 'Home',
     'product.productUnavailableDescription':
       'We could not load this product right now.',
@@ -46,7 +68,21 @@ const seoMessages = {
     'product.searchResultsFor': 'Search results for',
   },
   de: {
+    'account.account': 'Konto',
+    'account.accountDescription':
+      'Verwalten Sie Ihr Profil, Bestellungen und gespeicherte Adressen.',
+    'account.addresses': 'Adressen',
+    'account.createAccount': 'Konto erstellen',
+    'account.giftCards': 'Geschenkkarten',
     'account.order': 'Bestellung',
+    'account.orders': 'Bestellungen',
+    'account.paymentMethods': 'Zahlungsmethoden',
+    'account.resetPassword': 'Passwort zurücksetzen',
+    'account.resetPasswordDescription':
+      'Geben Sie Ihre E-Mail-Adresse ein, um Anweisungen für Ihr Konto zu erhalten.',
+    'branding.defaultDescription':
+      'Entdecken Sie Produkte, aufmerksamen Service und ein einfaches Einkaufserlebnis.',
+    'branding.defaultName': 'Shop',
     'cart.cart': 'Warenkorb',
     'cart.emptyCartDescription':
       'Beginnen Sie mit den Neuheiten oder durchsuchen Sie den gesamten Katalog.',
@@ -71,7 +107,13 @@ const seoMessages = {
       'Diese Kollektion konnte gerade nicht geladen werden.',
     'home.heroDescription':
       'Eine leichte Auswahl aus feinen Lagen, klaren Silhouetten und Alltagsstücken, die sich vom ersten Moment an luftiger anfühlen.',
+    'home.seoTitle': 'TanStack Start E-Commerce-Storefront',
     'home.heroTitle': 'Vom Sonnenlicht geformt',
+    'footer.getHelp': 'Hilfe',
+    'footer.privacyPolicy': 'Datenschutzrichtlinie',
+    'footer.returnPolicy': 'Rückgaberichtlinie',
+    'footer.shippingPolicy': 'Versandrichtlinie',
+    'footer.termsOfService': 'Nutzungsbedingungen',
     'newsletterVerification.description':
       'Bestätigen Sie Ihre Newsletter-Anmeldung und prüfen Sie ihren Status.',
     'newsletterVerification.title': 'Newsletter-Bestätigung',
@@ -81,6 +123,8 @@ const seoMessages = {
     'notFound.primaryAction': 'Zur Startseite',
     'notFound.secondaryAction': 'Produkte ansehen',
     'notFound.title': 'Diese Seite ist nicht verfügbar.',
+    'policy.pendingContent':
+      'Die store-spezifischen Richtlinientexte werden hier veröffentlicht, bevor diese Seite indexierbar wird.',
     'product.breadcrumbHome': 'Startseite',
     'product.productUnavailableDescription':
       'Dieses Produkt konnte gerade nicht geladen werden.',
@@ -90,7 +134,21 @@ const seoMessages = {
     'product.searchResultsFor': 'Suchergebnisse für',
   },
   es: {
+    'account.account': 'Cuenta',
+    'account.accountDescription':
+      'Gestiona tu perfil, pedidos y direcciones guardadas.',
+    'account.addresses': 'Direcciones',
+    'account.createAccount': 'Crear cuenta',
+    'account.giftCards': 'Tarjetas regalo',
     'account.order': 'Pedido',
+    'account.orders': 'Pedidos',
+    'account.paymentMethods': 'Métodos de pago',
+    'account.resetPassword': 'Restablecer contraseña',
+    'account.resetPasswordDescription':
+      'Introduce tu correo electrónico y te enviaremos instrucciones para volver a tu cuenta.',
+    'branding.defaultDescription':
+      'Descubre productos, un servicio atento y una tienda pensada para comprar fácilmente.',
+    'branding.defaultName': 'Tienda',
     'cart.cart': 'Carrito',
     'cart.emptyCartDescription':
       'Empieza por novedades o explora todo el catalogo.',
@@ -115,7 +173,13 @@ const seoMessages = {
       'No pudimos cargar esta coleccion ahora mismo.',
     'home.heroDescription':
       'Una seleccion sencilla de capas refinadas, siluetas limpias y piezas diarias que se sienten mas ligeras al ponertelas.',
+    'home.seoTitle': 'Storefront de comercio electrónico con TanStack Start',
     'home.heroTitle': 'Moldeado por la luz',
+    'footer.getHelp': 'Ayuda',
+    'footer.privacyPolicy': 'Política de privacidad',
+    'footer.returnPolicy': 'Política de devoluciones',
+    'footer.shippingPolicy': 'Política de envíos',
+    'footer.termsOfService': 'Términos del servicio',
     'newsletterVerification.description':
       'Confirma y revisa el estado de tu suscripcion al boletin.',
     'newsletterVerification.title': 'Confirmacion del boletin',
@@ -125,6 +189,8 @@ const seoMessages = {
     'notFound.primaryAction': 'Volver al inicio',
     'notFound.secondaryAction': 'Ver productos',
     'notFound.title': 'Esta pagina no esta disponible.',
+    'policy.pendingContent':
+      'El contenido de las políticas específicas de la tienda se publicará aquí antes de que esta página pueda indexarse.',
     'product.breadcrumbHome': 'Inicio',
     'product.productUnavailableDescription':
       'No pudimos cargar este producto ahora mismo.',
@@ -134,7 +200,21 @@ const seoMessages = {
     'product.searchResultsFor': 'Resultados para',
   },
   fr: {
+    'account.account': 'Compte',
+    'account.accountDescription':
+      'Gérez votre profil, vos commandes et vos adresses enregistrées.',
+    'account.addresses': 'Adresses',
+    'account.createAccount': 'Créer un compte',
+    'account.giftCards': 'Cartes cadeaux',
     'account.order': 'Commande',
+    'account.orders': 'Commandes',
+    'account.paymentMethods': 'Moyens de paiement',
+    'account.resetPassword': 'Réinitialiser le mot de passe',
+    'account.resetPasswordDescription':
+      'Saisissez votre adresse e-mail pour recevoir les instructions de récupération de votre compte.',
+    'branding.defaultDescription':
+      'Découvrez des produits, un service attentionné et une boutique conçue pour faciliter vos achats.',
+    'branding.defaultName': 'Boutique',
     'cart.cart': 'Panier',
     'cart.emptyCartDescription':
       'Commencez par les nouveautes ou parcourez tout le catalogue.',
@@ -160,7 +240,13 @@ const seoMessages = {
       "Nous n'avons pas pu charger cette collection pour le moment.",
     'home.heroDescription':
       'Une selection facile de superpositions raffinees, de lignes nettes et de pieces du quotidien qui semblent plus legeres des que vous les portez.',
+    'home.seoTitle': 'Storefront e-commerce TanStack Start',
     'home.heroTitle': 'Faconne par la lumiere',
+    'footer.getHelp': 'Aide',
+    'footer.privacyPolicy': 'Politique de confidentialité',
+    'footer.returnPolicy': 'Politique de retour',
+    'footer.shippingPolicy': 'Politique d’expédition',
+    'footer.termsOfService': 'Conditions générales',
     'newsletterVerification.description':
       'Confirmez et consultez le statut de votre inscription a la newsletter.',
     'newsletterVerification.title': 'Confirmation de newsletter',
@@ -170,6 +256,8 @@ const seoMessages = {
     'notFound.primaryAction': "Retour a l'accueil",
     'notFound.secondaryAction': 'Voir les produits',
     'notFound.title': "Cette page n'est pas disponible.",
+    'policy.pendingContent':
+      "Le contenu des politiques propres à la boutique sera publié ici avant l'indexation de cette page.",
     'product.breadcrumbHome': 'Accueil',
     'product.productUnavailableDescription':
       "Nous n'avons pas pu charger ce produit pour le moment.",
@@ -179,7 +267,21 @@ const seoMessages = {
     'product.searchResultsFor': 'Resultats pour',
   },
   ja: {
+    'account.account': 'アカウント',
+    'account.accountDescription':
+      'プロフィール、注文、保存した住所を管理します。',
+    'account.addresses': '住所',
+    'account.createAccount': 'アカウントを作成',
+    'account.giftCards': 'ギフトカード',
     'account.order': '注文',
+    'account.orders': '注文履歴',
+    'account.paymentMethods': '支払い方法',
+    'account.resetPassword': 'パスワードをリセット',
+    'account.resetPasswordDescription':
+      'メールアドレスを入力すると、アカウント復旧の手順をお送りします。',
+    'branding.defaultDescription':
+      '商品と心のこもったサービスを、快適にお買い物いただけるストアでお楽しみください。',
+    'branding.defaultName': 'ストア',
     'cart.cart': 'カート',
     'cart.emptyCartDescription':
       '新着商品から始めるか、すべての商品をご覧ください。',
@@ -203,7 +305,13 @@ const seoMessages = {
       '現在このコレクションを読み込めません。',
     'home.heroDescription':
       '洗練されたレイヤー、すっきりしたシルエット、日常を軽やかにするアイテム。',
+    'home.seoTitle': 'TanStack Start ECストアフロント',
     'home.heroTitle': '光にかたどられて',
+    'footer.getHelp': 'ヘルプ',
+    'footer.privacyPolicy': 'プライバシーポリシー',
+    'footer.returnPolicy': '返品ポリシー',
+    'footer.shippingPolicy': '配送ポリシー',
+    'footer.termsOfService': '利用規約',
     'newsletterVerification.description':
       'ニュースレター登録の確認状況を確認します。',
     'newsletterVerification.title': 'ニュースレター確認',
@@ -213,6 +321,8 @@ const seoMessages = {
     'notFound.primaryAction': 'ホームに戻る',
     'notFound.secondaryAction': '商品を見る',
     'notFound.title': 'このページは利用できません。',
+    'policy.pendingContent':
+      'このページをインデックス可能にする前に、ストア固有のポリシー内容をここに掲載します。',
     'product.breadcrumbHome': 'ホーム',
     'product.productUnavailableDescription': '現在この商品を読み込めません。',
     'product.products': '商品',

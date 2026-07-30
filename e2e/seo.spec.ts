@@ -56,6 +56,9 @@ test('indexable pages expose canonical and alternate metadata', async ({
     waitUntil: 'domcontentloaded',
   })
   expect(homeResponse?.status()).toBe(200)
+  await expect(page).toHaveTitle(
+    /TanStack Start (Ecommerce|E-Commerce|EC) Storefront.+\|.+/,
+  )
   await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
     'href',
     /\/us\/en$/,
@@ -66,6 +69,14 @@ test('indexable pages expose canonical and alternate metadata', async ({
 
   await page.goto('/us/en/products', { waitUntil: 'domcontentloaded' })
   await getFirstProductHref(page)
+
+  await page.goto('/us/en/account/login', { waitUntil: 'domcontentloaded' })
+  await expect(page).toHaveTitle(/Account\s*\|\s*.+/)
+  await expect(page.locator('meta[name="robots"]')).toHaveAttribute(
+    'content',
+    'noindex, nofollow',
+  )
+  await expect(page.getByRole('heading', { name: 'Sign in' })).toBeVisible()
 })
 
 test('faceted listings are noindex and PDP/policy contracts remain valid', async ({

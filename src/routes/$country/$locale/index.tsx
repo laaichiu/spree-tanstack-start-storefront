@@ -10,7 +10,7 @@ import { buildAlternateLocaleLinks } from '@/lib/seo/alternate-locale'
 import { getStorefrontMarketOptionsFromMatches } from '@/lib/seo/alternate-locale-loader'
 import {
   buildCanonicalUrl,
-  buildSeoHead,
+  buildStorefrontSeoHead,
   buildSeoImageUrl,
   siteSeo,
 } from '@/lib/seo/site-seo'
@@ -36,15 +36,21 @@ export const Route = createFileRoute('/$country/$locale/')({
     const imageUrl = buildSeoImageUrl(siteSeo.socialImagePath)
     const imageAlt = translateMessage(params.locale, 'home.heroTitle')
 
-    return buildSeoHead({
+    return buildStorefrontSeoHead({
       alternateLinks: buildAlternateLocaleLinks({
         marketOptions: getStorefrontMarketOptionsFromMatches(matches),
         path: canonicalPath,
       }),
       canonicalUrl,
       description: translateMessage(params.locale, 'home.heroDescription'),
+      fallbackDescription: translateMessage(
+        params.locale,
+        'home.heroDescription',
+      ),
       image: imageUrl ? { alt: imageAlt, url: imageUrl } : null,
-      title: siteSeo.title,
+      locale: params.locale,
+      matches,
+      title: translateMessage(params.locale, 'home.seoTitle'),
     })
   },
   component: Home,

@@ -7,7 +7,6 @@ import {
   useRouterState,
 } from '@tanstack/react-router'
 
-import { buildSeoMeta, siteSeo } from '@/lib/seo/site-seo'
 import { QueryProvider } from '@/lib/query/query-provider'
 import { normalizeLocale } from '@/lib/market/utils/market-format'
 import { NotFoundPage } from '@/components/layout/not-found-page'
@@ -47,7 +46,6 @@ export const Route = createRootRoute({
         name: 'viewport',
         content: 'width=device-width, initial-scale=1',
       },
-      ...buildSeoMeta(siteSeo),
     ],
     links: [
       {

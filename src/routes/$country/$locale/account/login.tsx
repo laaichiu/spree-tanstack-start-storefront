@@ -5,8 +5,21 @@ import { AccountAuthShell } from '@/components/account/account-auth-shell'
 import { AccountLoginForm } from '@/components/account/account-login-form'
 import { accountInlineLinkClassName } from '@/components/account/account-ui'
 import { useMarket } from '@/components/layout/market-provider'
+import { translateMessage } from '@/lib/i18n/messages'
+import { buildStorefrontSeoHead } from '@/lib/seo/site-seo'
 
 export const Route = createFileRoute('/$country/$locale/account/login')({
+  head: ({ matches, params }) =>
+    buildStorefrontSeoHead({
+      fallbackDescription: translateMessage(
+        params.locale,
+        'branding.defaultDescription',
+      ),
+      locale: params.locale,
+      matches,
+      noIndex: true,
+      title: translateMessage(params.locale, 'account.account'),
+    }),
   validateSearch: (search: Record<string, unknown>): { redirect?: string } => ({
     redirect: getOptionalTrimmedSearchValue(search.redirect),
   }),
@@ -105,7 +118,7 @@ function AccountLoginPage() {
           </Link>
         </p>
       }
-      title={t('account.welcomeBack')}
+      title={t('account.signIn')}
     >
       <AccountLoginForm
         redirectTo={resolveAccountRedirectTarget(marketParams, redirectTarget)}

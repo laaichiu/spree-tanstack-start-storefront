@@ -1,4 +1,8 @@
 {
+  "branding": {
+    "defaultDescription": "Discover products, thoughtful service, and a storefront built for easy shopping.",
+    "defaultName": "Store"
+  },
   "account": {
     "account": "Account",
     "accountDescription": "Manage your profile, orders, and saved addresses.",
@@ -188,8 +192,7 @@
     "specialInstructions": "Special instructions",
     "trackShipment": "Track shipment",
     "trackingNumber": "Tracking number",
-    "viewOrder": "View order",
-    "welcomeBack": "Welcome Back"
+    "viewOrder": "View order"
   },
   "cart": {
     "cart": "Cart",
@@ -398,7 +401,7 @@
     "joinList": "Join the list",
     "liveChat": "Live Chat",
     "manageAccount": "Manage Account",
-    "newsletterConsent": "By signing up, you agree to receive marketing emails from Spree Storefront.",
+    "newsletterConsent": "By signing up, you agree to receive marketing emails from our store.",
     "newsletterFailed": "Newsletter signup failed. Please try again.",
     "newsletterHeading": "Stay close to new arrivals, quiet edits, and storefront updates.",
     "newsletterHint": "We'll keep this email preference aligned if you create an account later.",
@@ -503,6 +506,7 @@
     "heroCta": "Shop the collection",
     "heroDescription": "An easy edit of refined layers, clean silhouettes, and everyday pieces that feel lighter the moment you put them on.",
     "heroEyebrow": "New arrivals",
+    "seoTitle": "TanStack Start Ecommerce Storefront",
     "heroTitle": "Shaped by sunlight",
     "newIn": "New In",
     "newProductsLoadFailed": "New products could not be loaded",
@@ -538,6 +542,9 @@
     "primaryAction": "Return home",
     "secondaryAction": "Shop products",
     "title": "This page is not available."
+  },
+  "policy": {
+    "pendingContent": "Store-specific policy content will be published here before this page is made indexable."
   },
   "product": {
     "addToBag": "Add to Cart",

@@ -21,8 +21,8 @@ import {
 import { translateMessage } from '@/lib/i18n/messages'
 import {
   buildCanonicalUrl,
-  buildSeoHead,
   buildSeoImageUrl,
+  buildStorefrontSeoHead,
   siteSeo,
 } from '@/lib/seo/site-seo'
 
@@ -83,7 +83,7 @@ export const Route = createFileRoute('/$country/$locale/products/')({
     )
     const isFacetedListing = shouldNoIndexProductListing(search)
 
-    return buildSeoHead({
+    return buildStorefrontSeoHead({
       alternateLinks:
         page?.status !== 'error' && !isFacetedListing
           ? buildAlternateLocaleLinks({
@@ -96,6 +96,10 @@ export const Route = createFileRoute('/$country/$locale/products/')({
         params.locale,
         'product.productsDescription',
       ),
+      fallbackDescription: translateMessage(
+        params.locale,
+        'product.productsDescription',
+      ),
       image: imageUrl
         ? { alt: primaryImage?.alt ?? title, url: imageUrl }
         : null,
@@ -105,6 +109,8 @@ export const Route = createFileRoute('/$country/$locale/products/')({
           ? 'noindex, follow'
           : undefined,
       title,
+      locale: params.locale,
+      matches,
     })
   },
   component: ProductsPage,

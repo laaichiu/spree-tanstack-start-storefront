@@ -1,9 +1,8 @@
 import { readPublicBuildEnv } from '@/lib/env/public'
+import { getConfiguredStorefrontBranding } from '@/lib/storefront/config/storefront-branding'
+import { getStorefrontBrandingFromMatches } from './storefront-branding-loader'
 
 export const siteSeo = {
-  title: 'Spree Storefront',
-  description:
-    'A carefully built Spree headless storefront for considered commerce.',
   socialImagePath: '/hero-1600.webp',
 }
 
@@ -29,11 +28,102 @@ type SeoMetaInput = {
   title: string
 }
 
+type StorefrontSeoInput = Omit<SeoMetaInput, 'description' | 'title'> & {
+  alternateLinks?: readonly SeoAlternateLink[]
+  description?: string | null
+  fallbackDescription?: string | null
+  locale: string
+  matches: readonly { loaderData?: unknown }[]
+  structuredData?: StructuredData[]
+  title: string
+}
+
 type StructuredData = Record<string, unknown>
 
 export type SeoAlternateLink = {
   href: string
   hreflang: string
+}
+
+function normalizeSeoText(
+  value: string | null | undefined,
+  maxLength?: number,
+) {
+  const normalized = value
+    ?.replace(/<[^>]*>/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim()
+
+  if (!normalized) {
+    return null
+  }
+
+  return maxLength && normalized.length > maxLength
+    ? `${normalized.slice(0, maxLength - 1).trimEnd()}…`
+    : normalized
+}
+
+export function buildPageTitle(pageTitle: string, storeName: string) {
+  const title = normalizeSeoText(pageTitle)
+  const name = normalizeSeoText(storeName)
+
+  if (!title) {
+    return name ?? 'Store'
+  }
+
+  if (!name) {
+    return title
+  }
+
+  const normalizedTitle = title.toLocaleLowerCase()
+  const normalizedName = name.toLocaleLowerCase()
+
+  if (
+    normalizedTitle === normalizedName ||
+    normalizedTitle.endsWith(`| ${normalizedName}`)
+  ) {
+    return title
+  }
+
+  return `${title} | ${name}`
+}
+
+export function resolveSeoDescription({
+  fallbackDescription,
+  pageDescription,
+  storeDescription,
+}: {
+  fallbackDescription?: string | null
+  pageDescription?: string | null
+  storeDescription?: string | null
+}) {
+  return (
+    [pageDescription, storeDescription, fallbackDescription]
+      .map((value) => normalizeSeoText(value, 160))
+      .find((value): value is string => Boolean(value)) ?? 'Store'
+  )
+}
+
+export function buildStorefrontSeoHead({
+  fallbackDescription,
+  locale,
+  matches,
+  title,
+  ...input
+}: StorefrontSeoInput) {
+  const branding =
+    getStorefrontBrandingFromMatches(matches) ??
+    getConfiguredStorefrontBranding(locale)
+
+  return buildSeoHead({
+    ...input,
+    description: resolveSeoDescription({
+      fallbackDescription,
+      pageDescription: input.description,
+      storeDescription: branding.metaDescription,
+    }),
+    title: buildPageTitle(title, branding.name),
+  })
 }
 
 function serializeStructuredData(data: StructuredData) {

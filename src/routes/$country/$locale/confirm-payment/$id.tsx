@@ -5,20 +5,21 @@ import { CheckoutRouteErrorState } from '@/components/checkout/checkout-route-er
 import { parseCheckoutPaymentReturnSearch } from '@/lib/checkout/utils/completion/payment-return'
 import { useMarket } from '@/components/layout/market-provider'
 import { translateMessage } from '@/lib/i18n/messages'
-import { buildSeoMeta } from '@/lib/seo/site-seo'
+import { buildStorefrontSeoHead } from '@/lib/seo/site-seo'
 
 export const Route = createFileRoute('/$country/$locale/confirm-payment/$id')({
   validateSearch: parseCheckoutPaymentReturnSearch,
-  head: ({ params }) => ({
-    meta: buildSeoMeta({
-      description: translateMessage(
+  head: ({ matches, params }) =>
+    buildStorefrontSeoHead({
+      fallbackDescription: translateMessage(
         params.locale,
-        'checkout.confirmPaymentDescription',
+        'branding.defaultDescription',
       ),
+      locale: params.locale,
+      matches,
       noIndex: true,
       title: translateMessage(params.locale, 'checkout.confirmPayment'),
     }),
-  }),
   component: ConfirmPaymentRoute,
   errorComponent: ConfirmPaymentError,
 })

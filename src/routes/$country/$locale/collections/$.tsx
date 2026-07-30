@@ -24,8 +24,8 @@ import { getStorefrontMarketOptionsFromMatches } from '@/lib/seo/alternate-local
 import { translateMessage } from '@/lib/i18n/messages'
 import {
   buildCanonicalUrl,
-  buildSeoHead,
   buildSeoImageUrl,
+  buildStorefrontSeoHead,
   siteSeo,
 } from '@/lib/seo/site-seo'
 
@@ -119,7 +119,7 @@ export const Route = createFileRoute('/$country/$locale/collections/$')({
         : []
     const isFacetedListing = shouldNoIndexProductListing(search)
 
-    return buildSeoHead({
+    return buildStorefrontSeoHead({
       alternateLinks:
         canonicalPath && page?.status !== 'error' && !isFacetedListing
           ? buildAlternateLocaleLinks({
@@ -129,6 +129,10 @@ export const Route = createFileRoute('/$country/$locale/collections/$')({
           : [],
       canonicalUrl,
       description,
+      fallbackDescription: translateMessage(
+        params.locale,
+        'collection.collectionUnavailableDescription',
+      ),
       image: imageUrl
         ? {
             alt: category?.name ?? primaryProductImage?.alt ?? title,
@@ -142,6 +146,8 @@ export const Route = createFileRoute('/$country/$locale/collections/$')({
           : undefined,
       structuredData,
       title,
+      locale: params.locale,
+      matches,
     })
   },
   component: CollectionPage,

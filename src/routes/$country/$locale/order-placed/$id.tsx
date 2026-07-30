@@ -7,7 +7,7 @@ import {
 import { getCompletedCheckoutOrder } from '@/lib/checkout/api/checkout-order.functions'
 import { translateMessage } from '@/lib/i18n/messages'
 import { reportError } from '@/lib/observability/report-error'
-import { buildSeoMeta } from '@/lib/seo/site-seo'
+import { buildStorefrontSeoHead } from '@/lib/seo/site-seo'
 
 export const Route = createFileRoute('/$country/$locale/order-placed/$id')({
   loader: async ({ params }) => {
@@ -34,12 +34,14 @@ export const Route = createFileRoute('/$country/$locale/order-placed/$id')({
       }
     }
   },
-  head: ({ loaderData, params }) => ({
-    meta: buildSeoMeta({
-      description: translateMessage(
+  head: ({ loaderData, matches, params }) =>
+    buildStorefrontSeoHead({
+      fallbackDescription: translateMessage(
         params.locale,
-        'checkout.orderPlacedDescription',
+        'branding.defaultDescription',
       ),
+      locale: params.locale,
+      matches,
       noIndex: true,
       title: loaderData?.order?.number
         ? `${translateMessage(params.locale, 'account.order')} ${
@@ -47,7 +49,6 @@ export const Route = createFileRoute('/$country/$locale/order-placed/$id')({
           }`
         : translateMessage(params.locale, 'checkout.orderPlaced'),
     }),
-  }),
   component: OrderPlacedRoutePage,
   errorComponent: OrderPlacedError,
 })

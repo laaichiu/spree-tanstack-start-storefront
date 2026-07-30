@@ -50,6 +50,9 @@ describe('message dictionaries', () => {
     const fallbackMessages = await loadMessages('pt-BR')
 
     expect(frenchMessages.home.heroTitle).toBe('Faconne par la lumiere')
+    expect(frenchMessages.home.seoTitle).toBe(
+      'Storefront e-commerce TanStack Start',
+    )
     expect(normalizedSpanishMessages.home.heroTitle).toBe('Moldeado por la luz')
     expect(germanMessages.header.popularSearches).toBe('Beliebte Suchanfragen')
     expect(germanMessages.header.suggestedProducts).toBe(

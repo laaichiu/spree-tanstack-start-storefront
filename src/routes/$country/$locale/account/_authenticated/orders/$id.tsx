@@ -4,6 +4,8 @@ import { AccountSectionShell } from '@/components/account/account-section-shell'
 import { getCustomerOrderDetail } from '@/lib/account/api/order.functions'
 import { AccountOrderDetail } from '@/components/account/account-order-detail'
 import { getReviewsFeatureStatus } from '@/lib/reviews/api/product-reviews.functions'
+import { translateMessage } from '@/lib/i18n/messages'
+import { buildStorefrontSeoHead } from '@/lib/seo/site-seo'
 
 export const Route = createFileRoute(
   '/$country/$locale/account/_authenticated/orders/$id',
@@ -32,6 +34,21 @@ export const Route = createFileRoute(
       }
     }
   },
+  head: ({ loaderData, matches, params }) =>
+    buildStorefrontSeoHead({
+      fallbackDescription: translateMessage(
+        params.locale,
+        'branding.defaultDescription',
+      ),
+      locale: params.locale,
+      matches,
+      noIndex: true,
+      title: loaderData?.order?.number
+        ? `${translateMessage(params.locale, 'account.order')} ${
+            loaderData.order.number
+          }`
+        : translateMessage(params.locale, 'account.order'),
+    }),
   component: AccountOrderDetailPage,
 })
 
