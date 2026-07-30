@@ -16,7 +16,11 @@ describe('getProductSummaries', () => {
     await getProductSummaries(client, { limit: 12 })
 
     expect(list).toHaveBeenCalledWith({
-      expand: ['primary_media', 'default_variant'],
+      expand: [
+        'primary_media',
+        'default_variant',
+        'default_variant.primary_media',
+      ],
       limit: 12,
     })
   })
@@ -30,7 +34,13 @@ describe('getProductSummaries', () => {
     await getProductSummaries(client, { limit: 12 }, { includeVariants: true })
 
     expect(list).toHaveBeenCalledWith({
-      expand: ['primary_media', 'default_variant', 'variants'],
+      expand: [
+        'primary_media',
+        'default_variant',
+        'default_variant.primary_media',
+        'variants',
+        'variants.primary_media',
+      ],
       limit: 12,
     })
   })

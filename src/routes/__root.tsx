@@ -14,6 +14,7 @@ import { NotFoundPage } from '@/components/layout/not-found-page'
 import { translateMessage } from '@/lib/i18n/messages'
 
 import appCss from '../styles/globals.css?url'
+import interLatinFont from '@fontsource-variable/inter/files/inter-latin-wght-normal.woff2?url'
 
 function getMarketParams(params: unknown) {
   if (!params || typeof params !== 'object') {
@@ -49,6 +50,13 @@ export const Route = createRootRoute({
       ...buildSeoMeta(siteSeo),
     ],
     links: [
+      {
+        rel: 'preload',
+        href: interLatinFont,
+        as: 'font',
+        type: 'font/woff2',
+        crossOrigin: 'anonymous',
+      },
       {
         rel: 'stylesheet',
         href: appCss,

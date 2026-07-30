@@ -13,8 +13,18 @@ import type {
 } from '../model/product-listing'
 import { toProductFiltersParams } from './product-listing-params'
 
-const DISPLAY_VARIANT_EXPAND = ['primary_media', 'default_variant']
-const FULL_VARIANT_EXPAND = ['primary_media', 'default_variant', 'variants']
+const DISPLAY_VARIANT_EXPAND = [
+  'primary_media',
+  'default_variant',
+  'default_variant.primary_media',
+]
+const FULL_VARIANT_EXPAND = [
+  'primary_media',
+  'default_variant',
+  'default_variant.primary_media',
+  'variants',
+  'variants.primary_media',
+]
 
 type ProductSummaryRequestOptions = {
   includeVariants?: boolean

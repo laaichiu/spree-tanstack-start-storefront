@@ -18,6 +18,11 @@ type ProductCardProps = {
   variant?: 'default' | 'listing'
 }
 
+const PRODUCT_CARD_SIZES = {
+  default: '(min-width: 1024px) 16.667vw, (min-width: 640px) 280px, 256px',
+  listing: '(min-width: 1280px) 25vw, (min-width: 768px) 33.333vw, 50vw',
+} as const
+
 export function ProductCard({
   product,
   variant = 'default',
@@ -70,8 +75,9 @@ export function ProductCard({
               alt={displayImage.alt}
               className="h-full w-full object-cover object-center transition duration-500 group-hover:scale-105"
               loading="lazy"
-              sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
+              sizes={PRODUCT_CARD_SIZES[variant]}
               src={displayImage.src}
+              srcSet={displayImage.srcSet}
             />
           ) : (
             <div className="text-sm leading-6 flex h-full items-center justify-center px-6 text-center text-muted-foreground">

@@ -3,6 +3,7 @@ import type { Money } from '@/lib/money/money'
 export type ProductImage = {
   id: string
   src: string
+  srcSet?: string
   alt: string
   variantIds: string[]
 }

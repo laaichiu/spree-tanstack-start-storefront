@@ -35,6 +35,8 @@ function CheckoutHeader() {
             alt="Spree Storefront"
             className="h-8 w-auto object-contain sm:h-9"
             src="/spree.png"
+            width={189}
+            height={76}
           />
         </a>
       </div>

@@ -41,6 +41,8 @@ describe('mapSpreeProductToSummary', () => {
       image: {
         id: 'media-1',
         src: 'https://example.com/large.jpg',
+        srcSet:
+          'https://example.com/medium.jpg 400w, https://example.com/large.jpg 720w',
         alt: 'Stoneware bowl on a table',
         variantIds: [],
       },
@@ -192,6 +194,24 @@ describe('mapSpreeProductToSummary', () => {
           amount_in_cents: 2500,
         },
         option_values: [],
+        primary_media: {
+          id: 'variant-media-1',
+          product_id: 'product-1',
+          variant_ids: ['variant-1'],
+          position: 1,
+          alt: 'White bowl on a table',
+          media_type: 'image',
+          focal_point_x: null,
+          focal_point_y: null,
+          external_video_url: null,
+          original_url: 'https://example.com/variant-original.jpg',
+          mini_url: null,
+          small_url: null,
+          medium_url: 'https://example.com/variant-medium.jpg',
+          large_url: 'https://example.com/variant-large.jpg',
+          xlarge_url: null,
+          og_image_url: null,
+        },
       },
     })
 
@@ -200,7 +220,14 @@ describe('mapSpreeProductToSummary', () => {
       amount: 25,
       currencyCode: 'USD',
     })
-    expect(summary.image?.src).toBe('https://example.com/white.jpg')
+    expect(summary.image).toEqual({
+      id: 'variant-media-1',
+      src: 'https://example.com/variant-large.jpg',
+      srcSet:
+        'https://example.com/variant-medium.jpg 400w, https://example.com/variant-large.jpg 720w',
+      alt: 'White bowl on a table',
+      variantIds: ['variant-1'],
+    })
     expect(summary.inStock).toBe(true)
     expect(summary.preorder).toBe(false)
   })

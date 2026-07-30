@@ -61,6 +61,7 @@ export function CollectionGridSection({ section }: CollectionGridSectionProps) {
                   <img
                     alt={category.name}
                     className="h-full w-full object-cover object-center transition duration-500 group-hover:scale-105"
+                    decoding="async"
                     loading="lazy"
                     src={category.imageUrl}
                   />

@@ -16,6 +16,7 @@ import type {
   ProductVariant,
   ProductVariantOptionValue,
 } from '../model/product'
+import { mapSpreeMediaSrcSet } from './product-media.mapper'
 
 function mapVariantImage(variant: SpreeVariant): ProductImage | null {
   const media = variant.primary_media ?? variant.media?.[0]
@@ -33,6 +34,7 @@ function mapVariantImage(variant: SpreeVariant): ProductImage | null {
   return {
     id: media?.id ?? `${variant.id}:thumbnail`,
     src,
+    ...(media ? { srcSet: mapSpreeMediaSrcSet(media) } : {}),
     alt:
       media?.alt ?? (variant.options_text || variant.sku || 'Product variant'),
     variantIds: media?.variant_ids.length ? media.variant_ids : [variant.id],

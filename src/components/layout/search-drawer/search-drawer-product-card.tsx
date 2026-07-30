@@ -32,6 +32,7 @@ export function SearchPreviewRow({
             loading="lazy"
             sizes="5rem"
             src={product.image.src}
+            srcSet={product.image.srcSet}
           />
         ) : (
           <div className="text-sm leading-6 flex h-full w-full items-center justify-center px-2 text-center text-muted-foreground">
@@ -80,6 +81,7 @@ export function SearchFeaturedProductCard({
             loading="lazy"
             sizes="10rem"
             src={product.image.src}
+            srcSet={product.image.srcSet}
           />
         ) : (
           <div className="text-sm leading-6 flex h-full w-full items-center justify-center px-3 text-center text-muted-foreground">

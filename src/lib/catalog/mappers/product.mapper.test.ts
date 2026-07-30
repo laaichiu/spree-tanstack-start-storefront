@@ -150,6 +150,8 @@ describe('mapSpreeProductToProduct', () => {
         {
           id: 'media-1',
           src: 'https://example.com/large.jpg',
+          srcSet:
+            'https://example.com/medium.jpg 400w, https://example.com/large.jpg 720w',
           alt: 'Bowl angle one',
           variantIds: ['variant-1'],
         },

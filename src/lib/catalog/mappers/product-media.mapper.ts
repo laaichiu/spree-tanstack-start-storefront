@@ -2,6 +2,29 @@ import type { Media as SpreeMedia, Product as SpreeProduct } from '@spree/sdk'
 
 import type { ProductImage } from '../model/product'
 
+const MEDIA_VARIANT_WIDTHS = [
+  ['mini_url', 128],
+  ['small_url', 256],
+  ['medium_url', 400],
+  ['large_url', 720],
+] as const
+
+type SpreeMediaVariants = Pick<
+  SpreeMedia,
+  'mini_url' | 'small_url' | 'medium_url' | 'large_url'
+>
+
+export function mapSpreeMediaSrcSet(
+  media: SpreeMediaVariants | null | undefined,
+) {
+  const candidates = MEDIA_VARIANT_WIDTHS.flatMap(([key, width]) => {
+    const url = media?.[key]
+    return url ? [`${url} ${width}w`] : []
+  })
+
+  return candidates.length > 0 ? candidates.join(', ') : undefined
+}
+
 export function mergeProductImages(images: ProductImage[]): ProductImage[] {
   const imagesBySource = new Map<string, ProductImage>()
 
@@ -44,6 +67,7 @@ export function mapProductImage(
   return {
     id: media?.id ?? `${product.id}:thumbnail`,
     src,
+    ...(media ? { srcSet: mapSpreeMediaSrcSet(media) } : {}),
     alt: media?.alt ?? product.name,
     variantIds: media?.variant_ids ?? [],
   }

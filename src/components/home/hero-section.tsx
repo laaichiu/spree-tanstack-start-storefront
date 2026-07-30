@@ -1,9 +1,22 @@
 import { Link } from '@tanstack/react-router'
+import { preload } from 'react-dom'
 import { DEFAULT_PRODUCT_LISTING_SEARCH } from '@/lib/catalog/model/product-listing'
 
 import { useMarket } from '@/components/layout/market-provider'
 
+const HERO_IMAGE_SRC_SET =
+  '/hero-828.webp 828w, /hero-960.webp 960w, /hero-1600.webp 1600w, /hero-2400.webp 2400w'
+const HERO_IMAGE_SIZES = '100vw'
+
 export function HeroSection() {
+  preload('/hero-828.webp', {
+    as: 'image',
+    fetchPriority: 'high',
+    imageSizes: HERO_IMAGE_SIZES,
+    imageSrcSet: HERO_IMAGE_SRC_SET,
+    type: 'image/webp',
+  })
+
   const { market, t } = useMarket()
 
   return (
@@ -11,8 +24,8 @@ export function HeroSection() {
       <div className="relative isolate h-svh overflow-hidden">
         <picture>
           <source
-            sizes="100vw"
-            srcSet="/hero-960.webp 960w, /hero-1600.webp 1600w, /hero-2400.webp 2400w"
+            sizes={HERO_IMAGE_SIZES}
+            srcSet={HERO_IMAGE_SRC_SET}
             type="image/webp"
           />
           <img
@@ -21,8 +34,10 @@ export function HeroSection() {
             className="absolute inset-0 h-full w-full object-cover object-center"
             decoding="async"
             fetchPriority="high"
-            sizes="100vw"
+            height={1600}
+            sizes={HERO_IMAGE_SIZES}
             src="/hero.jpg"
+            width={2400}
           />
         </picture>
         <div aria-hidden="true" className="absolute inset-0 bg-black/30" />
