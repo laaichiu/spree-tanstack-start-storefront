@@ -49,8 +49,9 @@ cp .env.example .env
 The [environment template](.env.example) assumes Spree at
 `http://localhost:3000` and the storefront at `http://localhost:3006`. Replace
 `SPREE_PUBLISHABLE_KEY` with an active publishable key for your Spree Store,
-and set `SPREE_API_URL`, `SPREE_CHANNEL`, and `VITE_STOREFRONT_URL` for your
-environment. The Channel must belong to that Store and already exist in Spree.
+and set `SPREE_API_URL` and `VITE_STOREFRONT_URL` for your environment. The
+runtime defaults `SPREE_CHANNEL` to `online`; set it only when using a different
+Channel, which must belong to that Store and already exist in Spree.
 
 The development server uses port `3006` by default:
 
@@ -100,6 +101,36 @@ The `pnpm deploy` build enables strict production validation and requires HTTPS
 for both `SPREE_API_URL` and `VITE_STOREFRONT_URL`; `pnpm build` alone does not
 enable that release-specific validation. Deployment configuration is covered in the
 [release guide](docs/guides/testing-and-release.md#configuration).
+
+### Cloudflare Workers deployment
+
+`pnpm deploy` needs the production build values in the build environment. Put
+the required `SPREE_API_URL`, `SPREE_PUBLISHABLE_KEY`, `SPREE_CHANNEL`, and
+`VITE_STOREFRONT_URL` values in an untracked `.env.production.local` file or
+provide them through the deployment environment. Add any optional `VITE_*`
+settings there too. The production build requires an explicit `SPREE_CHANNEL`,
+even though the Worker runtime defaults it to `online` when no runtime binding
+is set. Changing a `VITE_*` value requires rebuilding and redeploying because
+it is compiled into the browser bundle.
+
+The deployed Worker needs `SPREE_API_URL` and `SPREE_PUBLISHABLE_KEY` at
+runtime. Configure them as Wrangler secrets with values matching the production
+build environment. Wrangler prompts for each value:
+
+```bash
+pnpm exec wrangler secret put SPREE_API_URL
+pnpm exec wrangler secret put SPREE_PUBLISHABLE_KEY
+```
+
+Cloudflare documents [Worker variables](https://developers.cloudflare.com/workers/configuration/environment-variables/)
+and [Worker secrets](https://developers.cloudflare.com/workers/configuration/secrets/).
+
+Set a runtime `SPREE_CHANNEL` binding only when the store uses a Channel other
+than `online`; keep it consistent with the production build value. When a
+`SPREE_*` value changes, update the production build environment and matching
+Worker binding, then run `pnpm deploy` to publish the matching build.
+`wrangler secret put` also deploys a Worker version immediately. Rebuild and
+redeploy after changing any `VITE_*` value as well.
 
 Configure a local Rails integration app without committing its location:
 

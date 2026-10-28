@@ -225,9 +225,12 @@ VITE_STOREFRONT_URL=https://store.example.com
 
 Use the complete application-variable inventory and optional capability settings
 in the [README](../../README.md#environment-boundary) and [.env.example](../../.env.example).
-Supply `VITE_*` values at build time and `SPREE_*` to the deployed Worker's
-environment bindings or secrets, as well as to deployment build validation.
-Local `.env` files and build-shell variables do not provision deployed bindings.
+Supply `VITE_*` values at build time. Supply `SPREE_API_URL` and
+`SPREE_PUBLISHABLE_KEY` to the deployed Worker's environment bindings or
+secrets, and provide them plus an explicit `SPREE_CHANNEL` to production build
+validation. The Worker runtime defaults `SPREE_CHANNEL` to `online`; configure a
+runtime binding only when deploying to a different Channel. Local `.env` files
+and build-shell variables do not provision deployed bindings.
 See [Cloudflare environment variables](https://developers.cloudflare.com/workers/configuration/environment-variables/)
 and [local development variables](https://developers.cloudflare.com/workers/local-development/environment-variables/).
 
@@ -241,9 +244,10 @@ described in [Payment](checkout.md#payment); gateway secrets remain server-only.
 including explicit Channel/key configuration and HTTPS API/public origins.
 `pnpm build` alone does not enable that release-specific validation.
 
-The runtime resolves `SPREE_CHANNEL` through the official SDK. Cart and Order
-responses with missing or different canonical Channel ownership fail before
-mapping, persistence, or caching.
+The runtime resolves `SPREE_CHANNEL` through the official SDK, defaulting to
+`online` when the Worker binding is absent. Cart and Order responses with
+missing or different canonical Channel ownership fail before mapping,
+persistence, or caching.
 
 Use an absolute `E2E_SPREE_DEMO_PATH` for local integration. Do not commit a
 contributor's backend directory or private hostnames.
@@ -267,7 +271,9 @@ Each environment supplies variables `SPREE_API_URL`, `SPREE_CHANNEL`,
 `VITE_STOREFRONT_URL`, optional `VITE_STOREFRONT_NAME`, and
 `VITE_STRIPE_PUBLISHABLE_KEY`, plus secret `SPREE_PUBLISHABLE_KEY`. Production
 also needs `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` secrets. Provision
-server bindings separately; build-shell values do not configure a deployed Worker.
+`SPREE_API_URL` and `SPREE_PUBLISHABLE_KEY` as server bindings separately;
+configure a runtime `SPREE_CHANNEL` binding only when using a non-`online`
+Channel. Build-shell values do not configure a deployed Worker.
 
 The commerce environment additionally supplies secret `E2E_COMMERCE_PROBE_KEY`
 and variables `E2E_SPREE_COMMERCE_READY=true` and
