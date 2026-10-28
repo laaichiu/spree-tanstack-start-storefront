@@ -1,0 +1,45 @@
+{
+  "version": 1,
+  "entries": [
+    {
+      "name": "client eager index",
+      "directory": "dist/client/assets",
+      "pattern": "^index-[^/]+\\.js$",
+      "maxBytes": 360000,
+      "maxGzipBytes": 115000
+    },
+    {
+      "name": "client checkout entry",
+      "directory": "dist/client/assets",
+      "pattern": "^checkout-entry-state-[^/]+\\.js$",
+      "maxBytes": 145500,
+      "maxGzipBytes": 40000,
+      "reason": "Checkout address lifecycle is runtime-owned; the capability-injected boundary stays below a 0.4% raw-size allowance."
+    },
+    {
+      "name": "client global CSS",
+      "directory": "dist/client/assets",
+      "pattern": "^globals-[^/]+\\.css$",
+      "maxBytes": 99000,
+      "maxGzipBytes": 16500,
+      "reason": "Approved Tailwind Typography, app UI source coverage, optional brand/catalog presentation, mobile 16px form-control accessibility baseline, and short-landscape cart drawer controls"
+    },
+    {
+      "name": "server entry",
+      "directory": "dist/server",
+      "pattern": "^index\\.js$",
+      "maxBytes": 650000,
+      "maxGzipBytes": 140000
+    }
+  ],
+  "graphs": [
+    {
+      "name": "client initial JavaScript graph",
+      "manifest": "dist/client/.vite/manifest.json",
+      "directory": "dist/client",
+      "maxBytes": 575000,
+      "maxGzipBytes": 190000,
+      "reason": "Bounds browser entry code and all deduplicated static JavaScript imports, including shared chunks."
+    }
+  ]
+}
