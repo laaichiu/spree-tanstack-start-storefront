@@ -1,0 +1,484 @@
+{
+  "status": "active",
+  "spreeVersion": "6.0.0",
+  "spreeRevision": "661e226bd3b783b26f33f037748cc15a0f014c46",
+  "sdkVersion": "6.0.0",
+  "selectedAt": "2026-10-28",
+  "verificationStatus": "verified-local-backend-and-read-only-browser-checkout-incomplete",
+  "stableSourceAudit": {
+    "comparedFrom": "6.0.0.rc5",
+    "spreeVersion": "6.0.0",
+    "spreeRevision": "661e226bd3b783b26f33f037748cc15a0f014c46",
+    "sdkVersion": "6.0.0",
+    "sourceComparisonCommitCount": 62,
+    "sdkIntegrity": "sha512-+mZjvGP++KPoZn6c9+GTyOE83ZPtyyc6wmL3b8x28KHlGWbPrMJoy09vXLs3LbDbKV3E7Mu9awtWoRNpBgdaNw==",
+    "storefrontValidation": "passed-pnpm-validate",
+    "backendRuntime": "verified-local-published-gems"
+  },
+  "stableVerification": {
+    "verifiedAt": "2026-10-28",
+    "spreeVersion": "6.0.0",
+    "spreeRevision": "661e226bd3b783b26f33f037748cc15a0f014c46",
+    "sdkVersion": "6.0.0",
+    "sourceMode": "published-gems-with-application-customization",
+    "backend": {
+      "publishedGemChecksumsVerified": true,
+      "runtimeSourceFileCount": 2118,
+      "runtimeSourceMatchesSelectedRevision": true,
+      "engineMigrationCount": 4,
+      "upgradeStepCount": 54,
+      "isolatedDatabaseUpgrade": "passed",
+      "developmentDatabaseUpgrade": "passed",
+      "commerceResourceCountsUnchanged": true,
+      "pendingMigrations": false,
+      "storefrontBackendSpecCount": 16,
+      "auditExtensionCompatibilitySpecCount": 21,
+      "suppressedUpgradeSubscriberJobCount": 162,
+      "serviceHttpStatus": 200,
+      "commercePreflight": "passed"
+    },
+    "storefront": {
+      "publicSdkResourceProbes": [
+        "channel",
+        "markets",
+        "products",
+        "categories",
+        "sellers"
+      ],
+      "readOnlyBrowserStatus": "passed",
+      "checkoutBrowserStatus": "failed-selected-scenarios",
+      "readOnlyBrowserScenarioCount": 49,
+      "checkoutBrowserRun": {
+        "isolatedDatabase": true,
+        "scenarioCount": 3,
+        "passed": 2,
+        "failed": 1,
+        "passedScenarios": [
+          "cart-reload-and-responsive-layout",
+          "guest-delivery-address-and-payment-readiness"
+        ],
+        "failedScenarios": ["guest-stripe-test-card-completion"],
+        "failureStage": "payment-confirmation-returned-payment_failed",
+        "providerErrorCodeCaptured": false,
+        "completeCheckoutSuiteRun": false,
+        "rootCause": "unconfirmed"
+      },
+      "fullApplicationGate": "passed",
+      "testFileCount": 323,
+      "testCount": 2051
+    }
+  },
+  "rc4Verification": {
+    "verifiedAt": "2026-10-20",
+    "spreeVersion": "6.0.0.rc4",
+    "spreeRevision": "862ffb0076c414b590f1c0c531fdf53fc4f8a67f",
+    "sdkVersion": "2.0.0-rc.4",
+    "backend": {
+      "applicationCommit": "8f393f5",
+      "publishedGemChecksumsVerified": true,
+      "engineMigrationCount": 5,
+      "upgradeTasks": "passed-45-steps",
+      "actualDevelopmentDatabase": "migrated-and-commerce-counts-unchanged",
+      "commercePreflight": "passed",
+      "serviceHttpStatus": 200,
+      "isolatedBackendSpecCount": 16,
+      "defaultRailsTestDatabase": "not-configured"
+    },
+    "storefront": {
+      "sdkCountryCodeCount": 240,
+      "sdkCountryCodesMatchPreviousCheckedSet": true,
+      "fullApplicationGate": "passed",
+      "testFileCount": 312,
+      "testCount": 2019,
+      "buildBudgets": {
+        "clientEagerIndex": {
+          "rawKiB": 278.6,
+          "gzipKiB": 84.6
+        },
+        "clientCheckoutEntry": {
+          "rawKiB": 131.9,
+          "rawLimitKiB": 142.1,
+          "gzipKiB": 35.0,
+          "gzipLimitKiB": 39.1
+        },
+        "globalCss": {
+          "rawKiB": 92.7,
+          "gzipKiB": 15.5
+        },
+        "serverEntry": {
+          "rawKiB": 313.6,
+          "gzipKiB": 96.8
+        }
+      },
+      "checkoutBrowserRunAgainstRc4": "not-run",
+      "dependencyWorktreeScope": "The existing worktree also contains unrelated dependency edits; the full gate covers this checkout state."
+    },
+    "adminMcp": {
+      "gemVersion": "6.0.0.rc4",
+      "backendCommit": "9274ba8",
+      "localEndpoint": "POST /api/v3/admin/mcp",
+      "unauthenticatedPostStatus": 401,
+      "protectedResourceMetadataStatus": 200,
+      "authorizationServerMetadataStatus": 200,
+      "authentication": "Admin OAuth token with granted scopes; secret API keys rejected",
+      "clientConnection": "not-tested",
+      "deployedEndpoint": "not-configured"
+    }
+  },
+  "rc5Verification": {
+    "verifiedAt": "2026-10-22",
+    "spreeVersion": "6.0.0.rc5",
+    "spreeRevision": "fb1402adf5bfa1d2c6124f2b15190a35497a73ec",
+    "sdkVersion": "2.0.0-rc.5",
+    "backend": {
+      "applicationCommit": "98ea7ee",
+      "publishedGemChecksumsVerified": true,
+      "engineMigrationCount": 0,
+      "pendingMigrations": false,
+      "upgradeTaskCount": 53,
+      "isolatedUpgradeTasks": "passed-on-RC4-database-clone",
+      "isolatedBackendSpecCount": 16,
+      "commercePreflight": "passed",
+      "actualDevelopmentServiceHttpStatus": 200,
+      "defaultRailsTestDatabase": "not-configured",
+      "stripeAndMcpSourceFilesChangedFromRc4": false
+    },
+    "adminMcp": {
+      "gemVersion": "6.0.0.rc5",
+      "unauthenticatedPostStatus": 401,
+      "protectedResourceMetadataStatus": 200,
+      "authorizationServerMetadataStatus": 200,
+      "clientConnection": "not-tested",
+      "deployedEndpoint": "not-configured"
+    },
+    "storefront": {
+      "fullApplicationGate": "passed",
+      "testFileCount": 312,
+      "testCount": 2019,
+      "focusedContractTestCount": 61,
+      "readOnlyBrowserScenarios": {
+        "passed": 49,
+        "total": 49
+      },
+      "checkoutBrowserScenarios": {
+        "passed": 11,
+        "failed": 8,
+        "total": 19,
+        "database": "isolated-RC4-clone-upgraded-to-RC5",
+        "failureStage": "payment-confirmation-returned-payment_failed-with-gateway-error",
+        "providerErrorCodeCaptured": false,
+        "failedScenarios": [
+          "authenticated-saved-card-completion",
+          "guest-discount-and-payment-completion",
+          "guest-stripe-test-card-completion",
+          "late-order-completion-recovery",
+          "declined-card-retry",
+          "different-billing-address-completion",
+          "seller-and-first-party-order-group-completion",
+          "lost-order-group-completion-recovery"
+        ],
+        "rootCause": "unconfirmed"
+      },
+      "dependencyWorktreeScope": "The full gate included pre-existing unrelated dependency edits; only the RC5 SDK delta belongs in the RC5 commit."
+    }
+  },
+  "lastVerified": {
+    "scope": "local-read-only-browser-and-sdk-commerce",
+    "spreeVersion": "6.0.0.rc3",
+    "spreeRevision": "873666e78db6da01e60236bad081fd1a7d754fea",
+    "sdkVersion": "2.0.0-rc.3",
+    "sourceMode": "git-archive",
+    "verifiedAt": "2026-10-16",
+    "readOnlyScenarioCount": 49,
+    "checkoutBrowserStatus": "incomplete-stripe-fields-block-order-group-recovery",
+    "verifiedCapabilities": [
+      "engine-migrations-and-upgrade-tasks",
+      "commerce-schema-and-test-gateway-preflight",
+      "decimal-product-and-price-facet-responses",
+      "kwd-and-jpy-unit-price-rendering",
+      "regional-locale-rendering",
+      "sdk-delivery-rate-retention-after-quantity-change",
+      "sdk-full-store-credit-single-order-completion",
+      "sdk-full-gift-card-order-group-completion",
+      "sdk-order-recovery-by-completed-cart-and-group-id",
+      "sdk-order-group-denies-unrelated-guest",
+      "browser-guest-stripe-test-card-completion",
+      "browser-saved-card-completion",
+      "browser-cart-reload-and-responsive-layout",
+      "browser-saved-card-to-new-card",
+      "browser-provider-decline-and-successful-retry",
+      "browser-full-gift-card-order-group-completion",
+      "browser-full-store-credit-single-order-completion",
+      "browser-order-group-confirmation-reload-and-guest-isolation"
+    ],
+    "stripeFormRetry": {
+      "verifiedAt": "2026-10-17",
+      "result": "passed",
+      "scenarioCount": 3,
+      "testRetries": 0,
+      "scenarios": [
+        "saved-card-to-new-card",
+        "guest-test-card-completion-and-confirmation-reload",
+        "provider-decline-and-successful-retry"
+      ],
+      "elementsSessionRequestCount": 6,
+      "elementsSessionHttpStatuses": [200],
+      "elementsSessionDurationMs": {
+        "min": 730,
+        "max": 2181
+      },
+      "paymentCodeChanged": false,
+      "waitBudgetsChanged": false,
+      "completeCheckoutSuiteRun": false
+    },
+    "storefrontAudit": {
+      "verifiedAt": "2026-10-18",
+      "scope": "read-only-contracts-and-filter-failure-recovery",
+      "developmentBackendVersion": "6.0.0.rc3",
+      "integrationBackendVersion": "6.0.0.rc3",
+      "publicContractGroupCount": 8,
+      "syntheticAccountGroupCount": 1,
+      "sortRequestCount": 14,
+      "priceBoundRequestCount": 6,
+      "publicContracts": [
+        "all-product-detail-projections",
+        "category-and-seller-facets",
+        "search-empty-stock-and-price-results",
+        "expanded-market-country-and-state-projections"
+      ],
+      "accountContracts": [
+        "profile",
+        "sorted-address-order-gift-card-and-saved-card-lists",
+        "expanded-order-detail-and-channel-ownership"
+      ],
+      "openFindings": [],
+      "fixedFindings": [
+        "forbidden-response-invalidates-valid-customer-session",
+        "filter-failure-is-silent-in-products-categories-and-brands",
+        "price-sort-includes-other-currency-and-price-list-records",
+        "development-backend-still-precedes-selected-release"
+      ],
+      "filterFailureBrowserEvidence": {
+        "upstreamStatus": 503,
+        "productsRemainVisible": true,
+        "restoredFiltersAfterReload": true,
+        "viewportWidths": [390, 768, 1440, 1728],
+        "horizontalOverflow": false
+      },
+      "applicationValidation": {
+        "status": "passed",
+        "testFileCount": 310,
+        "testCount": 2010
+      },
+      "initialDevelopmentBackendVersion": "6.0.0.rc1"
+    },
+    "developmentUpgrade": {
+      "verifiedAt": "2026-10-18",
+      "fromSpreeVersion": "6.0.0.rc1",
+      "spreeVersion": "6.0.0.rc3",
+      "sourceMode": "published-gems-with-application-customization",
+      "publishedGemChecksumsVerified": 4,
+      "comparedRuntimeRubyFiles": 1835,
+      "runtimeRubySourceMatchesSelectedRevision": true,
+      "applicationRevision": "e98a6089d8ccc49463a5cf6985e8776155cb4227",
+      "databaseCheckpointVerified": true,
+      "engineMigrationCount": 2,
+      "upgradeTasks": "passed",
+      "commercePreflight": "passed",
+      "commerceResourceCountsUnchanged": true,
+      "heldJobCount": 0,
+      "backendSpecCount": 16,
+      "backendRubocop": "passed",
+      "storeApiPriceSort": {
+        "provider": "Storefront::DatabaseSearchProvider",
+        "currency": "USD",
+        "productCount": 39,
+        "pageSize": 7,
+        "pagesPerDirection": 6,
+        "ascending": "passed",
+        "descending": "passed",
+        "duplicateProducts": false,
+        "emptySearch": "passed",
+        "browserSortSelection": "passed",
+        "defaultVariantQuoteMismatchCount": 0
+      },
+      "scalingLimit": "Context-dependent database price sorting resolves all matching products before pagination; large catalogs need an equivalent indexed pricing projection.",
+      "frontendValidation": {
+        "typecheck": "passed",
+        "lint": "passed",
+        "testFileCount": 310,
+        "testCount": 2010,
+        "build": "passed",
+        "fullApplicationGate": "failed",
+        "formatting": {
+          "status": "failed",
+          "existingFileDifferenceCount": 20
+        },
+        "checkoutBuildBudget": {
+          "status": "failed",
+          "rawBytes": 158677,
+          "rawLimitBytes": 145500,
+          "gzipBytes": 42744,
+          "gzipLimitBytes": 40000
+        },
+        "dependencyUpdateIncluded": false,
+        "scopeNote": "Initial cutover validation ran with a separate, uncommitted dependency update present. The formatting and checkout budget failures recorded here describe that snapshot; frontendGate contains the latest follow-up validation. Those dependency changes are excluded from these audit commits."
+      }
+    },
+    "frontendGate": {
+      "verifiedAt": "2026-10-19",
+      "applicationRevision": "2c4722c2",
+      "fullApplicationGate": "passed",
+      "formatting": "passed",
+      "documentation": "passed",
+      "lint": "passed",
+      "typecheck": "passed",
+      "testFileCount": 312,
+      "testCount": 2019,
+      "build": "passed",
+      "checkoutBuildBudget": {
+        "status": "passed",
+        "rawBytes": 135073,
+        "rawLimitBytes": 145500,
+        "gzipBytes": 35775,
+        "gzipLimitBytes": 40000,
+        "limitsChanged": false
+      },
+      "expressCheckoutLoading": {
+        "boundary": "eligible-cart-only-dynamic-import",
+        "chunkFailure": "localized-retry-with-regular-checkout-available",
+        "lateResponseGuard": "cancelled-on-unmount-or-ineligible-cart"
+      },
+      "dependencyUpdateIncluded": false,
+      "scopeNote": "Validation includes the separate, uncommitted dependency update present in the worktree. The dependency files are excluded from these follow-up commits; this is not validation of a fresh install from the committed dependency manifest."
+    },
+    "checkoutBrowserRun": {
+      "verifiedAt": "2026-10-19",
+      "applicationRevision": "e88c71dc",
+      "spreeVersion": "6.0.0.rc3",
+      "sdkVersion": "2.0.0-rc.3",
+      "sourceMode": "published-gems-with-application-customization",
+      "isolatedDatabase": true,
+      "fixtureDeliveryPolicy": "operator-method-shared-with-seller",
+      "scenarioCount": 19,
+      "passed": 17,
+      "failed": 2,
+      "skipped": 0,
+      "testRetries": 0,
+      "result": "failed",
+      "failedScenarios": [
+        "order-group-lost-completion-response",
+        "required-checkout-fields"
+      ],
+      "failureStage": "stripe-card-fields-not-rendered",
+      "elementsSessionHttpStatuses": [200],
+      "slowStripeAssetMaximumDurationMs": [37461, 27741],
+      "targetedRetry": {
+        "scenarioCount": 2,
+        "passed": 1,
+        "failed": 1,
+        "testRetries": 0,
+        "passedScenarios": ["required-checkout-fields"],
+        "failedScenarios": ["order-group-lost-completion-response"],
+        "failureStage": "stripe-card-fields-not-rendered"
+      },
+      "waitBudgetsChanged": false,
+      "rootCause": "unconfirmed; slow provider assets were observed, and the failing OrderGroup scenario never reached completion or recovery"
+    },
+    "browserBalances": {
+      "verifiedAt": "2026-10-19",
+      "spreeVersion": "6.0.0.rc3",
+      "sourceMode": "published-gems-with-application-customization",
+      "isolatedDatabase": true,
+      "deliveryPolicy": "seller-owned-platform-unshared",
+      "giftCardOrderGroup": {
+        "applicationRevision": "e88c71dc",
+        "applicationThroughBrowser": "passed",
+        "amountDueBeforeCompletion": "0.00",
+        "completion": "passed",
+        "confirmationReload": "passed",
+        "unrelatedGuest": "denied"
+      },
+      "storeCreditOrder": {
+        "applicationRevision": "2c4722c2",
+        "application": "backend-fixture-through-configured-apply-service",
+        "customerOwned": true,
+        "amountDueBeforeCompletion": "0.00",
+        "completion": "passed",
+        "confirmationReload": "passed",
+        "unrelatedGuest": "denied",
+        "consoleErrorsAfterResetFix": 0,
+        "viewportWidths": [390, 768, 1440, 1728],
+        "horizontalOverflow": false
+      },
+      "paymentResetRegression": {
+        "newRegressionCases": 3,
+        "failedBeforeFix": 3,
+        "passedAfterFix": 3
+      },
+      "scopeNote": "Store Credit was applied through the configured backend service to the browser-owned test cart; no storefront balance-application UI is certified. These checks do not certify lost-response recovery or wallet callbacks."
+    },
+    "developmentDeliveryConfiguration": {
+      "verifiedAt": "2026-10-19",
+      "methodOwnership": "seller",
+      "platformMethodsShared": false,
+      "copiedExistingRateAndZone": true,
+      "verifiedRate": {
+        "amount": "5.00",
+        "currency": "USD"
+      },
+      "ownerAllowed": true,
+      "operatorExcluded": true,
+      "otherSellerExcluded": true,
+      "verificationPurchasePersisted": false
+    }
+  },
+  "commerceSchema": {
+    "spree_tax_identifiers": ["owner_id", "owner_type"],
+    "active_storage_blobs": ["store_id"]
+  },
+  "commerceMoneySchema": {
+    "precision": 19,
+    "scale": 4,
+    "columns": {
+      "spree_prices": ["amount", "compare_at_amount"],
+      "spree_line_items": ["price", "discount_total"],
+      "spree_carts": [
+        "item_total",
+        "delivery_total",
+        "discount_total",
+        "total"
+      ],
+      "spree_orders": [
+        "item_total",
+        "delivery_total",
+        "discount_total",
+        "total"
+      ],
+      "spree_fulfillments": ["cost", "discount_total"],
+      "spree_delivery_rates": ["cost"],
+      "spree_adjustments": ["amount"],
+      "spree_discounts": ["amount", "value"],
+      "spree_payments": ["amount"],
+      "spree_payment_sessions": ["amount"],
+      "spree_gift_cards": ["amount", "amount_authorized", "amount_used"],
+      "spree_store_credits": ["amount", "amount_authorized", "amount_used"]
+    }
+  },
+  "paymentProvider": "SpreeStripe::Gateway",
+  "writePathStatus": "partially-verified-checkout-recovery-and-wallet-gates-open",
+  "verificationNotes": [
+    "Initial commerce and multi-currency evidence uses an isolated database clone and a Git archive of the exact selected RC3 source. The actual development service now uses published RC3 gems and an application-owned Store API price-ordering provider.",
+    "Both RC3 engine migrations and the upgrade tasks completed. Commerce preflight verified no pending migrations, required ownership columns, decimal(19,4) money columns, and the store-scoped Stripe test gateway. A pre-migration negative probe failed as expected.",
+    "The read-only browser suite reached the isolated RC3 backend with the Cloudflare process-environment override enabled. Earlier runs against the existing RC1 service are excluded.",
+    "Actual responses carry decimal-string product and facet amounts and Market country_codes. KWD four-decimal unit prices, JPY zero-decimal prices, and regional locales were checked in rendered pages.",
+    "SDK commerce probes verified delivery cost and selected rate retention, full Store Credit single-order completion, full Gift Card multi-seller completion, completed-Cart and group lookup, child Channel ownership, and unrelated-guest denial. These probes do not certify browser cookies or UI recovery.",
+    "Guest test-card, saved-card, discount, delivery, billing-address, cart-reload, and normal OrderGroup browser scenarios passed locally. The latest complete checkout run passed 17 of 19 scenarios; two stopped at Stripe field initialization. A targeted retry passed required-field validation but still failed to initialize card fields for lost-response OrderGroup recovery. The complete suite remains unpassed.",
+    "Full Gift Card OrderGroup and Store Credit single-order browser completion, confirmation reload, and unrelated-guest denial passed on an isolated published-gem backend. Store Credit was applied through the configured backend service to the browser-owned test cart, not through a storefront balance-application UI. The observed zero-due payment-reset render loop was fixed and reverified with no console errors. Lost-response OrderGroup recovery and wallet callbacks remain open.",
+    "A focused Stripe browser retry passed all three scenarios without test retries, payment-code changes, or increased waits: saved-card to new-card switching, guest test-card completion with confirmation reload, and provider decline followed by successful retry. All six Elements session requests returned HTTP 200 in 730-2181 ms. This is consistent with a transient network or service issue, but does not prove the earlier root cause or replace the complete checkout suite.",
+    "Jobs were held and mail delivery disabled in the isolated backend. Deployed staging, rollback, jobs, mail, storage, webhooks, shared cache, backups, and live payments are not verified.",
+    "The built-in RC3 price sorter still aggregates unrelated currency and price-list rows. The development application now replaces Store API database price ordering with serializer-equivalent price resolution before pagination; both directions and empty results pass locally. Deployed Market-aware shared-cache behavior remains open.",
+    "The initial read-only audit compared the then-RC1 development service with the isolated RC3 source backend and reproduced price-ordering mismatches. The development service has since been upgraded to published RC3 gems and the application-owned ordering fix has passed backend, Store API, and browser checks. The frontend application gate passes with the separately modified dependency worktree; those dependency files are not included in these follow-up commits.",
+    "The actual development seller now has its own delivery method copied from an existing USD 5 rate and zone. Platform methods remain unshared; owner, operator, and other-seller scope checks passed without persisting a verification purchase. The complete browser suite used an isolated shared-method fixture; subsequent full-balance browser probes used the seller-owned policy."
+  ]
+}
