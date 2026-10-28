@@ -419,7 +419,7 @@ for (const [path, value, forbiddenFields] of [
   }
 }
 
-if (readJson('package.json').name !== 'spree-tanstack-storefront') {
+if (readJson('package.json').name !== 'spree-tanstack-start-storefront') {
   fail('package.json must declare the storefront package name')
 }
 
