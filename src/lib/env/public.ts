@@ -1,0 +1,97 @@
+import { parseStorefrontOrigin } from '../core/origin.ts'
+
+export type PublicBuildEnv = {
+  reviewsEnabled: boolean
+  storefrontName: string | null
+  storefrontUrl: string
+  stripePublishableKey: string | null
+}
+
+type PublicBuildEnvOptions = {
+  strictProduction?: boolean
+}
+
+const ENABLED_VALUES = new Set(['1', 'on', 'true', 'yes'])
+const DISABLED_VALUES = new Set(['0', 'off', 'false', 'no'])
+
+function readStorefrontUrl(
+  input: Record<string, string | undefined>,
+  strictProduction: boolean,
+) {
+  const configuredUrl = input.VITE_STOREFRONT_URL?.trim()
+
+  if (!configuredUrl) {
+    if (strictProduction) {
+      throw new Error('VITE_STOREFRONT_URL is required for production builds')
+    }
+
+    return 'http://localhost:3006'
+  }
+
+  return parseStorefrontOrigin(configuredUrl, {
+    httpsOnly: strictProduction,
+    variableName: 'VITE_STOREFRONT_URL',
+  })
+}
+
+function readStripePublishableKey(input: Record<string, string | undefined>) {
+  const value = input.VITE_STRIPE_PUBLISHABLE_KEY?.trim() ?? ''
+
+  if (value && !/^pk_[A-Za-z0-9][A-Za-z0-9_]*$/.test(value)) {
+    throw new Error(
+      'VITE_STRIPE_PUBLISHABLE_KEY must be a publishable key beginning with pk_',
+    )
+  }
+
+  return value || null
+}
+
+function readOptionalPublicText(
+  input: Record<string, string | undefined>,
+  key: 'VITE_STOREFRONT_NAME',
+) {
+  const value = input[key]?.trim()
+
+  return value || null
+}
+
+function readReviewsEnabled(
+  input: Record<string, string | undefined>,
+  strictProduction: boolean,
+) {
+  const value = input.VITE_STOREFRONT_REVIEWS_ENABLED?.trim().toLowerCase()
+
+  if (!value) {
+    return false
+  }
+
+  if (ENABLED_VALUES.has(value)) {
+    return true
+  }
+
+  if (DISABLED_VALUES.has(value)) {
+    return false
+  }
+
+  if (strictProduction) {
+    throw new Error(
+      'VITE_STOREFRONT_REVIEWS_ENABLED must be a boolean value (true or false)',
+    )
+  }
+
+  return false
+}
+
+export function readPublicBuildEnv(
+  input: Record<string, string | undefined>,
+  options: PublicBuildEnvOptions = {},
+) {
+  const strictProduction = options.strictProduction ?? false
+
+  return {
+    reviewsEnabled: readReviewsEnabled(input, strictProduction),
+    storefrontName: readOptionalPublicText(input, 'VITE_STOREFRONT_NAME'),
+    storefrontUrl: readStorefrontUrl(input, strictProduction),
+    stripePublishableKey: readStripePublishableKey(input),
+  } satisfies PublicBuildEnv
+}
