@@ -68,6 +68,7 @@ export function ProductReviewControls({
         disabled,
         filters,
         labels: {
+          allReviews: t('reviews.allReviews'),
           clearFilters: t('reviews.clearFilters'),
           filterReviews: t('reviews.filterReviews'),
           sortBy: t('reviews.sortBy'),

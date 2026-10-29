@@ -58,7 +58,8 @@ root to scale the whole interface on phones.
 | Badges and minor metadata                                               | `text-xs`                            |
 | Input and textarea primitives                                           | `text-base`                          |
 | NativeSelect default and footer newsletter input                        | `text-sm`                            |
-| Address selects and review filter/sort selects (owner override)         | `text-base`                          |
+| Address selects (owner override)                                        | `text-base`                          |
+| Review filter/sort selects (owner override)                             | `text-sm`                            |
 
 The storefront uses a compact type scale. `body` defaults to `text-xs`, and
 ordinary copy uses that size across breakpoints and orientations. The table
@@ -152,9 +153,9 @@ own dimensions and centered icons.
 - Search and other underline-only controls keep their intended border model
   while still showing hover and focus state.
 - Input and textarea primitives use `text-base`. NativeSelect defaults and the
-  footer newsletter input use `text-sm`. Address selects and review filter/sort
-  selects override the default with `text-base`. Keep each control's size stable
-  across compact and landscape layouts.
+  footer newsletter input use `text-sm`. Address selects override the default
+  with `text-base`, and review filter/sort selects use `text-sm`. Keep each
+  control's size stable across compact and landscape layouts.
 
 ## Required viewports
 

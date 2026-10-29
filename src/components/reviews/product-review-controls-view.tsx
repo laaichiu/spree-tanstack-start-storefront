@@ -9,7 +9,7 @@ export type {
 } from '../contracts/reviews'
 
 const pillSelectClassName =
-  'h-11 rounded-full py-0 pr-10 pl-5 text-base leading-5 font-normal normal-case'
+  'h-11 rounded-full py-0 pr-10 pl-5 text-sm leading-5 font-normal normal-case'
 
 export function ProductReviewControlsView({
   actions,
@@ -87,10 +87,10 @@ export function ProductReviewControlsView({
         )}
       </div>
 
-      <div className="hidden items-center justify-between gap-4 md:flex">
-        <div className="flex flex-wrap gap-3">
+      <div className="hidden items-start justify-between gap-4 md:flex">
+        <div className="flex min-w-0 flex-wrap gap-3">
           {filterOptions.map((filter) => (
-            <div className="min-w-44" key={filter.id}>
+            <div className="min-w-0 max-w-full sm:min-w-44" key={filter.id}>
               <NativeSelect
                 className={pillSelectClassName}
                 disabled={disabled}
@@ -118,7 +118,7 @@ export function ProductReviewControlsView({
           )}
         </div>
 
-        <div className="w-52 shrink-0">
+        <div className="w-52 max-w-[40%] shrink-0">
           <NativeSelect
             className={pillSelectClassName}
             disabled={disabled}

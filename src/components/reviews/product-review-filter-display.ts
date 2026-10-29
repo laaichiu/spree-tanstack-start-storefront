@@ -32,7 +32,9 @@ function getVisibleReviewFilterValues(filter: ProductReviewFilter) {
 
 export function getVisibleReviewFilters(filters: ProductReviewFilters) {
   return filters.filters.filter(
-    (filter) => filter.id !== 'verified_purchase' && filter.values.length > 0,
+    (filter) =>
+      (filter.id === 'rating' || filter.id === 'with_images') &&
+      filter.values.length > 0,
   )
 }
 
@@ -52,11 +54,15 @@ function getReviewFilterOptionDisplays(
 export function getReviewFilterDisplays(
   filters: ProductReviewFilters,
   query: ProductReviewQuery,
+  allReviewsLabel: string,
 ): ProductReviewFilterDisplay[] {
   return getVisibleReviewFilters(filters).map((filter) => ({
     id: filter.id,
     label: filter.label,
-    options: getReviewFilterOptionDisplays(filter, filter.label),
+    options: getReviewFilterOptionDisplays(
+      filter,
+      filter.id === 'with_images' ? allReviewsLabel : filter.label,
+    ),
     value: getReviewFilterValue(query, filter.id),
   }))
 }

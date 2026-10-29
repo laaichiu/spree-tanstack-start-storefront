@@ -14,6 +14,7 @@ export type ProductReviewSortDisplay = {
 }
 
 export type ProductReviewControlsPresentationLabels = {
+  allReviews: string
   clearFilters: string
   filterReviews: string
   sortBy: string
@@ -53,7 +54,7 @@ export function getProductReviewControlsPresentation({
     clearFiltersLabel: labels.clearFilters,
     disabled,
     filterButtonLabel: labels.filterReviews,
-    filterOptions: getReviewFilterDisplays(filters, query),
+    filterOptions: getReviewFilterDisplays(filters, query, labels.allReviews),
     selectedFilterCountLabel: selectedCount
       ? `(${formatNumber(selectedCount, locale)})`
       : undefined,
