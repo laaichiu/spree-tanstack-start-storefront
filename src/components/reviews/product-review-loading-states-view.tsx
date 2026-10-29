@@ -1,8 +1,13 @@
-export function ProductReviewsLoadingStateView() {
+export function ProductReviewsLoadingStateView({
+  sectionId,
+}: {
+  sectionId: string
+}) {
   return (
     <div
       aria-hidden="true"
-      className="mt-14 h-48 animate-pulse bg-muted motion-reduce:animate-none lg:mt-20"
+      className="mt-14 h-48 scroll-mt-24 animate-pulse bg-muted motion-reduce:animate-none lg:mt-20"
+      id={sectionId}
     />
   )
 }

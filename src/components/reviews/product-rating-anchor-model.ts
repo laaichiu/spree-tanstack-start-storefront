@@ -12,16 +12,16 @@ export type ProductRatingAnchorCopy = {
 
 export type ProductRatingAnchorDisplay = {
   ariaLabel: string
-  href: string
   label: string
   rating: number
   ratingLabel: string
+  targetId: string
 }
 
 export function getProductRatingAnchorDisplay(
   summary: ProductReviewSummary,
   locale: string,
-  options: ProductRatingAnchorCopy & { href: string },
+  options: ProductRatingAnchorCopy & { targetId: string },
 ): ProductRatingAnchorDisplay {
   const hasReviews = summary.reviewCount > 0
   const countLabel = hasReviews
@@ -34,11 +34,11 @@ export function getProductRatingAnchorDisplay(
 
   return {
     ariaLabel: hasReviews ? options.readReviews : options.goToReviews,
-    href: options.href,
     label: hasReviews
       ? `${formatReviewRating(summary.averageRating)} (${countLabel})`
       : countLabel,
     rating: summary.averageRating,
     ratingLabel: `${formatReviewRating(summary.averageRating)} / 5`,
+    targetId: options.targetId,
   }
 }

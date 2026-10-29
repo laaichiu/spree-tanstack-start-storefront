@@ -1,29 +1,44 @@
-import { cleanup, render, screen } from '@testing-library/react'
-import { afterEach, describe, expect, it } from 'vitest'
+import { cleanup, fireEvent, render, screen } from '@testing-library/react'
+import { afterEach, describe, expect, it, vi } from 'vitest'
 
 import { ProductRatingAnchorView } from './product-rating-anchor-view'
 
-afterEach(cleanup)
+afterEach(() => {
+  cleanup()
+  document.getElementById('reviews')?.remove()
+})
 
 describe('ProductRatingAnchorView', () => {
-  it('presents the review link and accessible rating label', () => {
+  it('scrolls to reviews without changing the URL', () => {
+    const section = document.createElement('section')
+    const scrollIntoView = vi.fn()
+    section.id = 'reviews'
+    section.scrollIntoView = scrollIntoView
+    document.body.append(section)
+
     render(
       <ProductRatingAnchorView
         model={{
           ariaLabel: 'Read reviews',
-          href: '#reviews',
           label: '4.5 (2 reviews)',
           rating: 4.5,
           ratingLabel: '4.5 / 5',
+          targetId: 'reviews',
         }}
       />,
     )
 
-    expect(screen.getByRole('link', { name: 'Read reviews' })).toHaveProperty(
-      'hash',
-      '#reviews',
-    )
+    const action = screen.getByRole('button', { name: 'Read reviews' })
+    expect(action.getAttribute('aria-controls')).toBe('reviews')
     expect(screen.getByText('4.5 (2 reviews)')).toBeTruthy()
     expect(screen.getByLabelText('4.5 / 5')).toBeTruthy()
+
+    fireEvent.click(action)
+
+    expect(scrollIntoView).toHaveBeenCalledWith({
+      behavior: 'smooth',
+      block: 'start',
+    })
+    expect(window.location.hash).toBe('')
   })
 })

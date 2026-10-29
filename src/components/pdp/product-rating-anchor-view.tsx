@@ -1,18 +1,38 @@
 import { ReviewStarsView } from '@/components/reviews/review-stars-view'
 import type { ProductRatingAnchorDisplay } from '@/components/reviews/product-rating-anchor-model'
+import { Button } from '@/components/ui/button'
 
 export function ProductRatingAnchorView({
   model,
 }: {
   model: ProductRatingAnchorDisplay
 }) {
-  const { ariaLabel, href, label, rating, ratingLabel } = model
+  const { ariaLabel, label, rating, ratingLabel, targetId } = model
+
+  function scrollToReviews() {
+    const target = document.getElementById(targetId)
+
+    if (!target) {
+      return
+    }
+
+    const prefersReducedMotion =
+      typeof window.matchMedia === 'function' &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
+    target.scrollIntoView({
+      behavior: prefersReducedMotion ? 'instant' : 'smooth',
+      block: 'start',
+    })
+  }
 
   return (
-    <a
+    <Button
+      aria-controls={targetId}
       aria-label={ariaLabel}
-      className="inline-flex flex-wrap items-center gap-2 text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50"
-      href={href}
+      className="flex-wrap rounded-none border-0 p-0 text-muted-foreground normal-case hover:bg-transparent hover:text-foreground"
+      onClick={scrollToReviews}
+      variant="ghost"
     >
       <ReviewStarsView
         className="gap-0.5 [&>svg]:size-3"
@@ -20,6 +40,6 @@ export function ProductRatingAnchorView({
         rating={rating}
       />
       <span className="text-xs leading-4">{label}</span>
-    </a>
+    </Button>
   )
 }

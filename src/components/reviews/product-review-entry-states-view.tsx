@@ -22,7 +22,7 @@ export function ProductReviewsUnavailableStateView({
 }) {
   return (
     <section
-      className="mx-auto mt-14 w-full max-w-7xl border-t border-border pt-10 lg:mt-20"
+      className="mx-auto mt-14 w-full max-w-7xl scroll-mt-24 border-t border-border pt-10 lg:mt-20"
       id={model.sectionId}
     >
       <div className="flex gap-3 bg-muted px-5 py-6 text-muted-foreground">

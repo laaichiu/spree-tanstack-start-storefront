@@ -2,6 +2,7 @@ import { lazy, Suspense } from 'react'
 
 import type { ProductReviewsFeatureState } from '@/lib/reviews/contracts'
 import { ProductReviewsLoadingStateView } from '@/components/reviews/product-review-loading-states-view'
+import { PRODUCT_REVIEWS_SECTION_ID } from '@/components/reviews/product-reviews-section-id'
 
 const ProductReviewsSection = lazy(async () => {
   const module = await import('@/components/reviews/product-reviews-section')
@@ -21,7 +22,13 @@ export function ProductReviewContent({
   }
 
   return (
-    <Suspense fallback={<ProductReviewsLoadingStateView />}>
+    <Suspense
+      fallback={
+        <ProductReviewsLoadingStateView
+          sectionId={PRODUCT_REVIEWS_SECTION_ID}
+        />
+      }
+    >
       <ProductReviewsSection feature={reviews} productId={productId} />
     </Suspense>
   )

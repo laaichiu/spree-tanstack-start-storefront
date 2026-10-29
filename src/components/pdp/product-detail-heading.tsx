@@ -88,7 +88,7 @@ export function ProductDetailHeading({
         readReviews: t('reviews.readReviews'),
         reviewPlural: t('reviews.reviewPlural'),
         reviewSingular: t('reviews.reviewSingular'),
-        href: `#${PRODUCT_REVIEWS_SECTION_ID}`,
+        targetId: PRODUCT_REVIEWS_SECTION_ID,
       })
     : null
   const breadcrumbs = getProductDetailBreadcrumbs(product, t)
