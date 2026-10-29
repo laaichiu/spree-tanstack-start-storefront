@@ -27,5 +27,7 @@ describe('ProductReviewSummaryView', () => {
 
     expect(screen.getByText('4.5 Overall Rating')).toBeTruthy()
     expect(summary?.id).toBe(PRODUCT_REVIEWS_SUMMARY_ID)
+    expect(summary?.classList.contains('scroll-mt-32')).toBe(true)
+    expect(summary?.classList.contains('xl:scroll-mt-24')).toBe(true)
   })
 })

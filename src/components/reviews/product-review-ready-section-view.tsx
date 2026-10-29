@@ -27,7 +27,7 @@ export function ProductReviewsReadySectionView({
   return (
     <section
       aria-busy={isFetching}
-      className="mx-auto mt-14 w-full max-w-7xl scroll-mt-24 lg:mt-20"
+      className="mx-auto mt-14 w-full max-w-7xl scroll-mt-32 lg:mt-20 xl:scroll-mt-24"
       id={sectionId}
     >
       <div className="flex items-end justify-between gap-5">

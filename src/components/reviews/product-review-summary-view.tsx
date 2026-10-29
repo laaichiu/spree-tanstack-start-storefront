@@ -17,7 +17,7 @@ export function ProductReviewSummaryView({
   } = model
   return (
     <div
-      className="scroll-mt-24 bg-muted px-6 py-8 sm:px-8 lg:px-10 lg:py-10"
+      className="scroll-mt-32 bg-muted px-6 py-8 sm:px-8 lg:px-10 lg:py-10 xl:scroll-mt-24"
       id={PRODUCT_REVIEWS_SUMMARY_ID}
     >
       <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(18rem,26rem)]">
