@@ -1,6 +1,6 @@
 import { useMarket } from '@/components/layout/market-provider'
 import type { ProductReviewsFeatureState } from '@/lib/reviews/contracts'
-import { PRODUCT_REVIEWS_SECTION_ID } from './product-reviews-section-id'
+import { PRODUCT_REVIEWS_SECTION_ID } from './product-reviews-target-ids'
 import {
   ProductReviewsEmptyStateView,
   ProductReviewsUnavailableStateView,

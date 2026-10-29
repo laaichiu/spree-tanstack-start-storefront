@@ -4,7 +4,7 @@ import type { ProductReviewsFeatureState } from '@/lib/reviews/contracts'
 import { ProductReviewCard } from './product-review-card'
 import { ProductReviewControls } from './product-review-controls'
 import { ProductReviewSummaryPanel } from './product-review-summary'
-import { PRODUCT_REVIEWS_SECTION_ID } from './product-reviews-section-id'
+import { PRODUCT_REVIEWS_SECTION_ID } from './product-reviews-target-ids'
 import { ReviewMediaLightbox } from './review-media-lightbox'
 import {
   ProductReviewsListView,

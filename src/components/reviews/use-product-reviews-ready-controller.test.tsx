@@ -2,6 +2,7 @@ import { act, cleanup, renderHook, waitFor } from '@testing-library/react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 
 import type { ProductReview, ProductReviewsPage } from '@/lib/reviews/contracts'
+import { PRODUCT_REVIEWS_SUMMARY_ID } from './product-reviews-target-ids'
 
 import { useProductReviewsReadyController } from './use-product-reviews-ready-controller'
 
@@ -91,12 +92,19 @@ const feature = {
 
 afterEach(() => {
   cleanup()
+  document.getElementById(PRODUCT_REVIEWS_SUMMARY_ID)?.remove()
   state.page = undefined
   vi.clearAllMocks()
 })
 
-describe('useProductReviewsReadyController media ownership', () => {
-  it('changes to a selected page and closes the open review photo', () => {
+describe('useProductReviewsReadyController', () => {
+  it('scrolls to the rating summary when changing pages and closes its photo', () => {
+    const summary = document.createElement('div')
+    const scrollIntoView = vi.fn()
+    summary.id = PRODUCT_REVIEWS_SUMMARY_ID
+    summary.scrollIntoView = scrollIntoView
+    document.body.append(summary)
+
     const { result } = renderHook(() =>
       useProductReviewsReadyController({ feature, productId: 'prod_product' }),
     )
@@ -106,6 +114,10 @@ describe('useProductReviewsReadyController media ownership', () => {
 
     expect(result.current.controls.query.page).toBe(3)
     expect(result.current.media.selectedId).toBeNull()
+    expect(scrollIntoView).toHaveBeenCalledWith({
+      behavior: 'smooth',
+      block: 'start',
+    })
   })
 
   it('closes and clears a selected media item removed by a page update', async () => {

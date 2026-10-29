@@ -12,9 +12,11 @@ import {
 } from '@/lib/reviews/client/use-product-reviews'
 
 import { useMarket } from '@/components/layout/market-provider'
+import { PRODUCT_REVIEWS_SUMMARY_ID } from './product-reviews-target-ids'
 
 import { getReviewMediaItems } from './review-media-items'
 import { getProductReviewPaginationPresentation } from './product-review-pagination-model'
+import { scrollToProductReviewTarget } from './product-reviews-scroll'
 
 type ReadyProductReviewsFeature = Extract<
   ProductReviewsFeatureState,
@@ -79,6 +81,7 @@ export function useProductReviewsReadyController({
 
     setSelectedMediaId(null)
     setQuery((current) => ({ ...current, page: nextPage }))
+    scrollToProductReviewTarget(PRODUCT_REVIEWS_SUMMARY_ID)
   }
 
   function vote(reviewId: string, nextVote: ProductReviewVote) {

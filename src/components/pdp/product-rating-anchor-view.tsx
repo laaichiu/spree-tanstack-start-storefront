@@ -1,5 +1,6 @@
 import { ReviewStarsView } from '@/components/reviews/review-stars-view'
 import type { ProductRatingAnchorDisplay } from '@/components/reviews/product-rating-anchor-model'
+import { scrollToProductReviewTarget } from '@/components/reviews/product-reviews-scroll'
 import { Button } from '@/components/ui/button'
 
 export function ProductRatingAnchorView({
@@ -9,29 +10,12 @@ export function ProductRatingAnchorView({
 }) {
   const { ariaLabel, label, rating, ratingLabel, targetId } = model
 
-  function scrollToReviews() {
-    const target = document.getElementById(targetId)
-
-    if (!target) {
-      return
-    }
-
-    const prefersReducedMotion =
-      typeof window.matchMedia === 'function' &&
-      window.matchMedia('(prefers-reduced-motion: reduce)').matches
-
-    target.scrollIntoView({
-      behavior: prefersReducedMotion ? 'instant' : 'smooth',
-      block: 'start',
-    })
-  }
-
   return (
     <Button
       aria-controls={targetId}
       aria-label={ariaLabel}
       className="flex-wrap rounded-none border-0 p-0 text-muted-foreground normal-case hover:bg-transparent hover:text-foreground"
-      onClick={scrollToReviews}
+      onClick={() => scrollToProductReviewTarget(targetId)}
       variant="ghost"
     >
       <ReviewStarsView

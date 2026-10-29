@@ -9,7 +9,7 @@ import { getMoneyDisplay } from '@/components/shared/money-display'
 import { useMarket } from '@/components/layout/market-provider'
 import { getCatalogBreadcrumbDisplays } from '@/components/catalog/catalog-breadcrumb-display'
 import { createProductDetailBreadcrumbRenderer } from '@/components/pdp/product-detail-breadcrumb-renderer'
-import { PRODUCT_REVIEWS_SECTION_ID } from '@/components/reviews/product-reviews-section-id'
+import { PRODUCT_REVIEWS_SECTION_ID } from '@/components/reviews/product-reviews-target-ids'
 import {
   ProductDetailBreadcrumbsView,
   ProductDetailHeadingView,

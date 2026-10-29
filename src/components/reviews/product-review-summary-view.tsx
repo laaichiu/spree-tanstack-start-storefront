@@ -1,6 +1,7 @@
 import { ReviewStarsView } from './review-stars-view'
 import { ReviewStarIcon } from './review-star-icon'
 import type { ProductReviewSummaryDisplay } from './product-review-summary-model'
+import { PRODUCT_REVIEWS_SUMMARY_ID } from './product-reviews-target-ids'
 
 export function ProductReviewSummaryView({
   model,
@@ -15,7 +16,10 @@ export function ProductReviewSummaryView({
     reviewCountLabel,
   } = model
   return (
-    <div className="bg-muted px-6 py-8 sm:px-8 lg:px-10 lg:py-10">
+    <div
+      className="scroll-mt-24 bg-muted px-6 py-8 sm:px-8 lg:px-10 lg:py-10"
+      id={PRODUCT_REVIEWS_SUMMARY_ID}
+    >
       <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(18rem,26rem)]">
         <div className="space-y-4">
           <p className="text-xs leading-6 font-normal text-foreground">
