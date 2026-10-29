@@ -42,6 +42,21 @@ describe('review pagination', () => {
     },
   )
 
+  it.each([
+    [1, 12, [1, 2, 3]],
+    [6, 12, [5, 6, 7]],
+    [12, 12, [10, 11, 12]],
+  ])(
+    'keeps the current page in a compact window at page %i of %i',
+    (page, count, expected) => {
+      expect(
+        presentation(page, count)
+          .pages.filter((item) => item.visibleInCompactLayout)
+          .map((item) => item.number),
+      ).toEqual(expected)
+    },
+  )
+
   it('marks the current page and navigates by number or arrow', () => {
     const actions = { goToPage: vi.fn(), next: vi.fn(), previous: vi.fn() }
     render(
@@ -61,6 +76,25 @@ describe('review pagination', () => {
     expect(actions.goToPage).toHaveBeenCalledWith(3)
     expect(actions.previous).toHaveBeenCalledOnce()
     expect(actions.next).toHaveBeenCalledOnce()
+  })
+
+  it('hides non-compact page buttons below the responsive breakpoint', () => {
+    const actions = { goToPage: vi.fn(), next: vi.fn(), previous: vi.fn() }
+    render(
+      <ProductReviewsPaginationView
+        actions={actions}
+        model={presentation(6, 12)}
+      />,
+    )
+
+    const currentPageButton = screen.getByText('6').closest('button')
+    const nonCompactPageButton = screen.getByText('4').closest('button')
+
+    expect(currentPageButton?.classList.contains('hidden')).toBe(false)
+    expect(nonCompactPageButton?.classList.contains('hidden')).toBe(true)
+    expect(nonCompactPageButton?.classList.contains('sm:inline-flex')).toBe(
+      true,
+    )
   })
 
   it('disables unavailable arrows and pending page changes', () => {

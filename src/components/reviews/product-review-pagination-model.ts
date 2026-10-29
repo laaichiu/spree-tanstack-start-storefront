@@ -9,6 +9,19 @@ type ProductReviewPaginationPresentationLabels = {
   previous: string
 }
 
+function getFirstPageInWindow(
+  currentPage: number,
+  pageCount: number,
+  windowSize: number,
+) {
+  const pagesBeforeCurrent = Math.floor(windowSize / 2)
+
+  return Math.max(
+    1,
+    Math.min(currentPage - pagesBeforeCurrent, pageCount - windowSize + 1),
+  )
+}
+
 export function getProductReviewPaginationPresentation({
   disabled,
   labels,
@@ -24,8 +37,18 @@ export function getProductReviewPaginationPresentation({
   >
 }): ProductReviewsPaginationModel {
   const pageCount = Math.max(1, pagination.pageCount)
-  const firstPage = Math.max(1, Math.min(pagination.page - 2, pageCount - 4))
-  const visibleCount = Math.min(5, pageCount)
+  const pageWindowSize = Math.min(5, pageCount)
+  const compactPageWindowSize = Math.min(3, pageCount)
+  const firstVisiblePage = getFirstPageInWindow(
+    pagination.page,
+    pageCount,
+    pageWindowSize,
+  )
+  const firstCompactVisiblePage = getFirstPageInWindow(
+    pagination.page,
+    pageCount,
+    compactPageWindowSize,
+  )
 
   return {
     hasNext: pagination.nextPage !== null,
@@ -36,13 +59,16 @@ export function getProductReviewPaginationPresentation({
     pageLabel: labels.pageOf
       .replace('{page}', formatNumber(pagination.page, locale))
       .replace('{pages}', formatNumber(pageCount, locale)),
-    pages: Array.from({ length: visibleCount }, (_, index) => {
-      const number = firstPage + index
+    pages: Array.from({ length: pageWindowSize }, (_, index) => {
+      const number = firstVisiblePage + index
 
       return {
         current: number === pagination.page,
         label: formatNumber(number, locale),
         number,
+        visibleInCompactLayout:
+          number >= firstCompactVisiblePage &&
+          number < firstCompactVisiblePage + compactPageWindowSize,
       }
     }),
     previousLabel: labels.previous,

@@ -89,7 +89,9 @@ export function ProductReviewsPaginationView({
       {pages.map((page) => (
         <Button
           aria-current={page.current ? 'page' : undefined}
-          className={`h-10 w-8 rounded-none border-0 p-0 text-sm font-normal normal-case transition-colors motion-reduce:transition-none disabled:opacity-55 sm:w-10 ${
+          className={`h-10 w-10 rounded-none border-0 p-0 text-sm font-normal normal-case transition-colors motion-reduce:transition-none disabled:opacity-55 ${
+            page.visibleInCompactLayout ? '' : 'hidden sm:inline-flex'
+          } ${
             page.current
               ? 'bg-foreground text-background hover:bg-foreground'
               : 'text-foreground hover:bg-muted'

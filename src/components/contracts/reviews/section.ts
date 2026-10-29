@@ -45,7 +45,12 @@ export type ProductReviewsPaginationModel = {
   navigationLabel: string
   nextLabel: string
   pageLabel: string
-  pages: ReadonlyArray<{ current: boolean; label: string; number: number }>
+  pages: ReadonlyArray<{
+    current: boolean
+    label: string
+    number: number
+    visibleInCompactLayout: boolean
+  }>
   previousLabel: string
 }
 
