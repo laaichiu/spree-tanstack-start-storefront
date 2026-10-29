@@ -132,14 +132,17 @@ describe('product review response ownership', () => {
     client.request.mockResolvedValue({ data: [] })
     server.mapPage.mockReturnValue({
       pagination: {
-        count: 1,
+        count: 2,
         limit: 10,
         nextPage: null,
         page: 1,
         pageCount: 1,
         previousPage: null,
       },
-      reviews: [{ productId: 'prod_other_product' }],
+      reviews: [
+        { productId: 'prod_de_product' },
+        { productId: 'prod_other_product' },
+      ],
     })
 
     await expect(
@@ -150,7 +153,7 @@ describe('product review response ownership', () => {
           query,
         },
       }),
-    ).rejects.toThrow('does not match the request')
+    ).rejects.toThrow('does not match the requested product')
     expect(server.reportError).toHaveBeenCalledWith(
       expect.objectContaining({ context: 'reviews.product.page' }),
     )
@@ -178,7 +181,7 @@ describe('product review response ownership', () => {
           query,
         },
       }),
-    ).rejects.toThrow('does not match the request')
+    ).rejects.toThrow('not a product resource')
     expect(server.reportError).toHaveBeenCalledWith(
       expect.objectContaining({ context: 'reviews.product.page' }),
     )

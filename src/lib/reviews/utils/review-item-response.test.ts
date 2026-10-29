@@ -68,6 +68,12 @@ describe('product review response boundary', () => {
     ).not.toThrow()
   })
 
+  it('accepts an approved legacy review with an empty title', () => {
+    expect(() =>
+      assertReviewItemResponse({ ...validResponse, title: '' }),
+    ).not.toThrow()
+  })
+
   it('accepts primitive labels emitted for boolean and scale answers', () => {
     expect(() =>
       assertReviewItemResponse({

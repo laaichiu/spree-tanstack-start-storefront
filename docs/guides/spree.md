@@ -176,7 +176,14 @@ Product and Category support storefront-visible `custom_fields` expansions in
 6.0.0. Wider expansion on Seller, Address and other resources is post-release
 upstream work; do not copy those fields from moving docs into pinned fixtures.
 
-Reviews require their enabled backend extension and moderation contract.
+Reviews require their enabled backend extension and moderation contract. The
+storefront's `SPREE_API_URL`, publishable key, and Channel must target the same
+Store where `spree_reviews` is installed; enabling the storefront flag alone
+does not install the extension. Check the product reviews, summary, and filters
+Store API endpoints when the review section is unavailable. A 404 from those
+endpoints can indicate a backend without the extension, an unpublished product,
+or a different Store or Channel. Approved historical reviews may have an empty
+title; new submissions still require one.
 Quotes, digital fulfillment and post-sale screens need their own capability
 plan, routes, permissions and tests. Storefront visibility is not implied by an
 SDK method or an installed backend gem.

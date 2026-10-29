@@ -3,11 +3,7 @@ import '@tanstack/react-start/server-only'
 import type { Client as SpreeClient } from '@spree/sdk'
 
 import { PRODUCT_REVIEWS_PAGE_SIZE } from '@/lib/reviews/contracts'
-import type {
-  ProductReviewsFeatureState,
-  ProductReviewsPage,
-  ProductReviewSummary,
-} from '@/lib/reviews/contracts'
+import type { ProductReviewsFeatureState } from '@/lib/reviews/contracts'
 import type { ResolvedMarket } from '@/lib/core/market'
 import { reportError } from '@/lib/observability/report-error'
 import { getServerSpreeClientForMarket } from '@/lib/spree/client.server'
@@ -19,39 +15,10 @@ import {
   mapProductReviewSummary,
 } from '../mappers/product-review.mapper'
 import { productReviewsPath } from './reviews-request.server'
-import { isReviewProductResourceId } from '../utils/review-product-identity'
-
-function assertReviewsBelongToProduct(
-  page: ProductReviewsPage,
-  productId: string,
-) {
-  if (
-    page.reviews.every(
-      (review) =>
-        isReviewProductResourceId(review.productId) &&
-        (!isReviewProductResourceId(productId) ||
-          review.productId === productId),
-    )
-  ) {
-    return
-  }
-
-  throw new Error('The product reviews response does not match the request.')
-}
-
-function assertReviewSummaryBelongsToProduct(
-  summary: ProductReviewSummary,
-  productId: string,
-) {
-  if (
-    isReviewProductResourceId(summary.productId) &&
-    (!isReviewProductResourceId(productId) || summary.productId === productId)
-  ) {
-    return
-  }
-
-  throw new Error('The product review summary does not match the request.')
-}
+import {
+  assertReviewsBelongToProduct,
+  assertReviewProductResourceMatchesRequestedLocator,
+} from '../utils/review-product-identity'
 
 export async function getProductReviewsOverviewForMarket({
   client: scopedClient,
@@ -85,8 +52,8 @@ export async function getProductReviewsOverviewForMarket({
     const initialPage = mapProductReviewsPage(reviews)
     const reviewSummary = mapProductReviewSummary(summary)
 
-    assertReviewsBelongToProduct(initialPage, productId)
-    assertReviewSummaryBelongsToProduct(reviewSummary, productId)
+    assertReviewsBelongToProduct(initialPage.reviews, productId)
+    assertReviewProductResourceMatchesRequestedLocator(reviewSummary, productId)
 
     return {
       filters: mapProductReviewFilters(filters),

@@ -116,6 +116,15 @@ export function assertReviewResourceIsReview(resource: { id?: unknown }) {
   }
 }
 
+export function assertReviewsBelongToProduct(
+  reviews: ReadonlyArray<{ productId: string }>,
+  productId: string,
+) {
+  for (const review of reviews) {
+    assertReviewProductResourceMatchesRequestedLocator(review, productId)
+  }
+}
+
 export function assertReviewProductResourceMatchesRequestedLocator(
   resource: { productId?: unknown },
   requestedProductLocator: string,

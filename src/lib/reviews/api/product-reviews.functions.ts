@@ -14,7 +14,7 @@ import {
   resolveReviewsRequestContext,
 } from './reviews-request.server'
 import { toProductReviewQueryParams } from '../utils/review-query-params'
-import { isReviewProductResourceId } from '../utils/review-product-identity'
+import { assertReviewsBelongToProduct } from '../utils/review-product-identity'
 
 const REVIEW_SORTS = [
   'most_recent',
@@ -22,24 +22,6 @@ const REVIEW_SORTS = [
   'lowest_rating',
   'most_helpful',
 ] as const satisfies readonly ProductReviewSort[]
-
-function assertReviewsBelongToProduct(
-  page: ProductReviewsPage,
-  productId: string,
-) {
-  if (
-    page.reviews.every(
-      (review) =>
-        isReviewProductResourceId(review.productId) &&
-        (!isReviewProductResourceId(productId) ||
-          review.productId === productId),
-    )
-  ) {
-    return
-  }
-
-  throw new Error('The product reviews response does not match the request.')
-}
 
 async function parseBaseInput(data: unknown) {
   const { serverZod: z } = await import('@/lib/validation/server-zod.server')
@@ -128,7 +110,7 @@ export const getProductReviewsPage = createServerFn({ method: 'GET' })
         { params: toProductReviewQueryParams(input.query) },
       )
       const page = mapProductReviewsPage(response)
-      assertReviewsBelongToProduct(page, input.productId)
+      assertReviewsBelongToProduct(page.reviews, input.productId)
 
       return page
     } catch (error) {

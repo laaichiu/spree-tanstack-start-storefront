@@ -150,7 +150,7 @@ export function isReviewItemResponse(
     (value.variant_id === null ||
       isReviewVariantResourceId(value.variant_id)) &&
     isNonBlankString(value.created_at) &&
-    isNonBlankString(value.title) &&
+    typeof value.title === 'string' &&
     typeof value.body === 'string' &&
     isReviewRating(value.rating) &&
     isNonNegativeInteger(value.helpful_count) &&

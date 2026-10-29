@@ -181,6 +181,22 @@ describe('product review response mappers', () => {
     })
   })
 
+  it('keeps a legacy review without a title in the page', () => {
+    expect(
+      mapProductReviewsPage({
+        data: [{ ...review, title: '' }],
+        meta: {
+          count: 1,
+          limit: 10,
+          next: null,
+          page: 1,
+          pages: 1,
+          previous: null,
+        },
+      }).reviews,
+    ).toMatchObject([{ id: 'rev_review', title: '' }])
+  })
+
   it.each([
     null,
     [],
