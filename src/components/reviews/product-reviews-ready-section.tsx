@@ -69,6 +69,7 @@ export function ProductReviewsReadySection({
   const paginationSlot = pagination.visible ? (
     <ProductReviewsPaginationView
       actions={{
+        goToPage: pagination.goToPage,
         next: pagination.next,
         previous: pagination.previous,
       }}

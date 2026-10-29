@@ -1,21 +1,12 @@
 import type { ProductReviewPagination } from '@/lib/reviews/contracts'
 import { formatNumber } from '@/components/shared/locale-format'
+import type { ProductReviewsPaginationModel } from '@/components/contracts/reviews'
 
-export type ProductReviewPaginationPresentationLabels = {
+type ProductReviewPaginationPresentationLabels = {
   navigation: string
   next: string
   pageOf: string
   previous: string
-}
-
-export type ProductReviewPaginationPresentation = {
-  hasNext: boolean
-  hasPrevious: boolean
-  isDisabled: boolean
-  navigationLabel: string
-  nextLabel: string
-  pageLabel: string
-  previousLabel: string
 }
 
 export function getProductReviewPaginationPresentation({
@@ -31,8 +22,10 @@ export function getProductReviewPaginationPresentation({
     ProductReviewPagination,
     'nextPage' | 'page' | 'pageCount' | 'previousPage'
   >
-}): ProductReviewPaginationPresentation {
+}): ProductReviewsPaginationModel {
   const pageCount = Math.max(1, pagination.pageCount)
+  const firstPage = Math.max(1, Math.min(pagination.page - 2, pageCount - 4))
+  const visibleCount = Math.min(5, pageCount)
 
   return {
     hasNext: pagination.nextPage !== null,
@@ -43,6 +36,15 @@ export function getProductReviewPaginationPresentation({
     pageLabel: labels.pageOf
       .replace('{page}', formatNumber(pagination.page, locale))
       .replace('{pages}', formatNumber(pageCount, locale)),
+    pages: Array.from({ length: visibleCount }, (_, index) => {
+      const number = firstPage + index
+
+      return {
+        current: number === pagination.page,
+        label: formatNumber(number, locale),
+        number,
+      }
+    }),
     previousLabel: labels.previous,
   }
 }

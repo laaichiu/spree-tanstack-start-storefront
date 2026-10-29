@@ -73,7 +73,7 @@ export function useProductReviewsReadyController({
   }
 
   function updatePage(nextPage: number | null) {
-    if (!nextPage) {
+    if (nextPage === null) {
       return
     }
 
@@ -105,6 +105,7 @@ export function useProductReviewsReadyController({
     page,
     pagination: {
       model: paginationPresentation,
+      goToPage: updatePage,
       next: () => updatePage(page.pagination.nextPage),
       previous: () => updatePage(page.pagination.previousPage),
       visible: page.pagination.pageCount > 1,

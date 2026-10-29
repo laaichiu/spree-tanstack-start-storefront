@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+import { ChevronLeft, ChevronRight } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
 import type {
@@ -65,27 +66,50 @@ export function ProductReviewsPaginationView({
     navigationLabel,
     nextLabel,
     pageLabel,
+    pages,
     previousLabel,
   } = model
   return (
     <nav
       aria-label={navigationLabel}
-      className="mt-8 flex items-center justify-between gap-4"
+      className="mt-8 flex items-center justify-center gap-1"
     >
       <Button
+        aria-label={previousLabel}
+        className="h-11 w-11 transition-colors motion-reduce:transition-none"
         disabled={!hasPrevious || isDisabled}
         onClick={actions.previous}
-        variant="secondary"
+        variant="icon"
       >
-        {previousLabel}
+        <ChevronLeft aria-hidden="true" className="h-5 w-5" />
       </Button>
-      <p className="text-xs text-muted-foreground">{pageLabel}</p>
+      <span className="sr-only" aria-live="polite">
+        {pageLabel}
+      </span>
+      {pages.map((page) => (
+        <Button
+          aria-current={page.current ? 'page' : undefined}
+          className={`h-10 w-8 rounded-none border-0 p-0 text-sm font-normal normal-case transition-colors motion-reduce:transition-none disabled:opacity-55 sm:w-10 ${
+            page.current
+              ? 'bg-foreground text-background hover:bg-foreground'
+              : 'text-foreground hover:bg-muted'
+          }`}
+          disabled={isDisabled}
+          key={page.number}
+          onClick={() => actions.goToPage(page.number)}
+          variant="ghost"
+        >
+          {page.label}
+        </Button>
+      ))}
       <Button
+        aria-label={nextLabel}
+        className="h-11 w-11 transition-colors motion-reduce:transition-none"
         disabled={!hasNext || isDisabled}
         onClick={actions.next}
-        variant="secondary"
+        variant="icon"
       >
-        {nextLabel}
+        <ChevronRight aria-hidden="true" className="h-5 w-5" />
       </Button>
     </nav>
   )

@@ -1,5 +1,4 @@
 import type { ReactNode } from 'react'
-import type { ProductReviewPaginationPresentation } from '@/components/reviews/product-review-pagination-model'
 
 export type ProductReviewsReadySectionModel = {
   isFetching: boolean
@@ -39,9 +38,19 @@ export type ProductReviewsLoadErrorStateModel = {
   title: string
 }
 
-export type ProductReviewsPaginationModel = ProductReviewPaginationPresentation
+export type ProductReviewsPaginationModel = {
+  hasNext: boolean
+  hasPrevious: boolean
+  isDisabled: boolean
+  navigationLabel: string
+  nextLabel: string
+  pageLabel: string
+  pages: ReadonlyArray<{ current: boolean; label: string; number: number }>
+  previousLabel: string
+}
 
 export type ProductReviewsPaginationActions = {
+  goToPage: (page: number) => void
   next: () => void
   previous: () => void
 }

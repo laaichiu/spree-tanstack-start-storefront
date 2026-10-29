@@ -96,6 +96,18 @@ afterEach(() => {
 })
 
 describe('useProductReviewsReadyController media ownership', () => {
+  it('changes to a selected page and closes the open review photo', () => {
+    const { result } = renderHook(() =>
+      useProductReviewsReadyController({ feature, productId: 'prod_product' }),
+    )
+
+    act(() => result.current.media.onSelectId('rev_review:rmedia_photo'))
+    act(() => result.current.pagination.goToPage(3))
+
+    expect(result.current.controls.query.page).toBe(3)
+    expect(result.current.media.selectedId).toBeNull()
+  })
+
   it('closes and clears a selected media item removed by a page update', async () => {
     const { result, rerender } = renderHook(() =>
       useProductReviewsReadyController({
