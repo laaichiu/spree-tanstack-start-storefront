@@ -126,6 +126,11 @@ describe('product review response ownership', () => {
         },
       }),
     ).resolves.toBe(page)
+    expect(client.request).toHaveBeenCalledWith(
+      'GET',
+      '/products/prod_de_product/reviews',
+      { params: { limit: 5, page: 1, sort: 'most_recent' } },
+    )
   })
 
   it('fails closed when the page contains another product review', async () => {
@@ -230,6 +235,11 @@ describe('product review response ownership', () => {
       status: 'ready',
       summary,
     })
+    expect(client.request).toHaveBeenCalledWith(
+      'GET',
+      '/products/prod_de_product/reviews',
+      { params: { limit: 5, page: 1, sort: 'most_recent' } },
+    )
   })
 
   it('fails closed when the overview summary belongs to another product', async () => {

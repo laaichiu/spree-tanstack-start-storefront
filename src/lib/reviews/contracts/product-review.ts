@@ -4,7 +4,7 @@
  * Customer eligibility, form state, media upload, and submission inputs stay
  * in the storefront runtime because they cross account or mutation boundaries.
  */
-export const PRODUCT_REVIEWS_PAGE_SIZE = 10
+export const PRODUCT_REVIEWS_PAGE_SIZE = 5
 export const PRODUCT_REVIEW_RATINGS = [5, 4, 3, 2, 1] as const
 export const PRODUCT_REVIEW_MAX_MEDIA_COUNT = 5
 export const PRODUCT_REVIEW_MEDIA_CONTENT_TYPES = [
