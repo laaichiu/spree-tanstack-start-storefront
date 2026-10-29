@@ -95,7 +95,7 @@ export function ProductDetailHeadingView({
         </div>
 
         {model.reviewAnchor && (
-          <div className="mt-5">
+          <div className="mt-2">
             <ProductRatingAnchorView model={model.reviewAnchor} />
           </div>
         )}

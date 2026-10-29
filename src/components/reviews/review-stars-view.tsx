@@ -1,6 +1,5 @@
-import { Star } from 'lucide-react'
-
 import { cn } from '@/components/ui/utils'
+import { ReviewStarIcon } from './review-star-icon'
 
 export function ReviewStarsView({
   className,
@@ -22,14 +21,8 @@ export function ReviewStarsView({
         const filled = index < roundedRating
 
         return (
-          <Star
-            aria-hidden="true"
-            className={cn(
-              'h-4 w-4',
-              filled
-                ? 'fill-foreground text-foreground'
-                : 'fill-muted text-muted',
-            )}
+          <ReviewStarIcon
+            className={cn('h-4 w-4', filled ? 'text-foreground' : 'text-muted')}
             key={index}
           />
         )

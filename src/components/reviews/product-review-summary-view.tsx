@@ -1,4 +1,5 @@
 import { ReviewStarsView } from './review-stars-view'
+import { ReviewStarIcon } from './review-star-icon'
 import type { ProductReviewSummaryDisplay } from './product-review-summary-model'
 
 export function ProductReviewSummaryView({
@@ -37,7 +38,7 @@ export function ProductReviewSummaryView({
               key={rating}
             >
               <span>{rating}</span>
-              <span aria-hidden="true">★</span>
+              <ReviewStarIcon />
               <div className="h-1.5 overflow-hidden rounded-full bg-border">
                 <div
                   className="h-full rounded-full bg-foreground"

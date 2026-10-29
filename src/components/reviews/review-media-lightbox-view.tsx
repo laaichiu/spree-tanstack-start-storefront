@@ -127,7 +127,7 @@ export function ReviewMediaLightboxView({
             <aside className="min-h-0 overflow-y-auto border-t border-border p-5 lg:border-t-0 lg:border-l lg:p-6 max-lg:landscape:border-t-0 max-lg:landscape:border-l max-lg:landscape:p-4">
               <div className="space-y-5">
                 <div className="space-y-2 text-xs">
-                  <p className="font-normal text-foreground">
+                  <p className="text-sm font-normal text-foreground uppercase">
                     {selectedItem.review.reviewerName ?? labels.anonymous}
                   </p>
                   {selectedItem.review.verifiedPurchase ? (

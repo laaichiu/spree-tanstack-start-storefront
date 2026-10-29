@@ -11,11 +11,15 @@ export function ProductRatingAnchorView({
   return (
     <a
       aria-label={ariaLabel}
-      className="mt-5 inline-flex flex-wrap items-center gap-3 text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50"
+      className="inline-flex flex-wrap items-center gap-2 text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50"
       href={href}
     >
-      <ReviewStarsView label={ratingLabel} rating={rating} />
-      <span className="text-xs leading-6">{label}</span>
+      <ReviewStarsView
+        className="gap-0.5 [&>svg]:size-3"
+        label={ratingLabel}
+        rating={rating}
+      />
+      <span className="text-xs leading-4">{label}</span>
     </a>
   )
 }

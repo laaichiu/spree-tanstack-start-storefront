@@ -1,9 +1,9 @@
-import { CheckCircle, Star } from 'lucide-react'
+import { CheckCircle } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { cn } from '@/components/ui/utils'
 import type { ProductReviewFormProps } from '../contracts/reviews'
+import { ReviewStarIcon } from './review-star-icon'
 
 export type {
   ProductReviewFormActions,
@@ -82,14 +82,9 @@ export function ProductReviewFormView({ ...props }: ProductReviewFormProps) {
               onClick={() => props.actions.ratingChange(value)}
               type="button"
             >
-              <Star
-                aria-hidden="true"
-                className={cn(
-                  'h-5 w-5',
-                  value <= state.rating
-                    ? 'fill-foreground'
-                    : 'fill-transparent',
-                )}
+              <ReviewStarIcon
+                className="h-5 w-5"
+                filled={value <= state.rating}
               />
             </Button>
           ))}

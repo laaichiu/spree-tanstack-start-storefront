@@ -30,7 +30,9 @@ export function ProductReviewCardView({
     <article className="grid gap-8 border-t border-border pt-8 md:grid-cols-[10rem_minmax(0,1fr)_6rem]">
       <aside className="space-y-5 text-xs text-foreground">
         <div className="space-y-2">
-          <p>{review.reviewerName ?? labels.anonymous}</p>
+          <p className="text-sm uppercase">
+            {review.reviewerName ?? labels.anonymous}
+          </p>
           {review.verifiedPurchase ? (
             <p className="inline-flex items-center gap-2 text-foreground">
               <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-foreground text-background">
@@ -71,9 +73,7 @@ export function ProductReviewCardView({
         />
 
         {review.title ? (
-          <h3 className="text-xs font-normal text-foreground">
-            {review.title}
-          </h3>
+          <h3 className="font-semibold text-foreground">{review.title}</h3>
         ) : null}
 
         {review.body ? (
