@@ -12,7 +12,7 @@ export function ProductRelatedProductsView({
   return (
     <section
       aria-labelledby="related-products-title"
-      className="mx-auto mt-14 w-full max-w-[78rem] space-y-6 lg:mt-20"
+      className="mx-auto mt-14 w-full max-w-7xl space-y-6 lg:mt-20"
     >
       <h2
         className="text-lg md:text-xl font-normal tracking-wider text-foreground"
