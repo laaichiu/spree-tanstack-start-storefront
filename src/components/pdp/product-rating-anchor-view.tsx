@@ -14,7 +14,7 @@ export function ProductRatingAnchorView({
     <Button
       aria-controls={targetId}
       aria-label={ariaLabel}
-      className="flex-wrap rounded-none border-0 p-0 text-muted-foreground normal-case hover:bg-transparent hover:text-foreground"
+      className="h-auto flex-wrap rounded-none border-0 p-0 text-muted-foreground normal-case hover:bg-transparent hover:text-foreground"
       onClick={() => scrollToProductReviewTarget(targetId)}
       variant="ghost"
     >
