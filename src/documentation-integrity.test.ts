@@ -114,14 +114,15 @@ describe('documentation integrity', () => {
     expect(result.stderr).toContain('exposure for SPREE_API_URL must match')
   })
 
-  it('rejects an undocumented template removal', () => {
-    rewrite('.env.example', (content) =>
-      content.replace(/^VITE_STOREFRONT_NAME=.*\n/m, ''),
+  it('rejects a stale environment variable documented only in the README', () => {
+    appendFileSync(
+      join(fixture, 'README.md'),
+      '\n| `VITE_REMOVED_STORE_NAME` | Browser | `Shop` | Removed setting |\n',
     )
     const result = verify()
     expect(result.status).toBe(1)
     expect(result.stderr).toContain(
-      'VITE_STOREFRONT_NAME absent from .env.example',
+      'README.md documents environment variable VITE_REMOVED_STORE_NAME absent from .env.example',
     )
   })
 

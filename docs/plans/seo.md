@@ -88,18 +88,31 @@ Every public route owns intentional title, description, canonical, robots,
 social image and locale metadata through shared normalized helpers. Raw SDK
 resources do not enter route head functions. Public product/category/policy
 content and primary metadata should be present in the initial SSR response.
+Global and market-level not-found responses emit localized `noindex` metadata;
+market-level not-found titles include the matching Store name when available.
 
 Test hydration and client navigation for duplicate or stale head tags after
 Market, slug or route changes. Prevent waterfalls that serialize independent
 catalog data behind message loading. Nonessential reviews or recommendations
 must not delay primary product content.
 
-Current branding uses validated public Store metadata first. If that request
-fails, `VITE_STOREFRONT_NAME` supplies the fallback name, followed by localized
-app defaults. It is not an override of a successful Store response. Any future
-deployment override needs its own explicit contract. Keep header, footer, page
-titles, social cards and structured data consistent. Do not use workstation,
-repository or account names as public branding.
+Spree 6.0.1 exposes the current Store's public name, `seo_title`, and
+`meta_description` from `GET /api/v3/store/store`, localized by the request's
+`X-Spree-Locale` and defaulting individual untranslated fields to the Store's
+default locale. The server-only Storefront branding loader calls
+`client.store.get({ locale })`, validates the Store identity and nullable text,
+then maps those values into the app-owned contract. The home page uses the
+Store SEO title and description before localized app copy. Append the Store
+name to the selected title unless that title is just the Store name. Do not
+detect an existing `| Store name` suffix. For resource pages, resolve
+description from resource metadata, resource description, Store metadata, then
+localized fallback. Other pages prefer explicit route descriptions, then Store
+metadata, then localized fallback. Store name is read from the Store API and is
+required to be non-empty; it is not configured in the storefront environment.
+If the API request fails, localized generic app copy is used temporarily. Keep
+header, footer, page titles, social cards and structured data consistent. Do
+not use workstation, repository or account names as public branding. The 6.0.1
+API response and locale fallback still need runtime verification.
 
 Logos and social images need safe public URLs, dimensions and useful alt text.
 Seller labels are app terminology; Seller identity remains the backend domain.

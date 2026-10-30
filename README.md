@@ -72,7 +72,6 @@ These are all the application variables in [.env.example](.env.example):
 | `SPREE_PUBLISHABLE_KEY`                          | Server   | `pk_your_publishable_api_key` | Required Store-scoped publishable key; replace the placeholder                                             |
 | `SPREE_CHANNEL`                                  | Server   | `online`                      | Channel code or prefixed ID; runtime fallback is `online`, but production builds require an explicit value |
 | `VITE_STOREFRONT_URL`                            | Browser  | `http://localhost:3006`       | Public origin for links, metadata, and payment redirects; required for production                          |
-| `VITE_STOREFRONT_NAME`                           | Browser  | `Shop`                        | Optional fallback Store name while backend branding is unavailable                                         |
 | `VITE_STRIPE_PUBLISHABLE_KEY`                    | Browser  | Empty                         | Required for Stripe payment UI; may stay empty for catalog development                                     |
 | `VITE_STOREFRONT_REVIEWS_ENABLED`                | Browser  | `false`                       | Reviews are disabled by default; set `true` only with a compatible backend extension                       |
 | `VITE_STOREFRONT_FREE_SHIPPING_THRESHOLD_AMOUNT` | Browser  | Empty                         | Optional currency map for the cart free-shipping progress indicator                                        |

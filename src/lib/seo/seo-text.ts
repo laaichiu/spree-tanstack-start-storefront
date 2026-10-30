@@ -31,10 +31,7 @@ export function buildPageTitle(pageTitle: string, storeName: string) {
   const normalizedTitle = title.toLocaleLowerCase()
   const normalizedName = name.toLocaleLowerCase()
 
-  if (
-    normalizedTitle === normalizedName ||
-    normalizedTitle.endsWith(`| ${normalizedName}`)
-  ) {
+  if (normalizedTitle === normalizedName) {
     return title
   }
 

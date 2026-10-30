@@ -2,7 +2,6 @@ import { parseStorefrontOrigin } from '../core/origin.ts'
 
 export type PublicBuildEnv = {
   reviewsEnabled: boolean
-  storefrontName: string | null
   storefrontUrl: string
   stripePublishableKey: string | null
 }
@@ -46,15 +45,6 @@ function readStripePublishableKey(input: Record<string, string | undefined>) {
   return value || null
 }
 
-function readOptionalPublicText(
-  input: Record<string, string | undefined>,
-  key: 'VITE_STOREFRONT_NAME',
-) {
-  const value = input[key]?.trim()
-
-  return value || null
-}
-
 function readReviewsEnabled(
   input: Record<string, string | undefined>,
   strictProduction: boolean,
@@ -90,7 +80,6 @@ export function readPublicBuildEnv(
 
   return {
     reviewsEnabled: readReviewsEnabled(input, strictProduction),
-    storefrontName: readOptionalPublicText(input, 'VITE_STOREFRONT_NAME'),
     storefrontUrl: readStorefrontUrl(input, strictProduction),
     stripePublishableKey: readStripePublishableKey(input),
   } satisfies PublicBuildEnv
