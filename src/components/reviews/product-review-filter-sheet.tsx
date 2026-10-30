@@ -36,9 +36,6 @@ export function ProductReviewFilterSheet({
       model={{
         clearDisabled: selectedFilterCount === 0,
         disabled,
-        headerCountLabel: selectedFilterCount
-          ? `(${selectedFilterCount})`
-          : allReviewsLabel,
         labels: {
           applyFilters: t('reviews.applyFilters'),
           clearFilters: t('reviews.clearFilters'),

@@ -26,16 +26,12 @@ export function ProductReviewFilterSheetView({
   actions: ProductReviewFilterSheetActions
   model: ProductReviewFilterSheetModel
 }) {
-  const { clearDisabled, disabled, headerCountLabel, labels, open, sections } =
-    model
+  const { clearDisabled, disabled, labels, open, sections } = model
   return (
     <Sheet onOpenChange={actions.openChange} open={open} swipeDirection="left">
       <SheetContent className="border-r border-border" disableSwipe side="left">
-        <SheetHeader className="grid min-h-16 grid-cols-[minmax(0,1fr)_auto_auto] border-b border-border px-4 py-4">
+        <SheetHeader className="grid min-h-16 grid-cols-[minmax(0,1fr)_auto] items-center gap-4 border-b border-border px-5 py-4">
           <SheetTitle>{labels.filterReviews}</SheetTitle>
-          <p className="text-xs leading-none tracking-wider text-muted-foreground uppercase">
-            {headerCountLabel}
-          </p>
           <SheetCloseButton aria-label={labels.closeFilters} />
         </SheetHeader>
 
@@ -52,7 +48,7 @@ export function ProductReviewFilterSheetView({
                   return (
                     <button
                       aria-pressed={selected}
-                      className="flex w-full items-center gap-3 text-left text-xs text-foreground transition-colors hover:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50"
+                      className="flex w-full items-center gap-3 text-left text-sm leading-5 text-foreground transition-colors hover:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50"
                       disabled={disabled}
                       key={option.value || `${section.id}-all`}
                       onClick={() =>
@@ -84,11 +80,17 @@ export function ProductReviewFilterSheetView({
             disabled={disabled || clearDisabled}
             onClick={actions.clear}
             size="lg"
+            className="tracking-wider"
             variant="secondary"
           >
             {labels.clearFilters}
           </Button>
-          <Button disabled={disabled} onClick={actions.apply} size="lg">
+          <Button
+            className="tracking-wider"
+            disabled={disabled}
+            onClick={actions.apply}
+            size="lg"
+          >
             {labels.applyFilters}
           </Button>
         </SheetFooter>

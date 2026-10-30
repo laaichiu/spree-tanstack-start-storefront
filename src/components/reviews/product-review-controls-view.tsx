@@ -46,7 +46,7 @@ export function ProductReviewControlsView({
       >
         {filterOptions.length ? (
           <button
-            className="inline-flex h-11 min-w-0 items-center justify-center gap-2 rounded-full border border-border bg-background px-4 text-xs text-foreground transition-colors hover:border-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50 disabled:pointer-events-none disabled:opacity-55"
+            className="inline-flex h-11 min-w-0 items-center justify-center gap-1 rounded-full border border-border bg-background px-3 text-sm leading-5 text-foreground transition-colors hover:border-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50 disabled:pointer-events-none disabled:opacity-55"
             disabled={disabled}
             onClick={actions.openFilterSheet}
             type="button"
@@ -57,7 +57,7 @@ export function ProductReviewControlsView({
             />
             <span className="truncate">{filterButtonLabel}</span>
             {selectedFilterCountLabel && (
-              <span className="shrink-0 text-muted-foreground">
+              <span className="shrink-0 text-xs text-muted-foreground">
                 {selectedFilterCountLabel}
               </span>
             )}
@@ -74,17 +74,6 @@ export function ProductReviewControlsView({
           options={sortOptions}
           value={sortValue}
         />
-
-        {selectedFilterCountLabel && (
-          <button
-            className="col-span-2 justify-self-start text-xs text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50"
-            disabled={disabled}
-            onClick={actions.clearFilters}
-            type="button"
-          >
-            {clearFiltersLabel}
-          </button>
-        )}
       </div>
 
       <div className="hidden items-start justify-between gap-4 md:flex">

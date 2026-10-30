@@ -3,7 +3,6 @@ import type { ProductReviewFilterSectionDisplay } from '@/components/reviews/pro
 export type ProductReviewFilterSheetModel = {
   clearDisabled: boolean
   disabled: boolean
-  headerCountLabel: string
   labels: {
     applyFilters: string
     clearFilters: string
