@@ -96,7 +96,7 @@ describe('MobileNavPanels Brands', () => {
     expect(actions.close).not.toHaveBeenCalled()
   })
 
-  it('shows All Brands first, the curated list, the image link, and Back', () => {
+  it('shows Brands in the back bar and Featured Brands above the brand links', () => {
     const actions = { close: vi.fn(), popPanel: vi.fn(), pushPanel: vi.fn() }
     render(
       <MobileNavPanels
@@ -114,6 +114,8 @@ describe('MobileNavPanels Brands', () => {
     const navigation = screen.getByRole('navigation', {
       name: 'Featured Brands',
     })
+    expect(screen.getByText('Brands')).toBeTruthy()
+    expect(screen.getByRole('heading', { name: 'Featured Brands' })).toBeTruthy()
     expect(
       within(navigation)
         .getAllByRole('link')

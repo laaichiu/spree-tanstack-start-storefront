@@ -82,8 +82,9 @@ export function MobileNavPanels({
                   onClose={actions.close}
                 />
               }
+              heading={t('brand.featuredBrands')}
               onBack={actions.popPanel}
-              title={t('brand.featuredBrands')}
+              title={t('brand.directory')}
             />
           ),
           id,

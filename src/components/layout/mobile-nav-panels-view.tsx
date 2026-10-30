@@ -104,10 +104,12 @@ export function MobileNavCategoryPanelView({
   featuredLink,
   onBack,
   title,
+  heading = title,
 }: {
   backLabel: string
   categoryLinks: ReactNode
   featuredLink?: ReactNode
+  heading?: string
   onBack: () => void
   title: string
 }) {
@@ -128,10 +130,10 @@ export function MobileNavCategoryPanelView({
 
       <div className="flex-1 overflow-y-auto px-8 pt-8 pb-10">
         <h2 className="text-xs font-semibold tracking-wider text-foreground uppercase">
-          {title}
+          {heading}
         </h2>
 
-        <nav aria-label={title} className="mt-4 space-y-0.5">
+        <nav aria-label={heading} className="mt-4 space-y-0.5">
           {categoryLinks}
         </nav>
         {featuredLink && <div className="mt-8">{featuredLink}</div>}
