@@ -83,8 +83,8 @@ pnpm verify:spree-runtime
 For a remote environment, provide:
 
 ```bash
-export E2E_SPREE_BACKEND_VERSION=6.0.0
-export E2E_SPREE_BACKEND_REVISION=661e226bd3b783b26f33f037748cc15a0f014c46
+export E2E_SPREE_BACKEND_VERSION=6.0.1
+export E2E_SPREE_BACKEND_REVISION=49d72a8d982f3fb17231348fd45fd6bf6a2fdc2d
 pnpm verify:spree-runtime --require-revision
 ```
 
@@ -268,8 +268,8 @@ The three release workflows are manual and use GitHub environments `production`,
 in GitHub before allowing releases.
 
 Each environment supplies variables `SPREE_API_URL`, `SPREE_CHANNEL`,
-`VITE_STOREFRONT_URL`, optional `VITE_STOREFRONT_NAME`, and
-`VITE_STRIPE_PUBLISHABLE_KEY`, plus secret `SPREE_PUBLISHABLE_KEY`. Production
+`VITE_STOREFRONT_URL`, and `VITE_STRIPE_PUBLISHABLE_KEY`, plus secret
+`SPREE_PUBLISHABLE_KEY`. Production
 also needs `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` secrets. Provision
 `SPREE_API_URL` and `SPREE_PUBLISHABLE_KEY` as server bindings separately;
 configure a runtime `SPREE_CHANNEL` binding only when using a non-`online`

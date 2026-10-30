@@ -4,21 +4,19 @@
 
 | Contract           | Selected value                             |
 | ------------------ | ------------------------------------------ |
-| Spree              | `6.0.0`                                    |
-| Source revision    | `661e226bd3b783b26f33f037748cc15a0f014c46` |
-| Source description | `v6.0.0`                                   |
-| Store SDK          | Exactly `@spree/sdk` `6.0.0`               |
-| Selection date     | 2026-10-28                                 |
+| Spree              | `6.0.1`                                    |
+| Source revision    | `49d72a8d982f3fb17231348fd45fd6bf6a2fdc2d` |
+| Source description | `v6.0.1`                                   |
+| Store SDK          | Exactly `@spree/sdk` `6.0.1`               |
+| Selection date     | 2026-10-30                                 |
 
 `config/spree-6-source-target.json` selects the contract.
 `config/spree-runtime-baseline.json` records executable evidence and its
-provenance. The stable source and installed SDK have been audited. The local
-backend now runs published stable gems with verified migrations, upgrade tasks,
-application and audit-extension compatibility tests, public SDK reads,
-commerce preflight and read-only browser checks. RC3, RC4 and RC5 results remain
-historical evidence. Selected stable checkout checks pass cart reload and
-delivery readiness, but Stripe test-card completion returns `payment_failed`.
-The provider cause is unconfirmed and the complete checkout gate remains open.
+provenance. The 6.0.1 Store SEO source contract and installed SDK types have
+been audited. The local
+`spree-demo` lockfile declares published Spree 6.0.1 gems, but the Store SEO
+response has not been probed and the previous 6.0.0 runtime results remain
+historical. The complete 6.0.1 runtime gate is open.
 
 A local Rails integration application is configured with
 `E2E_SPREE_DEMO_PATH`; remote environments attest their version with
@@ -32,11 +30,18 @@ with the backend release; Admin/Seller SDK versions remain independent.
 Production and checkout evidence remain gated by the
 [release plan](../plans/release.md).
 
-Use the [official release](https://github.com/spree/spree/releases/tag/v6.0.0)
+Use the [official release](https://github.com/spree/spree/releases/tag/v6.0.1)
 and its pinned source for this contract. Upstream documentation can describe
 unreleased `main` behavior. The ledger separately tracks
 [post-release changes](../plans/spree-upgrade.md#post-release-upstream-changes-to-evaluate)
-for evaluation; these do not widen the installed 6.0.0 contract.
+for evaluation; these do not widen the installed 6.0.1 contract.
+
+Spree 6.0.1 exposes the current Store's translated name, `seo_title`, and
+`meta_description` through `client.store.get({ locale })`. The server-owned
+storefront branding loader validates and maps that response; the home page uses
+the Store SEO fields with localized app copy as fallback. Store API translations
+fall back to the Store's default locale when a field has no requested-locale
+translation.
 
 ## Evidence boundaries
 
@@ -172,9 +177,10 @@ cart/company validation and inherited address-book ownership. A data-request UI
 must handle email confirmation, `awaiting_confirmation` and `lapsed` before
 claiming export/deletion completion.
 
-Product and Category support storefront-visible `custom_fields` expansions in
-6.0.0. Wider expansion on Seller, Address and other resources is post-release
-upstream work; do not copy those fields from moving docs into pinned fixtures.
+Spree 6.0.1 expands storefront-visible `custom_fields` on more Store API
+resources. This storefront does not consume those new projections. Do not
+expose them without auditing the 6.0.1 SDK types, public-field privacy, runtime
+responses and feature-owned mapping.
 
 Reviews require their enabled backend extension and moderation contract. The
 storefront's `SPREE_API_URL`, publishable key, and Channel must target the same

@@ -382,9 +382,9 @@ for (const field of ['spreeVersion', 'spreeRevision', 'sdkVersion']) {
 }
 
 for (const [field, expected] of [
-  ['spreeVersion', '6.0.0'],
-  ['spreeRevision', '661e226bd3b783b26f33f037748cc15a0f014c46'],
-  ['sdkVersion', '6.0.0'],
+  ['spreeVersion', '6.0.1'],
+  ['spreeRevision', '49d72a8d982f3fb17231348fd45fd6bf6a2fdc2d'],
+  ['sdkVersion', '6.0.1'],
 ]) {
   if (sourceTarget[field] !== expected) {
     fail(`config/spree-6-source-target.json must set ${field} to ${expected}`)

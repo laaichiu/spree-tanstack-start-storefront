@@ -98,7 +98,7 @@ describe('commerce execution gates', () => {
     const result = verify(
       {},
       {
-        E2E_SPREE_BACKEND_VERSION: '6.0.0',
+        E2E_SPREE_BACKEND_VERSION: '6.0.1',
         E2E_SPREE_DEMO_PATH: undefined,
         E2E_COMMERCE_RELEASE: 'true',
         E2E_SPREE_COMMERCE_READY: 'true',
@@ -113,7 +113,7 @@ describe('commerce execution gates', () => {
       verify(
         {},
         {
-          E2E_SPREE_BACKEND_VERSION: '6.0.0',
+          E2E_SPREE_BACKEND_VERSION: '6.0.1',
           E2E_SPREE_DEMO_PATH: undefined,
           E2E_COMMERCE_RELEASE: 'true',
           E2E_SPREE_COMMERCE_READY: 'true',

@@ -31,12 +31,12 @@ Do not duplicate these milestones in architecture guides or AGENTS.md.
 
 ## Selected target and runtime evidence
 
-| Layer        | Selected target                            | Evidence status                                          |
-| ------------ | ------------------------------------------ | -------------------------------------------------------- |
-| Spree        | `6.0.0`                                    | Local upgrade, SDK reads and commerce preflight verified |
-| Source       | `661e226bd3b783b26f33f037748cc15a0f014c46` | Release tag and source comparison pinned                 |
-| Store SDK    | Exactly `@spree/sdk` `6.0.0`               | Installed package and types audited                      |
-| Verification | Read `config/spree-runtime-baseline.json`  | Checkout and deployed release gates remain open          |
+| Layer        | Selected target                            | Evidence status                                              |
+| ------------ | ------------------------------------------ | ------------------------------------------------------------ |
+| Spree        | `6.0.1`                                    | `spree-demo` lockfile declares 6.0.1; runtime not reverified |
+| Source       | `49d72a8d982f3fb17231348fd45fd6bf6a2fdc2d` | Release tag and Store SEO contract inspected                 |
+| Store SDK    | Exactly `@spree/sdk` `6.0.1`               | Installed package and Store types inspected                  |
+| Verification | Read `config/spree-runtime-baseline.json`  | Previous 6.0.0 evidence is historical; 6.0.1 gates open      |
 
 `config/spree-6-source-target.json` records the selected compatibility target.
 Keep it, runtime evidence, the ledger, baseline guide, CI defaults and installed
@@ -48,10 +48,10 @@ The repository already has feature-owned guards, mappers, server functions,
 queries, payment recovery, SEO helpers and build budgets. Release workflow
 presence and executable behavior require a complete release checkout.
 Audit and reuse them; implementation presence is not complete release proof.
-Stable read-only browser checks pass. Selected stable checkout checks pass
-cart reload and delivery readiness, but guest Stripe test-card completion
-returns `payment_failed` with an unconfirmed provider cause. Neither older
-RC3 successes nor read-only checks close the complete checkout gate.
+The historical 6.0.0 read-only browser checks passed. Selected 6.0.0 checkout
+checks passed cart reload and delivery readiness, but guest Stripe test-card
+completion returned `payment_failed` with an unconfirmed provider cause. These
+results do not verify the selected 6.0.1 runtime or close its checkout gate.
 
 ## Prioritized gaps
 
@@ -384,7 +384,7 @@ for the selected artifact, with no relevant unknown in the contract ledger.
 
 ## References
 
-- [Spree 6.0 release](https://github.com/spree/spree/releases/tag/v6.0.0)
-- [Spree 6.0 Store SDK manifest](https://github.com/spree/spree/blob/v6.0.0/packages/sdk/package.json)
+- [Spree 6.0.1 release](https://github.com/spree/spree/releases/tag/v6.0.1)
+- [Spree 6.0.1 Store SDK manifest](https://github.com/spree/spree/blob/v6.0.1/packages/sdk/package.json)
 - [TanStack execution boundaries](https://tanstack.com/start/latest/docs/framework/react/guide/execution-model)
 - [Cloudflare TanStack Start deployment](https://developers.cloudflare.com/workers/framework-guides/web-apps/tanstack-start/)

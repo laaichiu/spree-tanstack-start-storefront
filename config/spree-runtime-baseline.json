@@ -1,11 +1,26 @@
 {
   "status": "active",
-  "spreeVersion": "6.0.0",
-  "spreeRevision": "661e226bd3b783b26f33f037748cc15a0f014c46",
-  "sdkVersion": "6.0.0",
-  "selectedAt": "2026-10-28",
-  "verificationStatus": "verified-local-backend-and-read-only-browser-checkout-incomplete",
+  "spreeVersion": "6.0.1",
+  "spreeRevision": "49d72a8d982f3fb17231348fd45fd6bf6a2fdc2d",
+  "sdkVersion": "6.0.1",
+  "selectedAt": "2026-10-30",
+  "verificationStatus": "6.0.1-source-sdk-and-local-lockfile-verified-store-api-response-not-runtime-verified",
   "stableSourceAudit": {
+    "spreeVersion": "6.0.1",
+    "spreeRevision": "49d72a8d982f3fb17231348fd45fd6bf6a2fdc2d",
+    "sdkVersion": "6.0.1",
+    "sdkIntegrity": "sha512-TpNtOv+fdjtTK27mcOuUiQYxw7YX5IEixTdg8fbsoqQWsag40qKnADBF6b3U6zyawjwOyVu2jZ0nG+UVaRSmHA==",
+    "storefrontSeo": {
+      "apiPath": "/api/v3/store/store",
+      "sdkCall": "client.store.get({ locale })",
+      "responseFields": ["id", "name", "seo_title", "meta_description"],
+      "localeBehavior": "requested-locale-with-default-locale-fallback",
+      "runtimeResponse": "not-verified"
+    },
+    "storefrontValidation": "typecheck-and-format-passed; docs-check-blocked-missing-workflows; tests-not-run",
+    "backendLockfile": "spree-demo-declares-published-Spree-gems-6.0.1; version-preflight-passed; Store-response-not-verified"
+  },
+  "previousStableSourceAudit": {
     "comparedFrom": "6.0.0.rc5",
     "spreeVersion": "6.0.0",
     "spreeRevision": "661e226bd3b783b26f33f037748cc15a0f014c46",
@@ -15,7 +30,7 @@
     "storefrontValidation": "passed-pnpm-validate",
     "backendRuntime": "verified-local-published-gems"
   },
-  "stableVerification": {
+  "previousStableVerification": {
     "verifiedAt": "2026-10-28",
     "spreeVersion": "6.0.0",
     "spreeRevision": "661e226bd3b783b26f33f037748cc15a0f014c46",

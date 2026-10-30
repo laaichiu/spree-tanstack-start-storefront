@@ -19,14 +19,14 @@ checkout, tax, shipping, payment, and orders.
 
 ## Compatibility baseline
 
-The selected compatibility target is Spree `6.0.0` at revision
-`661e226bd3b783b26f33f037748cc15a0f014c46` with exactly `@spree/sdk`
-`6.0.0`. The [source target](config/spree-6-source-target.json) selects this
-contract; the [runtime baseline](config/spree-runtime-baseline.json) records
-local backend, commerce preflight, and read-only browser verification. Stripe
-test-card completion currently returns `payment_failed`, and the complete
-browser checkout gate remains open. Local evidence is not production
-certification.
+The selected compatibility target is Spree `6.0.1` at revision
+`49d72a8d982f3fb17231348fd45fd6bf6a2fdc2d` with exactly `@spree/sdk`
+`6.0.1`. The [source target](config/spree-6-source-target.json) selects this
+contract. The [runtime baseline](config/spree-runtime-baseline.json) retains
+6.0.0 runtime evidence as historical; the 6.0.1 Store SEO source and SDK types
+are audited, but the Store SEO response and complete runtime gate have not been
+verified.
+Local evidence is not production certification.
 
 The [contract ledger](docs/plans/spree-upgrade.md) records the source audit,
 installed SDK integrity and runtime gates separately.

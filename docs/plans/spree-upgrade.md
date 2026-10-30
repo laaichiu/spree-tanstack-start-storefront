@@ -8,17 +8,15 @@ Execution order and evidence rules belong to the
 
 | Contract              | Value                                                          |
 | --------------------- | -------------------------------------------------------------- |
-| Spree                 | `6.0.0`                                                        |
-| Source revision       | `661e226bd3b783b26f33f037748cc15a0f014c46`                     |
-| Store SDK             | `@spree/sdk` `6.0.0`                                           |
+| Spree                 | `6.0.1`                                                        |
+| Source revision       | `49d72a8d982f3fb17231348fd45fd6bf6a2fdc2d`                     |
+| Store SDK             | `@spree/sdk` `6.0.1`                                           |
 | Runtime configuration | local path through `E2E_SPREE_DEMO_PATH` or remote attestation |
 
-The stable source and installed SDK are source-audited. Published stable gems
-now run locally with verified schema upgrades, application and audit-extension
-compatibility tests, public SDK reads, commerce preflight and read-only browser
-checks. Selected checkout checks pass cart reload and delivery readiness, but
-Stripe test-card completion fails. Complete commerce and deployed release
-evidence remain open; see the release plan.
+The 6.0.1 source and installed SDK are audited for the Store SEO contract. The
+local `spree-demo` lockfile declares published 6.0.1 gems, but the endpoint
+response and broader 6.0.1 runtime have not been reverified. The previous
+6.0.0 runtime results remain historical; see the release plan for open gates.
 
 ## Status values
 
@@ -30,28 +28,30 @@ evidence remain open; see the release plan.
 
 ## Current contract ledger
 
-Statuses apply only to the stated scope on the selected stable tuple. Recorded
-runs are in [the runtime baseline](../../config/spree-runtime-baseline.json).
-Historical RC results remain there and cannot close a stable-release gate.
+Statuses apply only to the stated scope on the selected tuple. Recorded runs
+are in [the runtime baseline](../../config/spree-runtime-baseline.json).
+Historical 6.0.0 results cannot close a 6.0.1 release gate.
 
-| Contract                               | Current implementation or recorded evidence                                              | Status           | Remaining gate                                                                                   |
-| -------------------------------------- | ---------------------------------------------------------------------------------------- | ---------------- | ------------------------------------------------------------------------------------------------ |
-| SDK and public reads                   | Stable SDK pinned; local Channel, Market, Product, Category and Seller reads pass        | `verified-local` | Clean release-artifact provenance and deployed reads                                             |
-| Commerce schema/provider               | Local stable migrations, upgrade tasks and test gateway preflight pass                   | `verified-local` | Re-attest provider gems, schema and configuration in the release environment                     |
-| Market/Channel identity                | Guards enforce `country_codes`, owning currency and canonical Channel before mapping     | `implemented`    | Stable positive and cross-owner negative matrix                                                  |
-| Cart address sessions                  | Customer-cart writes use the Account refresh boundary; guest writes use cart credentials | `implemented`    | Owner succeeds; guest, other customer and stale responses cannot write owned addresses           |
-| OrderGroup and completed-Cart recovery | Order lookup, child ownership and original-credential replay guards exist                | `implemented`    | Full stable group completion, lost-response recovery, reload and unrelated-guest denial          |
-| Store Credit and Gift Cards            | Balance display and Gift Card operations exist; no Store Credit apply/remove UI          | `implemented`    | Verify each enabled application/removal and full/partial completion flow on stable               |
-| Price ordering                         | Application-owned database provider resolves the displayed offer before pagination       | `implemented`    | Stable context, all-page ordering and scale evidence; indexed providers need separate proof      |
-| Payment and wallets                    | Stripe preparation, confirmation, recovery and deferred express UI exist                 | `implemented`    | Diagnose stable `payment_failed`; pass complete checkout and each enabled wallet/saved-card flow |
-| Shared cache and optional extensions   | Local source/feature checks exist                                                        | `audited`        | Deployed Market-aware cache variation and exact enabled-extension contracts                      |
-| Operations and rollback                | No deployed operational certification in the baseline                                    | `unknown`        | Jobs, mail, storage, webhooks, backup/restore, staging and rollback                              |
+| Contract                               | Current implementation or recorded evidence                                                             | Status        | Remaining gate                                                                                   |
+| -------------------------------------- | ------------------------------------------------------------------------------------------------------- | ------------- | ------------------------------------------------------------------------------------------------ |
+| SDK and public reads                   | 6.0.0 Channel, Market, Product, Category and Seller reads are historical; 6.0.1 Store types are audited | `audited`     | Probe 6.0.1 Store SEO response and reverify release-artifact reads                               |
+| Storefront Store SEO                   | Server loader calls `store.get` and maps nullable title/description; no 6.0.1 response captured         | `audited`     | Verify requested/default locales, malformed responses and rendered home metadata                 |
+| Commerce schema/provider               | Local migration, upgrade and gateway checks cover 6.0.0 only                                            | `unknown`     | Re-attest 6.0.1 provider gems, schema and configuration                                          |
+| Market/Channel identity                | Guards enforce `country_codes`, owning currency and canonical Channel before mapping                    | `implemented` | Stable positive and cross-owner negative matrix                                                  |
+| Cart address sessions                  | Customer-cart writes use the Account refresh boundary; guest writes use cart credentials                | `implemented` | Owner succeeds; guest, other customer and stale responses cannot write owned addresses           |
+| OrderGroup and completed-Cart recovery | Order lookup, child ownership and original-credential replay guards exist                               | `implemented` | Full stable group completion, lost-response recovery, reload and unrelated-guest denial          |
+| Store Credit and Gift Cards            | Balance display and Gift Card operations exist; no Store Credit apply/remove UI                         | `implemented` | Verify each enabled application/removal and full/partial completion flow on stable               |
+| Price ordering                         | Application-owned database provider resolves the displayed offer before pagination                      | `implemented` | Stable context, all-page ordering and scale evidence; indexed providers need separate proof      |
+| Payment and wallets                    | Stripe preparation, confirmation, recovery and deferred express UI exist                                | `implemented` | Diagnose stable `payment_failed`; pass complete checkout and each enabled wallet/saved-card flow |
+| Shared cache and optional extensions   | Local source/feature checks exist                                                                       | `audited`     | Deployed Market-aware cache variation and exact enabled-extension contracts                      |
+| Operations and rollback                | No deployed operational certification in the baseline                                                   | `unknown`     | Jobs, mail, storage, webhooks, backup/restore, staging and rollback                              |
 
-## Remaining stable runtime gates
+## Remaining 6.0.1 runtime gates
 
-- Diagnose stable guest test-card completion returning `payment_failed`, capture
-  a redacted provider code and pass the complete checkout suite. Cart reload,
-  delivery readiness and read-only checks pass, but do not certify payment.
+- Verify the Store SEO endpoint response for default and translated locales,
+  including malformed data rejection and the rendered SSR home metadata.
+- Diagnose whether 6.0.0's guest test-card `payment_failed` reproduces on 6.0.1,
+  capture a redacted provider code and pass the complete checkout suite.
 - Verify lost-response OrderGroup recovery and wallet callbacks on stable.
   Historical RC full-balance and group results do not establish these outcomes.
   Backend-applied Store Credit fixtures do not certify a storefront balance UI.
@@ -64,14 +64,29 @@ Historical RC results remain there and cannot close a stable-release gate.
 - Verify deployed Market-aware shared-cache behavior and every enabled optional
   extension. Account for local-fixture-only skips in remote browser runs.
 
-## Stable Spree 6.0 source audit
+## Selected Spree 6.0.1 source audit
 
-The selected release is Spree `6.0.0` at
+The selected target is Spree `6.0.1` at
+`49d72a8d982f3fb17231348fd45fd6bf6a2fdc2d`, with `@spree/sdk` `6.0.1`.
+The 6.0.1 source adds the public `GET /api/v3/store/store` endpoint and the
+Store SDK exposes it as `client.store.get({ locale })`. It returns `id`,
+`name`, `seo_title`, and `meta_description`; translated fields use the
+requested locale and fall back to the Store's default locale. The storefront
+now calls this method from its server-only branding loader, validates the
+Store identity and nullable SEO fields, and maps them to its app-owned
+branding contract. The home route already gives Store SEO title/description
+precedence over localized defaults. The actual 6.0.1 response and positive
+and negative runtime cases are not yet verified.
+
+### Historical Spree 6.0.0 source and runtime audit
+
+The previous selected release was Spree `6.0.0` at
 `661e226bd3b783b26f33f037748cc15a0f014c46`, with the matching Store SDK
 `6.0.0`. The stable SDK includes maintenance-task webhook event types and documents
 that direct password changes revoke refresh sessions. Storefront type-checking
 and local application validation are recorded in the runtime baseline; neither
-substitutes for the remaining positive and negative runtime checks below.
+substitutes for the remaining positive and negative runtime checks recorded for
+that 6.0.0 target.
 
 | Stable behavior                         | Storefront audit                                                                                                                                                                         | Remaining runtime evidence                                                                                                         |
 | --------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
@@ -87,29 +102,27 @@ substitutes for the remaining positive and negative runtime checks below.
 | Webhook SDK events                      | The stable SDK adds `maintenance_task_run.*` event types. This storefront has no webhook receiver or subscription management UI.                                                         | No storefront migration is required unless a webhook consumer is introduced.                                                       |
 | Store-scoped resources and API security | Requests use the configured Store client and existing identity, Market and Channel guards.                                                                                               | Exercise positive and cross-store/owner negative responses on the stable backend.                                                  |
 
-The stable source and SDK are audited, and the address-write session adaptation
-has focused tests. Local stable upgrade, preflight and browser evidence is
-recorded in `config/spree-runtime-baseline.json`; the table still requires its
-explicit positive and negative contract checks and does not claim deployed
-verification. Stable guest test-card completion returns `payment_failed` with
-an unconfirmed provider cause. Diagnose it and pass the complete checkout suite
-before closing the release gate.
+Those source and SDK checks, address-write tests, local upgrade and browser
+results apply to 6.0.0 only. Stable guest test-card completion returned
+`payment_failed` with an unconfirmed provider cause. Do not transfer those
+results to 6.0.1 or close the current release gate from the historical evidence.
 
-### Stable runtime acceptance
+### Spree 6.0.1 runtime acceptance
 
-1. Attest the exact stable backend revision and compatible payment provider for
-   the release environment. Reuse the recorded local upgrade evidence only for
-   its verified inputs; repeat schema/upgrade checks when those inputs change.
+1. Attest the exact 6.0.1 backend revision and compatible payment provider for
+   the release environment. Reuse the recorded 6.0.0 local upgrade evidence
+   only for its verified inputs; repeat schema/upgrade checks for 6.0.1.
 2. Verify owner-only cart addresses, Market/Channel/catalog isolation, private
    custom-field visibility, newsletter response privacy, delivery currency,
    and payment behavior with positive and negative cases.
-3. Run read-only browser checks and the complete checkout/OrderGroup recovery
-   suite. Capture redacted provider error codes; do not transfer RC5 passes or
-   failures to stable without reproduction.
+3. Verify the Store SEO endpoint with the requested and default locales, then
+   run read-only browser checks and the complete checkout/OrderGroup recovery
+   suite. Capture redacted provider error codes; do not transfer earlier passes
+   or failures to 6.0.1 without reproduction.
 4. Keep staging, cache, webhook, storage, rollback and production operation
    evidence separate from local source and type checks.
 
-### Stable sources
+### Historical 6.0.0 sources
 
 - [Spree 6.0 release](https://github.com/spree/spree/releases/tag/v6.0.0)
 - [Store SDK manifest](https://github.com/spree/spree/blob/v6.0.0/packages/sdk/package.json)
@@ -121,19 +134,11 @@ before closing the release gate.
 
 ## Post-release upstream changes to evaluate
 
-The [6.0.0 release](https://github.com/spree/spree/releases/tag/v6.0.0) is the
-selected stable release. Later commits on upstream `main` are candidates,
-not part of that tag or this app's certified runtime:
-
-- [Delivery-aware stock allocation](https://github.com/spree/spree/commit/75e29731b039e1b8211b2a6e62b17b6b695838f1)
-  changes allocation and reservations when only some origins can deliver.
-  Reproduce a multi-origin case on stable, compare the patch, and verify stock,
-  delivery rates and reservation consistency before selecting a patched backend.
-- [Wider Custom Fields expansion](https://github.com/spree/spree/commit/30493b4f8e0e0f19b1c684fd8ac34bff24f51187)
-  adds optional fields to more Store API resource types. Product and Category
-  expansion already exists in 6.0.0; this storefront must not assume the wider
-  Seller, Address, Order or other projections exist in the pinned SDK/backend.
-  Any adoption needs matching source/types, public-field privacy and runtime tests.
+The [6.0.1 release](https://github.com/spree/spree/releases/tag/v6.0.1) is the
+selected stable release. Later commits on upstream `main` are candidates, not
+part of that release. The 6.0.1 source also changes stock allocation and
+expands Store API custom-field projections; this storefront has not adopted
+those optional capabilities. Audit each contract before using it.
 
 Recheck the official release, exact tag and SDK publication when selecting a
 candidate. Moving documentation and unreleased `main` features do not change

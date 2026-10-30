@@ -16,7 +16,7 @@ Use sources in this order:
 5. The focused documents linked from `docs/README.md`.
 6. Memory, examples from other versions, and general framework guidance.
 
-The selected compatibility target is Spree `6.0.0` with `@spree/sdk` `6.0.0`.
+The selected compatibility target is Spree `6.0.1` with `@spree/sdk` `6.0.1`.
 Runtime evidence is recorded separately in `config/spree-runtime-baseline.json`;
 an unverified target is not runtime or release certification. Treat every Spree
 5-to-6 difference as a contract change. A type declaration alone is not

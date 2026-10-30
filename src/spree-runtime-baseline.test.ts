@@ -21,6 +21,7 @@ const script = fileURLToPath(
 const baseline = JSON.parse(
   readFileSync(new URL('config/spree-runtime-baseline.json', root), 'utf8'),
 ) as {
+  sdkVersion: string
   spreeVersion: string
   spreeRevision: string
 }
@@ -80,7 +81,10 @@ describe('release runtime attestation', () => {
   })
 
   it.each([
-    { version: '6.0.0.beta4', revision: baseline.spreeRevision },
+    {
+      version: `${baseline.spreeVersion}.beta4`,
+      revision: baseline.spreeRevision,
+    },
     { version: baseline.spreeVersion, revision: '0'.repeat(40) },
     { revision: baseline.spreeRevision },
   ])('rejects an incomplete or mismatched tuple %j', (tuple) => {
@@ -106,7 +110,7 @@ describe('local Spree lockfile provenance', () => {
       )
       writeFileSync(
         join(fixture, 'node_modules/@spree/sdk/package.json'),
-        JSON.stringify({ version: '6.0.0' }),
+        JSON.stringify({ version: baseline.sdkVersion }),
       )
       writeFileSync(join(fixture, 'backend/Gemfile.lock'), lockfile)
       const env: NodeJS.ProcessEnv = {
@@ -128,7 +132,7 @@ describe('local Spree lockfile provenance', () => {
     }
   }
   function gitSource(name: string, revision: string) {
-    return `GIT\n  remote: https://example.com/${name}.git\n  revision: ${revision}\n  specs:\n    ${name} (6.0.0)\n\n`
+    return `GIT\n  remote: https://example.com/${name}.git\n  revision: ${revision}\n  specs:\n    ${name} (${baseline.spreeVersion})\n\n`
   }
   it('reads the revision from the Spree source after unrelated Git dependencies', () => {
     const lockfile =
@@ -150,7 +154,7 @@ describe('local Spree lockfile provenance', () => {
     expect(
       verifyLockfile(
         gitSource('other', '0'.repeat(40)) +
-          'GEM\n  remote: https://rubygems.org/\n  specs:\n    spree (6.0.0)\n',
+          `GEM\n  remote: https://rubygems.org/\n  specs:\n    spree (${baseline.spreeVersion})\n`,
       ).status,
     ).toBe(0)
   })
@@ -158,7 +162,7 @@ describe('local Spree lockfile provenance', () => {
     for (const lockfile of [
       gitSource('spree', baseline.spreeRevision).repeat(2),
       gitSource('spree', 'short'),
-      'PATH\n  remote: .\n  specs:\n    spree (6.0.0)\n',
+      `PATH\n  remote: .\n  specs:\n    spree (${baseline.spreeVersion})\n`,
     ])
       expect(verifyLockfile(lockfile).status).toBe(1)
   })
