@@ -8,7 +8,8 @@ import { CheckoutEntryState } from '@/components/checkout/checkout-entry-state'
 import { CheckoutRouteErrorState } from '@/components/checkout/checkout-route-error-state'
 import { CART_MARKET_MISMATCH_MESSAGE } from '@/lib/cart/utils/cart-market'
 import { parseCheckoutPaymentErrorSearch } from '@/lib/checkout/utils/completion/checkout-completion-error'
-import { translateMessage } from '@/lib/i18n/messages'
+import { fallbackMessages, getMessage, loadMessages } from '@/lib/i18n/messages'
+import { getMessageFromMatches } from '@/lib/i18n/message-route-lookup'
 import { reportError } from '@/lib/observability/report-error'
 import { buildStorefrontSeoHead } from '@/lib/seo/site-seo'
 
@@ -74,6 +75,9 @@ export const Route = createFileRoute('/$country/$locale/checkout/$id')({
         context: 'checkout.cart',
         error,
       })
+      const messages = await loadMessages(params.locale).catch(
+        () => fallbackMessages,
+      )
 
       return {
         cart: null,
@@ -81,7 +85,7 @@ export const Route = createFileRoute('/$country/$locale/checkout/$id')({
           error instanceof Error &&
           error.message === CART_MARKET_MISMATCH_MESSAGE
             ? CART_MARKET_MISMATCH_MESSAGE
-            : translateMessage(params.locale, 'cart.cartLoadFailedDescription'),
+            : getMessage(messages, 'cart.cartLoadFailedDescription'),
         customerEmail: null,
         savedAddresses: [],
         savedPaymentCards: [],
@@ -90,14 +94,14 @@ export const Route = createFileRoute('/$country/$locale/checkout/$id')({
   },
   head: ({ matches, params }) =>
     buildStorefrontSeoHead({
-      fallbackDescription: translateMessage(
-        params.locale,
+      fallbackDescription: getMessageFromMatches(
+        matches,
         'branding.defaultDescription',
       ),
       locale: params.locale,
       matches,
       noIndex: true,
-      title: translateMessage(params.locale, 'checkout.checkout'),
+      title: getMessageFromMatches(matches, 'checkout.checkout'),
     }),
   component: CheckoutDetailPage,
   errorComponent: CheckoutDetailError,

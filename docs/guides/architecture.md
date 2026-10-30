@@ -22,6 +22,12 @@ src/components/ui
 src/config
   navigation, footer, search curation, and reserved route configuration
 
+src/lib/i18n
+  locale resolution, lazy JSON message catalogs, and typed message lookup
+
+src/lib/seo
+  metadata formatting, canonical and alternate links, and structured data
+
 src/styles
   semantic tokens and the smallest necessary global CSS surface
 
@@ -45,6 +51,12 @@ The existing `src/lib/spree` adapter reads server environment values and delegat
 to Runtime. Routes and components reach it through feature server functions.
 Branding and feature configuration stay with their owners in `src/lib/<feature>`;
 Worker and build configuration live in `wrangler.jsonc` and `vite.config.ts`.
+
+Localized copy has one source in `src/lib/i18n/messages/*.json`. The market
+route loader resolves the locale and loads its dictionary. Route heads use that
+loaded dictionary for localized titles and descriptions, then pass resolved
+text into `src/lib/seo`; SEO helpers format metadata without owning localized
+copy or selecting message catalogs.
 
 Keep code in the feature that owns its identity, lifecycle, and error semantics.
 Do not extract a package, feature flag, plugin layer, or catch-all shared module

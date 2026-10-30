@@ -6,7 +6,8 @@ import type {
   ProductListingSearch,
   ProductSummary,
 } from '@/lib/catalog/contracts'
-import { translateMessage } from '@/lib/i18n/messages'
+import { getMessage } from '@/lib/i18n/messages'
+import type { MessageDictionary } from '@/lib/i18n/messages'
 
 type ListingResult = {
   filters: ProductListingFilters | null
@@ -20,11 +21,11 @@ type CollectionListingResult = ListingResult & {
 
 export function createProductsListingPage({
   listing,
-  locale,
+  messages,
   search,
 }: {
   listing: ListingResult | null
-  locale: string
+  messages: MessageDictionary
   search: ProductListingSearch
 }): ProductListingPageModel {
   const query = search.q
@@ -39,18 +40,18 @@ export function createProductsListingPage({
     search,
     status: listing ? 'ready' : 'error',
     title: query
-      ? `${translateMessage(locale, 'product.searchResultsFor')} "${query}"`
-      : translateMessage(locale, 'product.products'),
+      ? `${getMessage(messages, 'product.searchResultsFor')} "${query}"`
+      : getMessage(messages, 'product.products'),
   }
 }
 
 export function createCollectionListingPage({
   listing,
-  locale,
+  messages,
   search,
 }: {
   listing: CollectionListingResult | null
-  locale: string
+  messages: MessageDictionary
   search: ProductListingSearch
 }): ProductListingPageModel {
   const category = listing?.category ?? null
@@ -66,6 +67,6 @@ export function createCollectionListingPage({
     status: listing ? 'ready' : 'error',
     title:
       category?.name ??
-      translateMessage(locale, 'collection.collectionUnavailable'),
+      getMessage(messages, 'collection.collectionUnavailable'),
   }
 }

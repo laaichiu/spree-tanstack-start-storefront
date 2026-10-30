@@ -16,7 +16,7 @@ import {
   isBrowserFetchFailureError,
   reportError,
 } from '@/lib/observability/report-error'
-import { translateMessage } from '@/lib/i18n/messages'
+import { fallbackMessages, getMessage, loadMessages } from '@/lib/i18n/messages'
 
 import { getStorefrontBrandingForRequest } from './get-storefront-branding.server'
 
@@ -114,18 +114,18 @@ export async function loadStorefrontShellForResolution({
           cart,
           error: null,
         }),
-        (error: unknown) => {
+        async (error: unknown) => {
           reportError({
             context: 'layout.cart',
             error,
           })
+          const messages = await loadMessages(market.locale).catch(
+            () => fallbackMessages,
+          )
 
           return {
             cart: null,
-            error: translateMessage(
-              market.locale,
-              'cart.cartLoadFailedDescription',
-            ),
+            error: getMessage(messages, 'cart.cartLoadFailedDescription'),
           }
         },
       ),

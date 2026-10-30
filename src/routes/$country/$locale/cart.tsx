@@ -1,7 +1,7 @@
 import { createFileRoute, getRouteApi } from '@tanstack/react-router'
 
 import { CartPageContent } from '@/components/cart/cart-page-content'
-import { translateMessage } from '@/lib/i18n/messages'
+import { getMessageFromMatches } from '@/lib/i18n/message-route-lookup'
 import { buildStorefrontSeoHead } from '@/lib/seo/site-seo'
 
 const marketRoute = getRouteApi('/$country/$locale')
@@ -9,14 +9,14 @@ const marketRoute = getRouteApi('/$country/$locale')
 export const Route = createFileRoute('/$country/$locale/cart')({
   head: ({ matches, params }) =>
     buildStorefrontSeoHead({
-      fallbackDescription: translateMessage(
-        params.locale,
+      fallbackDescription: getMessageFromMatches(
+        matches,
         'branding.defaultDescription',
       ),
       locale: params.locale,
       matches,
       noIndex: true,
-      title: translateMessage(params.locale, 'cart.cart'),
+      title: getMessageFromMatches(matches, 'cart.cart'),
     }),
   component: CartPage,
 })

@@ -3,7 +3,7 @@ import { Link, createFileRoute } from '@tanstack/react-router'
 import { AccountPasswordResetForm } from '@/components/account/account-password-reset-form'
 import { accountInlineLinkClassName } from '@/components/account/account-ui-view'
 import { useMarket } from '@/components/layout/market-provider'
-import { translateMessage } from '@/lib/i18n/messages'
+import { getMessageFromMatches } from '@/lib/i18n/message-route-lookup'
 import { buildStorefrontSeoHead } from '@/lib/seo/site-seo'
 import { AccountAuthShellView } from '@/components/account/account-auth-shell-view'
 
@@ -12,14 +12,14 @@ export const Route = createFileRoute(
 )({
   head: ({ matches, params }) =>
     buildStorefrontSeoHead({
-      fallbackDescription: translateMessage(
-        params.locale,
+      fallbackDescription: getMessageFromMatches(
+        matches,
         'branding.defaultDescription',
       ),
       locale: params.locale,
       matches,
       noIndex: true,
-      title: translateMessage(params.locale, 'account.resetPassword'),
+      title: getMessageFromMatches(matches, 'account.resetPassword'),
     }),
   component: ForgotPasswordPage,
 })

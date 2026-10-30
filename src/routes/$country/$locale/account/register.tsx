@@ -3,21 +3,21 @@ import { Link, createFileRoute } from '@tanstack/react-router'
 import { AccountRegisterForm } from '@/components/account/account-register-form'
 import { accountInlineLinkClassName } from '@/components/account/account-ui-view'
 import { useMarket } from '@/components/layout/market-provider'
-import { translateMessage } from '@/lib/i18n/messages'
+import { getMessageFromMatches } from '@/lib/i18n/message-route-lookup'
 import { buildStorefrontSeoHead } from '@/lib/seo/site-seo'
 import { AccountAuthShellView } from '@/components/account/account-auth-shell-view'
 
 export const Route = createFileRoute('/$country/$locale/account/register')({
   head: ({ matches, params }) =>
     buildStorefrontSeoHead({
-      fallbackDescription: translateMessage(
-        params.locale,
+      fallbackDescription: getMessageFromMatches(
+        matches,
         'branding.defaultDescription',
       ),
       locale: params.locale,
       matches,
       noIndex: true,
-      title: translateMessage(params.locale, 'account.createAccount'),
+      title: getMessageFromMatches(matches, 'account.createAccount'),
     }),
   component: AccountRegisterPage,
 })

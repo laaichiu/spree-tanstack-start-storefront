@@ -10,7 +10,9 @@ import {
 import { QueryProvider } from '@/lib/query/query-provider'
 import { normalizeLocale } from '@/lib/core/market'
 import { NotFoundPageView } from '@/components/layout/not-found-page-view'
-import { translateMessage } from '@/lib/i18n/messages'
+import { fallbackMessages, getMessage } from '@/lib/i18n/messages'
+import { getMessageFromMatches } from '@/lib/i18n/message-route-lookup'
+import { buildStorefrontSeoHead } from '@/lib/seo/site-seo'
 
 import appCss from '../styles/globals.css?url'
 
@@ -45,20 +47,63 @@ function getMarketParams(params: unknown) {
   }
 }
 
+function getLocaleFromMatches(matches: readonly { params?: unknown }[]) {
+  for (let index = matches.length - 1; index >= 0; index -= 1) {
+    const params = matches[index]?.params
+
+    if (isRecord(params) && typeof params.locale === 'string') {
+      return params.locale
+    }
+  }
+
+  return 'en'
+}
+
+function hasMarketNotFoundMatch(
+  matches: readonly { routeId: string; status: string }[],
+) {
+  return matches.some(
+    (match) =>
+      match.routeId === '/$country/$locale' && match.status === 'notFound',
+  )
+}
+
 export const Route = createRootRoute({
   beforeLoad: ({ context }) => ({ cspNonce: getCspNonce(context) }),
-  head: () => ({
-    meta: [
-      {
-        charSet: 'utf-8',
-      },
-      {
-        name: 'viewport',
-        content: 'width=device-width, initial-scale=1',
-      },
-    ],
-    links: [{ rel: 'stylesheet', href: appCss }],
-  }),
+  head: ({ match, matches }) => {
+    const notFoundSeo =
+      match._notFound || hasMarketNotFoundMatch(matches)
+        ? buildStorefrontSeoHead({
+            description: getMessageFromMatches(matches, 'notFound.description'),
+            fallbackDescription: getMessageFromMatches(
+              matches,
+              'notFound.description',
+            ),
+            locale: getLocaleFromMatches(matches),
+            matches,
+            noIndex: true,
+            title: getMessageFromMatches(matches, 'notFound.title'),
+          })
+        : null
+
+    return {
+      meta: [
+        {
+          charSet: 'utf-8',
+        },
+        {
+          name: 'viewport',
+          content: 'width=device-width, initial-scale=1',
+        },
+        ...(notFoundSeo?.meta ?? []),
+      ],
+      links: [
+        ...(notFoundSeo?.links ?? []),
+        { rel: 'stylesheet', href: appCss },
+      ],
+      scripts: notFoundSeo?.scripts,
+    }
+  },
   component: AppRoot,
   notFoundComponent: RootNotFound,
   shellComponent: RootDocument,
@@ -120,10 +165,10 @@ function RootNotFound() {
     <NotFoundPageView
       marketParams={{ country: 'us', locale: 'en' }}
       model={{
-        description: translateMessage('en', 'notFound.description'),
-        eyebrow: translateMessage('en', 'notFound.eyebrow'),
-        primaryLabel: translateMessage('en', 'notFound.primaryAction'),
-        title: translateMessage('en', 'notFound.title'),
+        description: getMessage(fallbackMessages, 'notFound.description'),
+        eyebrow: getMessage(fallbackMessages, 'notFound.eyebrow'),
+        primaryLabel: getMessage(fallbackMessages, 'notFound.primaryAction'),
+        title: getMessage(fallbackMessages, 'notFound.title'),
       }}
     />
   )

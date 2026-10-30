@@ -21,7 +21,8 @@ import { isReservedMarketRouteSegment } from '@/config/routes'
 import { isCatalogResourceNotFoundError } from '@/lib/catalog/utils/catalog-errors'
 import { reportError } from '@/lib/observability/report-error'
 import { useMarket } from '@/components/layout/market-provider'
-import { translateMessage } from '@/lib/i18n/messages'
+import { fallbackMessages, loadMessages } from '@/lib/i18n/messages'
+import { getMessageFromMatches } from '@/lib/i18n/message-route-lookup'
 import { buildAlternateLocaleLinks } from '@/lib/seo/alternate-locale'
 import { getStorefrontMarketOptionsFromMatches } from '@/lib/seo/alternate-locale-loader'
 import {
@@ -50,6 +51,10 @@ export const Route = createFileRoute('/$country/$locale/$slug')({
       throw notFound()
     }
 
+    const messagesPromise = loadMessages(params.locale).catch(
+      () => fallbackMessages,
+    )
+
     try {
       const market = {
         country: params.country,
@@ -66,22 +71,26 @@ export const Route = createFileRoute('/$country/$locale/$slug')({
             })
 
       try {
-        const products =
+        const productsPromise =
           import.meta.env.SSR && context.shellResolution
-            ? await loadBrandProductsForMarketOnServer({
+            ? loadBrandProductsForMarketOnServer({
                 market: context.shellResolution.market,
                 search: deps,
                 sellerId: brand.id,
               })
-            : await getBrandProducts({
+            : getBrandProducts({
                 data: { market, search: deps, sellerId: brand.id },
               })
+        const [products, messages] = await Promise.all([
+          productsPromise,
+          messagesPromise,
+        ])
 
         return {
           brand,
           productsPage: createBrandProductListingPage({
             listing: products,
-            locale: params.locale,
+            messages,
             search: deps,
           }),
           status: 'ready',
@@ -91,12 +100,13 @@ export const Route = createFileRoute('/$country/$locale/$slug')({
           context: 'brands.profile.products',
           error,
         })
+        const messages = await messagesPromise
 
         return {
           brand,
           productsPage: createBrandProductListingPage({
             listing: null,
-            locale: params.locale,
+            messages,
             search: deps,
           }),
           status: 'ready',
@@ -124,10 +134,10 @@ export const Route = createFileRoute('/$country/$locale/$slug')({
       : null
     const canonicalUrl = canonicalPath ? buildCanonicalUrl(canonicalPath) : null
     const title =
-      brand?.name ?? translateMessage(params.locale, 'brand.profileUnavailable')
+      brand?.name ?? getMessageFromMatches(matches, 'brand.profileUnavailable')
     const description =
       brand?.about ||
-      translateMessage(params.locale, 'brand.profileUnavailableDescription')
+      getMessageFromMatches(matches, 'brand.profileUnavailableDescription')
     const imageUrl = buildSeoImageUrl(
       brand?.coverPhotoUrl ?? brand?.logoUrl ?? siteSeo.socialImagePath,
     )
@@ -141,8 +151,8 @@ export const Route = createFileRoute('/$country/$locale/$slug')({
         : [],
       canonicalUrl,
       description,
-      fallbackDescription: translateMessage(
-        params.locale,
+      fallbackDescription: getMessageFromMatches(
+        matches,
         'brand.profileUnavailableDescription',
       ),
       image: imageUrl ? { alt: title, url: imageUrl } : null,

@@ -73,6 +73,14 @@ domains. Keep server-only exports separate from client-safe exports. When moving
 code, update callers and remove the obsolete path in the same change rather
 than leaving compatibility barrels for unsupported consumers.
 
+Localization has one source of truth in `src/lib/i18n/messages/*.json`.
+`message-catalog.ts` owns supported-locale resolution, lazy catalog loading,
+typed message keys and lookup with English per-key fallback. Route-specific
+lookup may read the dictionary already loaded by the market route; avoid loading
+the same catalog again just to build route metadata. `src/lib/seo` receives
+resolved strings and owns metadata composition, not translation lookup or
+message catalog loading.
+
 ## Dependency direction
 
 Routes and components consume feature contracts. Features may use pure Core

@@ -3,15 +3,16 @@ import type {
   ProductListingSearch,
 } from '@/lib/catalog/contracts'
 import type { BrandProductListingPage } from '@/lib/brands/contracts'
-import { translateMessage } from '@/lib/i18n/messages'
+import { getMessage } from '@/lib/i18n/messages'
+import type { MessageDictionary } from '@/lib/i18n/messages'
 
 export function createBrandProductListingPage({
   listing,
-  locale,
+  messages,
   search,
 }: {
   listing: BrandProductListingPage | null
-  locale: string
+  messages: MessageDictionary
   search: ProductListingSearch
 }): ProductListingPageModel {
   return {
@@ -23,6 +24,6 @@ export function createBrandProductListingPage({
     products: listing?.products ?? [],
     search,
     status: listing ? 'ready' : 'error',
-    title: translateMessage(locale, 'product.products'),
+    title: getMessage(messages, 'product.products'),
   }
 }

@@ -1,4 +1,3 @@
-import { getConfiguredStorefrontBranding } from '@/lib/storefront/config/storefront-branding'
 import { getStorefrontBrandingFromMatches } from './storefront-branding-loader'
 import { buildSeoHead } from './seo-head'
 import { buildPageTitle, resolveSeoDescription } from './seo-text'
@@ -31,15 +30,12 @@ export function buildStorefrontSeoHead({
   title,
   ...input
 }: StorefrontSeoInput) {
-  const branding =
-    getStorefrontBrandingFromMatches(matches) ??
-    getConfiguredStorefrontBranding(locale)
+  const branding = getStorefrontBrandingFromMatches(matches, locale)
   const pageDescription = preferStoreSeo
-    ? (branding.metaDescription ?? input.description)
+    ? (branding?.metaDescription ?? input.description)
     : input.description
-  const seoTitle = preferStoreSeo
-    ? (branding.seoTitle ?? buildPageTitle(title, branding.name))
-    : buildPageTitle(title, branding.name)
+  const pageTitle = preferStoreSeo ? (branding?.seoTitle ?? title) : title
+  const seoTitle = buildPageTitle(pageTitle, branding?.name ?? '')
 
   return buildSeoHead({
     ...input,
@@ -48,7 +44,7 @@ export function buildStorefrontSeoHead({
       pageDescription,
       storeDescription: preferStoreSeo
         ? input.description
-        : branding.metaDescription,
+        : branding?.metaDescription,
     }),
     title: seoTitle,
   })

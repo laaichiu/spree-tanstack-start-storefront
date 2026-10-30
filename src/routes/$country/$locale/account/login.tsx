@@ -6,21 +6,21 @@ import { accountInlineLinkClassName } from '@/components/account/account-ui-view
 import { resolveAccountRedirectTarget } from '@/lib/account/utils/account-redirect'
 import { useMarket } from '@/components/layout/market-provider'
 import { parseOptionalTrimmedSearchText } from '@/lib/core/optional-search-text'
-import { translateMessage } from '@/lib/i18n/messages'
+import { getMessageFromMatches } from '@/lib/i18n/message-route-lookup'
 import { buildStorefrontSeoHead } from '@/lib/seo/site-seo'
 import { AccountAuthShellView } from '@/components/account/account-auth-shell-view'
 
 export const Route = createFileRoute('/$country/$locale/account/login')({
   head: ({ matches, params }) =>
     buildStorefrontSeoHead({
-      fallbackDescription: translateMessage(
-        params.locale,
+      fallbackDescription: getMessageFromMatches(
+        matches,
         'branding.defaultDescription',
       ),
       locale: params.locale,
       matches,
       noIndex: true,
-      title: translateMessage(params.locale, 'account.account'),
+      title: getMessageFromMatches(matches, 'account.account'),
     }),
   validateSearch: (search: Record<string, unknown>): { redirect?: string } => ({
     redirect: parseOptionalTrimmedSearchText(search.redirect),

@@ -26,7 +26,8 @@ import { reportError } from '@/lib/observability/report-error'
 import { buildCatalogBreadcrumbLinks } from '@/lib/catalog/utils/catalog-seo'
 import { buildAlternateLocaleLinks } from '@/lib/seo/alternate-locale'
 import { getStorefrontMarketOptionsFromMatches } from '@/lib/seo/alternate-locale-loader'
-import { translateMessage } from '@/lib/i18n/messages'
+import { fallbackMessages, loadMessages } from '@/lib/i18n/messages'
+import { getMessageFromMatches } from '@/lib/i18n/message-route-lookup'
 import {
   buildCanonicalUrl,
   buildSeoImageUrl,
@@ -41,6 +42,10 @@ export const Route = createFileRoute('/$country/$locale/collections/$')({
   },
   loaderDeps: ({ search }) => search,
   loader: async ({ context, deps, params }) => {
+    const messagesPromise = loadMessages(params.locale).catch(
+      () => fallbackMessages,
+    )
+
     try {
       const slug = params._splat ?? ''
       const listingInput = {
@@ -52,28 +57,32 @@ export const Route = createFileRoute('/$country/$locale/collections/$')({
         slug,
       }
       if (import.meta.env.SSR && context.shellResolution && slug) {
-        const listing = await loadCollectionListingForMarketOnServer({
-          ...listingInput,
-          market: context.shellResolution.market,
-        })
+        const [listing, messages] = await Promise.all([
+          loadCollectionListingForMarketOnServer({
+            ...listingInput,
+            market: context.shellResolution.market,
+          }),
+          messagesPromise,
+        ])
 
         return {
           page: createCollectionListingPage({
             listing,
-            locale: params.locale,
+            messages,
             search: deps,
           }),
         }
       }
 
-      const listing = await getCollectionListing({
-        data: listingInput,
-      })
+      const [listing, messages] = await Promise.all([
+        getCollectionListing({ data: listingInput }),
+        messagesPromise,
+      ])
 
       return {
         page: createCollectionListingPage({
           listing,
-          locale: params.locale,
+          messages,
           search: deps,
         }),
       }
@@ -86,11 +95,12 @@ export const Route = createFileRoute('/$country/$locale/collections/$')({
         context: 'collections.listing',
         error,
       })
+      const messages = await messagesPromise
 
       return {
         page: createCollectionListingPage({
           listing: null,
-          locale: params.locale,
+          messages,
           search: deps,
         }),
       }
@@ -100,16 +110,16 @@ export const Route = createFileRoute('/$country/$locale/collections/$')({
     const page = loaderData?.page
     const category = page?.category
     const search = page?.search ?? DEFAULT_PRODUCT_LISTING_SEARCH
+    const fallbackDescription = category
+      ? getMessageFromMatches(matches, 'collection.collectionDescription')
+      : getMessageFromMatches(
+          matches,
+          'collection.collectionUnavailableDescription',
+        )
     const { description, title } = getCatalogSeoText({
       description: category?.description,
-      fallbackDescription: category
-        ? translateMessage(params.locale, 'collection.collectionDescription')
-        : translateMessage(
-            params.locale,
-            'collection.collectionUnavailableDescription',
-          ),
-      fallbackTitle: translateMessage(
-        params.locale,
+      fallbackTitle: getMessageFromMatches(
+        matches,
         'collection.collectionUnavailable',
       ),
       metaDescription: category?.metaDescription,
@@ -132,10 +142,7 @@ export const Route = createFileRoute('/$country/$locale/collections/$')({
         ? buildCatalogBreadcrumbLinks({
             breadcrumbs: category.breadcrumbs,
             country: params.country,
-            homeLabel: translateMessage(
-              params.locale,
-              'product.breadcrumbHome',
-            ),
+            homeLabel: getMessageFromMatches(matches, 'product.breadcrumbHome'),
             locale: params.locale,
           })
         : null
@@ -159,10 +166,7 @@ export const Route = createFileRoute('/$country/$locale/collections/$')({
           : [],
       canonicalUrl,
       description,
-      fallbackDescription: translateMessage(
-        params.locale,
-        'collection.collectionUnavailableDescription',
-      ),
+      fallbackDescription,
       image: imageUrl
         ? {
             alt: category?.name ?? primaryProductImage?.alt ?? title,

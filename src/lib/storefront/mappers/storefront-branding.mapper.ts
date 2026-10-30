@@ -4,11 +4,9 @@ export type StorefrontBrandingInput = {
   locale: string
   logoUrl?: string | null
   metaDescription?: string | null
-  name?: string | null
+  name: string
   seoTitle?: string | null
 }
-
-const FALLBACK_BRANDING_NAME = 'Store'
 
 function normalizeOptionalText(value: string | null | undefined) {
   const normalized = value?.trim()
@@ -51,7 +49,7 @@ export function mapStorefrontBranding({
     locale,
     logoUrl: normalizePublicImageUrl(logoUrl),
     metaDescription: normalizeOptionalText(metaDescription),
-    name: normalizeOptionalText(name) ?? FALLBACK_BRANDING_NAME,
+    name: name.trim(),
     seoTitle: normalizeOptionalText(seoTitle),
   }
 }

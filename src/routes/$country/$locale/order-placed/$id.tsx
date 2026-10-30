@@ -5,7 +5,7 @@ import {
   OrderPlacedPage,
 } from '@/components/checkout/completion/order-placed-page'
 import { getCompletedCheckoutOrder } from '@/lib/checkout/api/checkout-order.functions'
-import { translateMessage } from '@/lib/i18n/messages'
+import { getMessageFromMatches } from '@/lib/i18n/message-route-lookup'
 import { reportError } from '@/lib/observability/report-error'
 import { buildStorefrontSeoHead } from '@/lib/seo/site-seo'
 
@@ -36,18 +36,18 @@ export const Route = createFileRoute('/$country/$locale/order-placed/$id')({
   },
   head: ({ loaderData, matches, params }) =>
     buildStorefrontSeoHead({
-      fallbackDescription: translateMessage(
-        params.locale,
+      fallbackDescription: getMessageFromMatches(
+        matches,
         'branding.defaultDescription',
       ),
       locale: params.locale,
       matches,
       noIndex: true,
       title: loaderData?.order?.number
-        ? `${translateMessage(params.locale, 'account.order')} ${
+        ? `${getMessageFromMatches(matches, 'account.order')} ${
             loaderData.order.number
           }`
-        : translateMessage(params.locale, 'checkout.orderPlaced'),
+        : getMessageFromMatches(matches, 'checkout.orderPlaced'),
     }),
   component: OrderPlacedRoutePage,
   errorComponent: OrderPlacedError,

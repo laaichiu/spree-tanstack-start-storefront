@@ -21,7 +21,8 @@ import { toProductListingApiInput } from '@/lib/catalog/api/product-listing-para
 import { createProductsListingPage } from '@/lib/catalog/utils/product-listing-page'
 import { buildAlternateLocaleLinks } from '@/lib/seo/alternate-locale'
 import { getStorefrontMarketOptionsFromMatches } from '@/lib/seo/alternate-locale-loader'
-import { translateMessage } from '@/lib/i18n/messages'
+import { fallbackMessages, loadMessages } from '@/lib/i18n/messages'
+import { getMessageFromMatches } from '@/lib/i18n/message-route-lookup'
 import {
   buildCanonicalUrl,
   buildSeoImageUrl,
@@ -36,6 +37,10 @@ export const Route = createFileRoute('/$country/$locale/products/')({
   },
   loaderDeps: ({ search }) => search,
   loader: async ({ context, deps, params }) => {
+    const messagesPromise = loadMessages(params.locale).catch(
+      () => fallbackMessages,
+    )
+
     try {
       const listingInput = {
         ...toProductListingApiInput(deps),
@@ -45,26 +50,32 @@ export const Route = createFileRoute('/$country/$locale/products/')({
         },
       }
       if (import.meta.env.SSR && context.shellResolution) {
+        const [listing, messages] = await Promise.all([
+          loadProductsPageSummariesForMarketOnServer({
+            ...listingInput,
+            market: context.shellResolution.market,
+          }),
+          messagesPromise,
+        ])
+
         return {
           page: createProductsListingPage({
-            listing: await loadProductsPageSummariesForMarketOnServer({
-              ...listingInput,
-              market: context.shellResolution.market,
-            }),
-            locale: params.locale,
+            listing,
+            messages,
             search: deps,
           }),
         }
       }
 
-      const listing = await getProductsPageSummaries({
-        data: listingInput,
-      })
+      const [listing, messages] = await Promise.all([
+        getProductsPageSummaries({ data: listingInput }),
+        messagesPromise,
+      ])
 
       return {
         page: createProductsListingPage({
           listing,
-          locale: params.locale,
+          messages,
           search: deps,
         }),
       }
@@ -73,11 +84,12 @@ export const Route = createFileRoute('/$country/$locale/products/')({
         context: 'products.listing',
         error,
       })
+      const messages = await messagesPromise
 
       return {
         page: createProductsListingPage({
           listing: null,
-          locale: params.locale,
+          messages,
           search: deps,
         }),
       }
@@ -87,7 +99,7 @@ export const Route = createFileRoute('/$country/$locale/products/')({
     const page = loaderData?.page
     const search = page?.search ?? DEFAULT_PRODUCT_LISTING_SEARCH
     const title =
-      page?.title ?? translateMessage(params.locale, 'product.products')
+      page?.title ?? getMessageFromMatches(matches, 'product.products')
     const canonicalPath = buildListingCanonicalPath(
       `/${params.country}/${params.locale}/products`,
       search,
@@ -108,12 +120,12 @@ export const Route = createFileRoute('/$country/$locale/products/')({
             })
           : [],
       canonicalUrl,
-      description: translateMessage(
-        params.locale,
+      description: getMessageFromMatches(
+        matches,
         'product.productsDescription',
       ),
-      fallbackDescription: translateMessage(
-        params.locale,
+      fallbackDescription: getMessageFromMatches(
+        matches,
         'product.productsDescription',
       ),
       image: imageUrl

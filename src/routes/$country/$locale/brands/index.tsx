@@ -9,7 +9,7 @@ import type { BrandDirectoryPageModel } from '@/lib/brands/contracts'
 import { parseBrandDirectorySearch } from '@/lib/brands/contracts/brand-directory-search'
 import { reportError } from '@/lib/observability/report-error'
 import { useMarket } from '@/components/layout/market-provider'
-import { translateMessage } from '@/lib/i18n/messages'
+import { getMessageFromMatches } from '@/lib/i18n/message-route-lookup'
 import { buildAlternateLocaleLinks } from '@/lib/seo/alternate-locale'
 import { getStorefrontMarketOptionsFromMatches } from '@/lib/seo/alternate-locale-loader'
 import {
@@ -50,9 +50,9 @@ export const Route = createFileRoute('/$country/$locale/brands/')({
   head: ({ loaderData, matches, params }) => {
     const canonicalPath = `/${params.country}/${params.locale}/brands`
     const canonicalUrl = buildCanonicalUrl(canonicalPath)
-    const title = translateMessage(params.locale, 'brand.directory')
-    const description = translateMessage(
-      params.locale,
+    const title = getMessageFromMatches(matches, 'brand.directory')
+    const description = getMessageFromMatches(
+      matches,
       'brand.directoryDescription',
     )
     const imageUrl = buildSeoImageUrl(siteSeo.socialImagePath)

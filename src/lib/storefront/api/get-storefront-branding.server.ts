@@ -1,6 +1,9 @@
 import '@tanstack/react-start/server-only'
 
+import { toSpreeLocaleCode } from '@/lib/runtime/locale-code'
 import { getServerSpreeClient } from '@/lib/spree/client.server'
+import { reportError } from '@/lib/observability/report-error'
+import { loadMessages } from '@/lib/i18n/messages'
 
 import { getConfiguredStorefrontBranding } from '../config/storefront-branding'
 import { mapStorefrontBranding } from '../mappers/storefront-branding.mapper'
@@ -11,15 +14,14 @@ export type StorefrontBrandingRequest = {
 }
 
 type StoreMetadataResponse = {
-  locale: string
-  logo_url: string | null
+  id: string
   meta_description: string | null
   name: string
   seo_title: string | null
 }
 
 function isRecord(value: unknown): value is Record<string, unknown> {
-  return typeof value === 'object' && value !== null
+  return typeof value === 'object' && value !== null && !Array.isArray(value)
 }
 
 function readStoreMetadataResponse(value: unknown): StoreMetadataResponse {
@@ -27,32 +29,43 @@ function readStoreMetadataResponse(value: unknown): StoreMetadataResponse {
     throw new Error('Store metadata response must be an object')
   }
 
-  const { locale, logo_url, meta_description, name, seo_title } = value
+  if (
+    !Object.hasOwn(value, 'id') ||
+    !Object.hasOwn(value, 'name') ||
+    !Object.hasOwn(value, 'meta_description') ||
+    !Object.hasOwn(value, 'seo_title')
+  ) {
+    throw new Error('Store metadata response has invalid fields')
+  }
+
+  const { id, meta_description, name, seo_title } = value
 
   if (
-    typeof locale !== 'string' ||
+    typeof id !== 'string' ||
+    !id.startsWith('store_') ||
+    id.length === 'store_'.length ||
     typeof name !== 'string' ||
-    (logo_url !== null && typeof logo_url !== 'string') ||
+    name.trim().length === 0 ||
     (meta_description !== null && typeof meta_description !== 'string') ||
     (seo_title !== null && typeof seo_title !== 'string')
   ) {
     throw new Error('Store metadata response has invalid fields')
   }
 
-  return { locale, logo_url, meta_description, name, seo_title }
+  return { id, meta_description, name, seo_title }
 }
 
 async function getStorefrontBrandingFromApi(
   locale: string,
 ): Promise<StorefrontBranding> {
-  const response = await getServerSpreeClient().request<unknown>('GET', '/', {
-    locale,
+  const response = await getServerSpreeClient().store.get({
+    locale: toSpreeLocaleCode(locale),
   })
   const metadata = readStoreMetadataResponse(response)
 
   return mapStorefrontBranding({
-    locale: metadata.locale || locale,
-    logoUrl: metadata.logo_url,
+    locale,
+    logoUrl: null,
     metaDescription: metadata.meta_description,
     name: metadata.name,
     seoTitle: metadata.seo_title,
@@ -62,14 +75,15 @@ async function getStorefrontBrandingFromApi(
 export async function getStorefrontBrandingForRequest({
   locale,
 }: StorefrontBrandingRequest): Promise<StorefrontBranding> {
-  const fallback = getConfiguredStorefrontBranding(locale)
-
   try {
     return await getStorefrontBrandingFromApi(locale)
-  } catch {
-    // The public Store metadata endpoint is newer than the currently pinned
-    // backend/SDK. Keep startup branding available while it is being rolled
-    // out; all successful responses still pass through the normalized mapper.
-    return fallback
+  } catch (error: unknown) {
+    reportError({
+      context: 'layout.storefrontBranding',
+      error,
+    })
+
+    // Keep localized generic branding available if Store metadata cannot load.
+    return getConfiguredStorefrontBranding(locale, await loadMessages(locale))
   }
 }

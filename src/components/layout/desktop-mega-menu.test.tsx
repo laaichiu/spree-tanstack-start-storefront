@@ -11,6 +11,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 import type { BrandNavigation } from '@/lib/brands/contracts/brand-navigation'
 import type { CategoryNavigationItem } from '@/lib/catalog/contracts'
+import { fallbackMessages } from '@/lib/i18n/messages'
 import {
   resolveMarketSelection,
   FALLBACK_STOREFRONT_MARKETS,
@@ -118,7 +119,11 @@ afterEach(() => {
 
 function Menu({ navigation = brands }: { navigation?: BrandNavigation }) {
   return (
-    <MarketProvider market={market} marketOptions={FALLBACK_STOREFRONT_MARKETS}>
+    <MarketProvider
+      market={market}
+      marketOptions={FALLBACK_STOREFRONT_MARKETS}
+      messages={fallbackMessages}
+    >
       <DesktopMegaMenu brands={navigation} categories={categories} />
     </MarketProvider>
   )

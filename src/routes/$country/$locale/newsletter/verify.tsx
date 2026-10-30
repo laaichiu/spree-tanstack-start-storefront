@@ -2,7 +2,7 @@ import { createFileRoute } from '@tanstack/react-router'
 
 import { NewsletterVerificationPage } from '@/components/newsletter/newsletter-verification-page'
 import { parseOptionalTrimmedSearchText } from '@/lib/core/optional-search-text'
-import { translateMessage } from '@/lib/i18n/messages'
+import { getMessageFromMatches } from '@/lib/i18n/message-route-lookup'
 import { verifyNewsletterSubscription } from '@/lib/newsletter/api/subscribe-to-newsletter'
 import type { NewsletterVerificationPageState } from '@/lib/newsletter/contracts'
 import { buildStorefrontSeoHead } from '@/lib/seo/site-seo'
@@ -39,14 +39,14 @@ export const Route = createFileRoute('/$country/$locale/newsletter/verify')({
   },
   head: ({ matches, params }) =>
     buildStorefrontSeoHead({
-      fallbackDescription: translateMessage(
-        params.locale,
+      fallbackDescription: getMessageFromMatches(
+        matches,
         'branding.defaultDescription',
       ),
       locale: params.locale,
       matches,
       noIndex: true,
-      title: translateMessage(params.locale, 'newsletterVerification.title'),
+      title: getMessageFromMatches(matches, 'newsletterVerification.title'),
     }),
   component: NewsletterVerificationRoute,
 })

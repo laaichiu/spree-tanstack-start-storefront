@@ -1,5 +1,7 @@
 export {
   fallbackMessages,
+  getMessage,
+  isMessageDictionary,
   loadMessages,
   resolveMessageLocale,
 } from './message-catalog'
@@ -8,4 +10,3 @@ export type {
   MessageKey,
   SupportedLocale,
 } from './message-catalog'
-export { translateMessage } from './seo-messages'

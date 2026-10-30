@@ -1,7 +1,7 @@
 import { createContext, useContext, useMemo } from 'react'
 
 import type { MessageDictionary, MessageKey } from '@/lib/i18n/messages'
-import { fallbackMessages } from '@/lib/i18n/messages'
+import { getMessage } from '@/lib/i18n/messages'
 
 import type {
   ResolvedMarket,
@@ -22,20 +22,16 @@ type MarketContextValue = {
 
 const MarketContext = createContext<MarketContextValue | undefined>(undefined)
 
-function isRecord(value: unknown): value is Record<string, unknown> {
-  return typeof value === 'object' && value !== null && !Array.isArray(value)
-}
-
 export function MarketProvider({
   children,
   market,
   marketOptions,
-  messages = fallbackMessages,
+  messages,
 }: {
   children: React.ReactNode
   market: ResolvedMarket
   marketOptions: StorefrontMarket[]
-  messages?: MessageDictionary
+  messages: MessageDictionary
 }) {
   const value = useMemo<MarketContextValue>(() => {
     const options = marketOptions.length
@@ -48,19 +44,7 @@ export function MarketProvider({
       localeOptions: activeMarket.locales,
       market,
       marketOptions: options,
-      t: (key) => {
-        let resolvedValue: unknown = messages
-
-        for (const segment of key.split('.')) {
-          if (!isRecord(resolvedValue) || !(segment in resolvedValue)) {
-            return key
-          }
-
-          resolvedValue = resolvedValue[segment]
-        }
-
-        return typeof resolvedValue === 'string' ? resolvedValue : key
-      },
+      t: (key) => getMessage(messages, key),
     }
   }, [market, marketOptions, messages])
 

@@ -4,21 +4,21 @@ import { CheckoutConfirmPaymentPage } from '@/components/checkout/completion/che
 import { CheckoutRouteErrorState } from '@/components/checkout/checkout-route-error-state'
 import { parseCheckoutPaymentReturnSearch } from '@/lib/checkout/utils/completion/payment-return'
 import { useMarket } from '@/components/layout/market-provider'
-import { translateMessage } from '@/lib/i18n/messages'
+import { getMessageFromMatches } from '@/lib/i18n/message-route-lookup'
 import { buildStorefrontSeoHead } from '@/lib/seo/site-seo'
 
 export const Route = createFileRoute('/$country/$locale/confirm-payment/$id')({
   validateSearch: parseCheckoutPaymentReturnSearch,
   head: ({ matches, params }) =>
     buildStorefrontSeoHead({
-      fallbackDescription: translateMessage(
-        params.locale,
+      fallbackDescription: getMessageFromMatches(
+        matches,
         'branding.defaultDescription',
       ),
       locale: params.locale,
       matches,
       noIndex: true,
-      title: translateMessage(params.locale, 'checkout.confirmPayment'),
+      title: getMessageFromMatches(matches, 'checkout.confirmPayment'),
     }),
   component: ConfirmPaymentRoute,
   errorComponent: ConfirmPaymentError,

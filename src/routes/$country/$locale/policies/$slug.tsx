@@ -2,7 +2,7 @@ import { createFileRoute, notFound } from '@tanstack/react-router'
 
 import { useMarket } from '@/components/layout/market-provider'
 import { PolicyPageView } from '@/components/policies/policy-page-view'
-import { translateMessage } from '@/lib/i18n/messages'
+import { getMessageFromMatches } from '@/lib/i18n/message-route-lookup'
 import { buildStorefrontSeoHead } from '@/lib/seo/site-seo'
 
 const policies = {
@@ -37,18 +37,18 @@ export const Route = createFileRoute('/$country/$locale/policies/$slug')({
   head: ({ loaderData, matches, params }) =>
     buildStorefrontSeoHead({
       description: loaderData
-        ? translateMessage(params.locale, 'policy.pendingContent')
+        ? getMessageFromMatches(matches, 'policy.pendingContent')
         : null,
-      fallbackDescription: translateMessage(
-        params.locale,
+      fallbackDescription: getMessageFromMatches(
+        matches,
         'branding.defaultDescription',
       ),
       locale: params.locale,
       matches,
       noIndex: true,
       title: loaderData
-        ? translateMessage(params.locale, loaderData.titleKey)
-        : translateMessage(params.locale, 'notFound.title'),
+        ? getMessageFromMatches(matches, loaderData.titleKey)
+        : getMessageFromMatches(matches, 'notFound.title'),
     }),
   component: PolicyPage,
 })

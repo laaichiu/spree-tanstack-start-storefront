@@ -5,7 +5,7 @@ import { getCustomerOrderSummaries } from '@/lib/account/api/order.functions'
 import { AccountOrdersList } from '@/components/account/account-orders-list'
 import { redirectToAccountLogin } from '@/lib/account/api/auth-guard'
 import { isCustomerSessionRequiredError } from '@/lib/account/utils/customer-session-error'
-import { translateMessage } from '@/lib/i18n/messages'
+import { getMessageFromMatches } from '@/lib/i18n/message-route-lookup'
 import { buildStorefrontSeoHead } from '@/lib/seo/site-seo'
 
 export const Route = createFileRoute(
@@ -44,14 +44,14 @@ export const Route = createFileRoute(
   },
   head: ({ matches, params }) =>
     buildStorefrontSeoHead({
-      fallbackDescription: translateMessage(
-        params.locale,
+      fallbackDescription: getMessageFromMatches(
+        matches,
         'branding.defaultDescription',
       ),
       locale: params.locale,
       matches,
       noIndex: true,
-      title: translateMessage(params.locale, 'account.orders'),
+      title: getMessageFromMatches(matches, 'account.orders'),
     }),
   component: AccountOrdersPage,
 })

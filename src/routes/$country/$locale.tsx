@@ -149,6 +149,12 @@ function MarketRouteLayout() {
 
 function MarketNotFound() {
   const params = Route.useParams()
+  const { messages } = Route.useLoaderData()
 
-  return <MarketNotFoundPage market={resolveMarketInput(params).market} />
+  return (
+    <MarketNotFoundPage
+      market={resolveMarketInput(params).market}
+      messages={messages}
+    />
+  )
 }

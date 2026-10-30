@@ -6,7 +6,7 @@ import {
 } from '@/lib/catalog/api/get-home-page'
 import { useMarket } from '@/components/layout/market-provider'
 import { HomePageView } from '@/components/home/home-page-view'
-import { translateMessage } from '@/lib/i18n/messages'
+import { getMessageFromMatches } from '@/lib/i18n/message-route-lookup'
 import { buildAlternateLocaleLinks } from '@/lib/seo/alternate-locale'
 import { getStorefrontMarketOptionsFromMatches } from '@/lib/seo/alternate-locale-loader'
 import {
@@ -35,7 +35,7 @@ export const Route = createFileRoute('/$country/$locale/')({
     const canonicalPath = `/${params.country}/${params.locale}`
     const canonicalUrl = buildCanonicalUrl(canonicalPath)
     const imageUrl = buildSeoImageUrl(siteSeo.socialImagePath)
-    const imageAlt = translateMessage(params.locale, 'home.heroTitle')
+    const imageAlt = getMessageFromMatches(matches, 'home.heroTitle')
 
     return buildStorefrontSeoHead({
       alternateLinks: buildAlternateLocaleLinks({
@@ -43,16 +43,16 @@ export const Route = createFileRoute('/$country/$locale/')({
         path: canonicalPath,
       }),
       canonicalUrl,
-      description: translateMessage(params.locale, 'home.heroDescription'),
-      fallbackDescription: translateMessage(
-        params.locale,
+      description: getMessageFromMatches(matches, 'home.heroDescription'),
+      fallbackDescription: getMessageFromMatches(
+        matches,
         'home.heroDescription',
       ),
       image: imageUrl ? { alt: imageAlt, url: imageUrl } : null,
       locale: params.locale,
       matches,
       preferStoreSeo: true,
-      title: translateMessage(params.locale, 'home.seoTitle'),
+      title: getMessageFromMatches(matches, 'home.seoTitle'),
     })
   },
   component: Home,

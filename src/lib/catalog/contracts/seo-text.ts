@@ -1,6 +1,5 @@
 export type CatalogSeoTextInput = {
   description?: string | null
-  fallbackDescription: string
   fallbackTitle: string
   metaDescription?: string | null
   metaTitle?: string | null
@@ -8,24 +7,20 @@ export type CatalogSeoTextInput = {
 }
 
 export type CatalogSeoText = {
-  description: string
+  description: string | null
   title: string
 }
 
-/**
- * Resolves catalog page SEO text without knowing about routes, i18n, or head
- * rendering. The runtime supplies localized fallback copy.
- */
+/** Resolves catalog-owned SEO fields; the route supplies localized fallbacks. */
 export function getCatalogSeoText({
   description,
-  fallbackDescription,
   fallbackTitle,
   metaDescription,
   metaTitle,
   name,
 }: CatalogSeoTextInput): CatalogSeoText {
   return {
-    description: metaDescription || description || fallbackDescription,
+    description: metaDescription || description || null,
     title: metaTitle || name || fallbackTitle,
   }
 }

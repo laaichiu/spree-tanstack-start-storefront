@@ -12,7 +12,7 @@ import {
 } from '@/lib/catalog/api/get-product-page'
 import { isCatalogResourceNotFoundError } from '@/lib/catalog/utils/catalog-errors'
 import { reportError } from '@/lib/observability/report-error'
-import { translateMessage } from '@/lib/i18n/messages'
+import { getMessageFromMatches } from '@/lib/i18n/message-route-lookup'
 import {
   buildCatalogBreadcrumbLinks,
   buildProductStructuredData,
@@ -63,13 +63,13 @@ export const Route = createFileRoute('/$country/$locale/products/$slug')({
   notFoundComponent: ProductDetailEmptyState,
   head: ({ loaderData, matches, params }) => {
     const product = loaderData?.product
+    const fallbackDescription = getMessageFromMatches(
+      matches,
+      'product.productUnavailableDescription',
+    )
     const { description, title } = getCatalogSeoText({
       description: product?.description,
-      fallbackDescription: translateMessage(
-        params.locale,
-        'product.productUnavailableDescription',
-      ),
-      fallbackTitle: translateMessage(params.locale, 'product.products'),
+      fallbackTitle: getMessageFromMatches(matches, 'product.products'),
       metaDescription: product?.metaDescription,
       metaTitle: product?.metaTitle,
       name: product?.name,
@@ -87,10 +87,7 @@ export const Route = createFileRoute('/$country/$locale/products/$slug')({
         ? buildCatalogBreadcrumbLinks({
             breadcrumbs: product.categoryBreadcrumbs,
             country: params.country,
-            homeLabel: translateMessage(
-              params.locale,
-              'product.breadcrumbHome',
-            ),
+            homeLabel: getMessageFromMatches(matches, 'product.breadcrumbHome'),
             locale: params.locale,
           })
         : null
@@ -115,10 +112,7 @@ export const Route = createFileRoute('/$country/$locale/products/$slug')({
         : [],
       canonicalUrl,
       description,
-      fallbackDescription: translateMessage(
-        params.locale,
-        'product.productUnavailableDescription',
-      ),
+      fallbackDescription,
       image: imageUrl
         ? { alt: primaryImage?.alt ?? title, url: imageUrl }
         : null,
