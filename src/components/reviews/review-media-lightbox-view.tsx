@@ -23,7 +23,7 @@ export function ReviewMediaLightboxView({
   actions: ReviewMediaLightboxActions
   model: ReviewMediaLightboxModel
 }) {
-  const { items, labels, selectedId } = model
+  const { galleryStatus, items, labels, selectedId } = model
   const { isOpen, selectNext, selectPrevious, selectedIndex, selectedItem } =
     useReviewMediaLightbox({
       items,
@@ -52,9 +52,17 @@ export function ReviewMediaLightboxView({
           title={labels.photoGallery}
         >
           <header className="flex h-14 shrink-0 items-center justify-between border-b border-border px-4 sm:px-6">
-            <p className="text-xs text-muted-foreground">
-              {selectedIndex + 1} / {items.length}
-            </p>
+            <div className="flex items-center gap-3 text-xs text-muted-foreground">
+              <p>
+                {selectedIndex + 1} / {items.length}
+              </p>
+              {galleryStatus === 'loading' ? (
+                <p role="status">{labels.loading}</p>
+              ) : null}
+              {galleryStatus === 'error' ? (
+                <p role="alert">{labels.loadFailedDescription}</p>
+              ) : null}
+            </div>
             <DialogClose aria-label={labels.closePhotoGallery}>
               <CloseIcon />
             </DialogClose>

@@ -90,6 +90,7 @@ export function ProductReviewsReadySection({
         controls: <ProductReviewControls {...controls} />,
         mediaLightbox: (
           <ReviewMediaLightbox
+            galleryStatus={media.galleryStatus}
             items={media.items}
             selectedId={media.selectedId}
             onClose={media.onClose}

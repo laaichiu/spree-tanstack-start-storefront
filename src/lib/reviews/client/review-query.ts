@@ -3,6 +3,9 @@ import type { QueryClient } from '@tanstack/react-query'
 import { useSyncExternalStore } from 'react'
 
 export const productReviewsQueryKey = ['product-reviews'] as const
+export const productReviewMediaGalleryQueryKey = [
+  'product-review-media-gallery',
+] as const
 export const productReviewFormQueryKey = ['product-review-form'] as const
 
 export function getProductReviewFormQueryKey({
@@ -61,6 +64,7 @@ function advanceProductReviewSessionGeneration() {
 export function clearProductReviewSessionState(queryClient: QueryClient) {
   advanceProductReviewSessionGeneration()
   queryClient.removeQueries({ queryKey: productReviewsQueryKey })
+  queryClient.removeQueries({ queryKey: productReviewMediaGalleryQueryKey })
   queryClient.removeQueries({ queryKey: productReviewFormQueryKey })
 
   for (const mutation of queryClient

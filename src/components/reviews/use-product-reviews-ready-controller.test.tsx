@@ -7,6 +7,7 @@ import { PRODUCT_REVIEWS_SUMMARY_ID } from './product-reviews-target-ids'
 import { useProductReviewsReadyController } from './use-product-reviews-ready-controller'
 
 const state = vi.hoisted(() => ({
+  galleryReviews: undefined as ProductReview[] | undefined,
   page: undefined as ProductReviewsPage | undefined,
 }))
 
@@ -34,6 +35,14 @@ vi.mock('@/lib/reviews/client/use-product-reviews', () => ({
     isError: false,
     isFetching: false,
     refetch: vi.fn(),
+  }),
+}))
+
+vi.mock('@/lib/reviews/client/use-product-review-media-gallery', () => ({
+  useProductReviewMediaGallery: () => ({
+    data: state.galleryReviews,
+    isError: false,
+    isLoading: false,
   }),
 }))
 
@@ -93,6 +102,7 @@ const feature = {
 afterEach(() => {
   cleanup()
   document.getElementById(PRODUCT_REVIEWS_SUMMARY_ID)?.remove()
+  state.galleryReviews = undefined
   state.page = undefined
   vi.clearAllMocks()
 })
@@ -140,6 +150,39 @@ describe('useProductReviewsReadyController', () => {
     rerender()
 
     await waitFor(() => expect(result.current.media.selectedId).toBeNull())
+  })
+
+  it('exposes photos from reviews outside the current page to the lightbox', () => {
+    const laterReview = {
+      ...review,
+      id: 'rev_later_page',
+      media: [
+        {
+          ...review.media[0],
+          id: 'rmedia_later_photo',
+          url: 'https://example.com/later-photo.jpg',
+        },
+      ],
+    }
+    state.galleryReviews = [review, laterReview]
+
+    const { result } = renderHook(() =>
+      useProductReviewsReadyController({
+        feature,
+        productId: 'prod_product',
+      }),
+    )
+
+    expect(result.current.media.items.map((item) => item.id)).toEqual([
+      'rev_review:rmedia_photo',
+      'rev_later_page:rmedia_later_photo',
+    ])
+    act(() => {
+      result.current.media.onSelectId('rev_later_page:rmedia_later_photo')
+    })
+    expect(result.current.media.selectedId).toBe(
+      'rev_later_page:rmedia_later_photo',
+    )
   })
 
   it('clears selected media when filters are cleared', () => {

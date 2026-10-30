@@ -6,6 +6,7 @@ import {
   getReviewsFeatureEnabledSafely,
   getProductReviewsOverview,
   getProductReviewsPage,
+  getProductReviewMediaGallery,
 } from './product-reviews.functions'
 
 const server = vi.hoisted(() => ({
@@ -130,6 +131,129 @@ describe('product review response ownership', () => {
       'GET',
       '/products/prod_de_product/reviews',
       { params: { limit: 5, page: 1, sort: 'most_recent' } },
+    )
+  })
+
+  it('collects every photo-review page while preserving active filters', async () => {
+    const firstReview = {
+      id: 'rev_first',
+      productId: 'prod_de_product',
+    }
+    const secondReview = {
+      id: 'rev_second',
+      productId: 'prod_de_product',
+    }
+    const thirdReview = {
+      id: 'rev_third',
+      productId: 'prod_de_product',
+    }
+    const page = (
+      pageNumber: number,
+      review: { id: string; productId: string },
+    ) => ({
+      pagination: {
+        count: 3,
+        limit: 5,
+        nextPage: pageNumber < 3 ? pageNumber + 1 : null,
+        page: pageNumber,
+        pageCount: 3,
+        previousPage: pageNumber > 1 ? pageNumber - 1 : null,
+      },
+      reviews: [review],
+    })
+    client.request.mockResolvedValue({ data: [] })
+    server.mapPage
+      .mockReturnValueOnce(page(1, firstReview))
+      .mockReturnValueOnce(page(2, secondReview))
+      .mockReturnValueOnce(page(3, thirdReview))
+
+    await expect(
+      getProductReviewMediaGallery({
+        data: {
+          market: { country: 'de', locale: 'de-DE' },
+          productId: 'prod_de_product',
+          query: {
+            ...query,
+            answerFilters: { fit: ['relaxed'] },
+            page: 3,
+            ratings: ['5'],
+            verifiedPurchase: true,
+          },
+        },
+      }),
+    ).resolves.toEqual([firstReview, secondReview, thirdReview])
+
+    expect(client.request).toHaveBeenNthCalledWith(
+      1,
+      'GET',
+      '/products/prod_de_product/reviews',
+      {
+        params: {
+          limit: 5,
+          page: 1,
+          sort: 'most_recent',
+          rating: '5',
+          with_images: true,
+          verified_purchase: true,
+          'answers[fit]': 'relaxed',
+        },
+      },
+    )
+    expect(client.request).toHaveBeenNthCalledWith(
+      2,
+      'GET',
+      '/products/prod_de_product/reviews',
+      {
+        params: expect.objectContaining({ page: 2, with_images: true }),
+      },
+    )
+    expect(client.request).toHaveBeenNthCalledWith(
+      3,
+      'GET',
+      '/products/prod_de_product/reviews',
+      {
+        params: expect.objectContaining({ page: 3, with_images: true }),
+      },
+    )
+  })
+
+  it('rejects another product review found on a later photo-gallery page', async () => {
+    client.request.mockResolvedValue({ data: [] })
+    server.mapPage
+      .mockReturnValueOnce({
+        pagination: {
+          count: 2,
+          limit: 5,
+          nextPage: 2,
+          page: 1,
+          pageCount: 2,
+          previousPage: null,
+        },
+        reviews: [{ productId: 'prod_de_product' }],
+      })
+      .mockReturnValueOnce({
+        pagination: {
+          count: 2,
+          limit: 5,
+          nextPage: null,
+          page: 2,
+          pageCount: 2,
+          previousPage: 1,
+        },
+        reviews: [{ productId: 'prod_other_product' }],
+      })
+
+    await expect(
+      getProductReviewMediaGallery({
+        data: {
+          market: { country: 'de', locale: 'de-DE' },
+          productId: 'prod_de_product',
+          query,
+        },
+      }),
+    ).rejects.toThrow('does not match the requested product')
+    expect(server.reportError).toHaveBeenCalledWith(
+      expect.objectContaining({ context: 'reviews.product.media_gallery' }),
     )
   })
 

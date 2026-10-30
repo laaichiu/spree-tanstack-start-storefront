@@ -1,15 +1,18 @@
 import { useMarket } from '@/components/layout/market-provider'
 import { getReviewMediaLightboxDisplays } from './review-media-lightbox-model'
 import type { ProductReviewMediaItem } from './review-media-items'
+import type { ReviewMediaGalleryStatus } from '../contracts/reviews'
 
 import { ReviewMediaLightboxView } from './review-media-lightbox-view'
 
 export function ReviewMediaLightbox({
+  galleryStatus,
   items,
   onClose,
   onSelectId,
   selectedId,
 }: {
+  galleryStatus: ReviewMediaGalleryStatus
   items: ProductReviewMediaItem[]
   onClose: () => void
   onSelectId: (id: string) => void
@@ -21,11 +24,14 @@ export function ReviewMediaLightbox({
   return (
     <ReviewMediaLightboxView
       model={{
+        galleryStatus,
         items: themeItems,
         labels: {
           anonymous: t('reviews.anonymous'),
           closePhotoGallery: t('reviews.closePhotoGallery'),
           customerPhoto: t('reviews.customerPhoto'),
+          loadFailedDescription: t('reviews.loadFailedDescription'),
+          loading: t('reviews.loading'),
           nextPhoto: t('reviews.nextPhoto'),
           openPhoto: t('reviews.openPhoto'),
           photoGallery: t('reviews.photoGallery'),

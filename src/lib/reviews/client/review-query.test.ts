@@ -4,6 +4,7 @@ import { describe, expect, it } from 'vitest'
 import {
   clearProductReviewSessionState,
   getProductReviewSessionGeneration,
+  productReviewMediaGalleryQueryKey,
   productReviewFormQueryKey,
   productReviewsQueryKey,
 } from './review-query'
@@ -19,13 +20,30 @@ describe('review session cleanup', () => {
       'or_order',
     ]
     const reviewKey = [...productReviewsQueryKey, 'us', 'en', 'prod_product']
+    const galleryKey = [
+      ...productReviewMediaGalleryQueryKey,
+      'us',
+      'en',
+      'prod_product',
+      getProductReviewSessionGeneration(),
+      {
+        answerFilters: {},
+        page: 1,
+        ratings: [],
+        sort: 'most_recent',
+        verifiedPurchase: false,
+        withImages: true,
+      },
+    ]
     client.setQueryData(formKey, { eligibility: { canReview: true } })
     client.setQueryData(reviewKey, { viewerVote: 'helpful' })
+    client.setQueryData(galleryKey, [{ id: 'rev_photo', currentVote: null }])
     client.setQueryData(['products', 'us', 'en'], { products: [] })
     const generation = getProductReviewSessionGeneration()
     clearProductReviewSessionState(client)
     expect(client.getQueryData(formKey)).toBeUndefined()
     expect(client.getQueryData(reviewKey)).toBeUndefined()
+    expect(client.getQueryData(galleryKey)).toBeUndefined()
     expect(client.getQueryData(['products', 'us', 'en'])).toEqual({
       products: [],
     })

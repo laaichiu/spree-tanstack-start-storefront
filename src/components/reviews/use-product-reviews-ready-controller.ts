@@ -12,6 +12,8 @@ import {
 } from '@/lib/reviews/client/use-product-reviews'
 
 import { useMarket } from '@/components/layout/market-provider'
+import { useProductReviewMediaGallery } from '@/lib/reviews/client/use-product-review-media-gallery'
+import type { ReviewMediaGalleryStatus } from '../contracts/reviews'
 import { PRODUCT_REVIEWS_SUMMARY_ID } from './product-reviews-target-ids'
 
 import { getReviewMediaItems } from './review-media-items'
@@ -43,6 +45,12 @@ export function useProductReviewsReadyController({
     query,
   })
   const reviewVote = useProductReviewVote({ market, productId })
+  const mediaGalleryQuery = useProductReviewMediaGallery({
+    enabled: selectedMediaId !== null,
+    market,
+    productId,
+    query,
+  })
   const page = reviewsQuery.data ?? feature.initialPage
   const paginationPresentation = getProductReviewPaginationPresentation({
     disabled: reviewsQuery.isFetching,
@@ -55,10 +63,26 @@ export function useProductReviewsReadyController({
     locale: market.locale,
     pagination: page.pagination,
   })
-  const reviewMediaItems = useMemo(
+  const currentPageMediaItems = useMemo(
     () => getReviewMediaItems(page.reviews),
     [page.reviews],
   )
+  const reviewMediaItems = useMemo(
+    () =>
+      mediaGalleryQuery.data
+        ? getReviewMediaItems(mediaGalleryQuery.data)
+        : currentPageMediaItems,
+    [currentPageMediaItems, mediaGalleryQuery.data],
+  )
+  let galleryStatus: ReviewMediaGalleryStatus = 'ready'
+
+  if (selectedMediaId !== null && !mediaGalleryQuery.data) {
+    if (mediaGalleryQuery.isLoading) {
+      galleryStatus = 'loading'
+    } else if (mediaGalleryQuery.isError) {
+      galleryStatus = 'error'
+    }
+  }
 
   useEffect(() => {
     if (
@@ -100,6 +124,7 @@ export function useProductReviewsReadyController({
       query,
     },
     media: {
+      galleryStatus,
       items: reviewMediaItems,
       onClose: () => setSelectedMediaId(null),
       onSelectId: setSelectedMediaId,

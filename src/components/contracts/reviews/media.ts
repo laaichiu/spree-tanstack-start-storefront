@@ -15,12 +15,17 @@ export type ReviewMediaPickerActions = {
   removeFile: (index: number) => void
 }
 
+export type ReviewMediaGalleryStatus = 'error' | 'loading' | 'ready'
+
 export type ReviewMediaLightboxModel = {
+  galleryStatus: ReviewMediaGalleryStatus
   items: readonly ProductReviewMediaLightboxDisplay[]
   labels: {
     anonymous: string
     closePhotoGallery: string
     customerPhoto: string
+    loadFailedDescription: string
+    loading: string
     nextPhoto: string
     openPhoto: string
     photoGallery: string

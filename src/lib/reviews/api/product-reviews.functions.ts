@@ -1,6 +1,9 @@
 import { createServerFn } from '@tanstack/react-start'
+import type { Client as SpreeClient } from '@spree/sdk'
 
 import type {
+  ProductReview,
+  ProductReviewQuery,
   ProductReviewsFeatureState,
   ProductReviewsPage,
   ProductReviewSort,
@@ -22,6 +25,7 @@ const REVIEW_SORTS = [
   'lowest_rating',
   'most_helpful',
 ] as const satisfies readonly ProductReviewSort[]
+const REVIEW_MEDIA_GALLERY_PAGE_BATCH_SIZE = 4
 
 async function parseBaseInput(data: unknown) {
   const { serverZod: z } = await import('@/lib/validation/server-zod.server')
@@ -53,6 +57,26 @@ async function parsePageInput(data: unknown) {
       }),
     })
     .parse(data)
+}
+
+async function fetchProductReviewsPage({
+  client,
+  productId,
+  query,
+}: {
+  client: SpreeClient
+  productId: string
+  query: ProductReviewQuery
+}) {
+  const response = await client.request<unknown>(
+    'GET',
+    productReviewsPath(productId),
+    { params: toProductReviewQueryParams(query) },
+  )
+  const page = mapProductReviewsPage(response)
+  assertReviewsBelongToProduct(page.reviews, productId)
+
+  return page
 }
 
 export const getReviewsFeatureStatus = createServerFn({
@@ -104,18 +128,76 @@ export const getProductReviewsPage = createServerFn({ method: 'GET' })
     }
 
     try {
-      const response = await context.client.request<unknown>(
-        'GET',
-        productReviewsPath(input.productId),
-        { params: toProductReviewQueryParams(input.query) },
-      )
-      const page = mapProductReviewsPage(response)
-      assertReviewsBelongToProduct(page.reviews, input.productId)
-
-      return page
+      return await fetchProductReviewsPage({
+        client: context.client,
+        productId: input.productId,
+        query: input.query,
+      })
     } catch (error) {
       reportError({
         context: 'reviews.product.page',
+        error,
+      })
+
+      throw error
+    }
+  })
+
+export const getProductReviewMediaGallery = createServerFn({ method: 'GET' })
+  .validator((data: unknown) => data)
+  .handler(async ({ data }): Promise<ProductReview[] | null> => {
+    if (!isReviewsFeatureEnabled()) {
+      return null
+    }
+
+    const input = await parsePageInput(data)
+    const context = await resolveReviewsRequestContext(input.market)
+
+    if (!context) {
+      return null
+    }
+
+    try {
+      const galleryQuery = { ...input.query, page: 1, withImages: true }
+      const firstPage = await fetchProductReviewsPage({
+        client: context.client,
+        productId: input.productId,
+        query: galleryQuery,
+      })
+      const reviews = [...firstPage.reviews]
+      const remainingPageCount = Math.max(firstPage.pagination.pageCount - 1, 0)
+
+      for (
+        let pageOffset = 0;
+        pageOffset < remainingPageCount;
+        pageOffset += REVIEW_MEDIA_GALLERY_PAGE_BATCH_SIZE
+      ) {
+        const pageNumbers = Array.from(
+          {
+            length: Math.min(
+              REVIEW_MEDIA_GALLERY_PAGE_BATCH_SIZE,
+              remainingPageCount - pageOffset,
+            ),
+          },
+          (_, index) => pageOffset + index + 2,
+        )
+        const pages = await Promise.all(
+          pageNumbers.map((page) =>
+            fetchProductReviewsPage({
+              client: context.client,
+              productId: input.productId,
+              query: { ...galleryQuery, page },
+            }),
+          ),
+        )
+
+        reviews.push(...pages.flatMap((page) => page.reviews))
+      }
+
+      return reviews
+    } catch (error) {
+      reportError({
+        context: 'reviews.product.media_gallery',
         error,
       })
 
