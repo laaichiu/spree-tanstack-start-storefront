@@ -16,6 +16,7 @@ const messageLoaders = {
   es: () => import('./messages/es.json'),
   fr: () => import('./messages/fr.json'),
   ja: () => import('./messages/ja.json'),
+  'zh-cn': () => import('./messages/zh-CN.json'),
 } satisfies Record<string, () => Promise<{ default: MessageDictionary }>>
 
 export type SupportedLocale = keyof typeof messageLoaders
@@ -88,13 +89,18 @@ function isSupportedLocale(value: string): value is SupportedLocale {
 }
 
 export function resolveMessageLocale(locale: string): SupportedLocale {
-  const language = locale
-    .trim()
-    .replaceAll('_', '-')
-    .toLowerCase()
-    .split('-')[0]
+  const normalizedLocale = locale.trim().replaceAll('_', '-').toLowerCase()
 
-  return isSupportedLocale(language) ? language : 'en'
+  if (isSupportedLocale(normalizedLocale)) {
+    return normalizedLocale
+  }
+
+  const language = normalizedLocale.split('-')[0]
+  if (language && isSupportedLocale(language)) {
+    return language
+  }
+
+  return 'en'
 }
 
 export async function loadMessages(locale: string) {
