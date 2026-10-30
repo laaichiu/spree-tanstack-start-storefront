@@ -15,6 +15,3 @@
 
 /newsletter-popup-bg-*.webp
   Cache-Control: public, max-age=3600, stale-while-revalidate=86400
-
-/spree.png
-  Cache-Control: public, max-age=3600, stale-while-revalidate=86400
