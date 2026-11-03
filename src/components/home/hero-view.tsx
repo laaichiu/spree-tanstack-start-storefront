@@ -64,7 +64,7 @@ export function HeroView({
             <div className="mt-7 flex justify-center">
               {renderCta(
                 ctaLabel,
-                'text-xs leading-4 font-normal uppercase inline-flex border-b border-white/80 pb-1 text-white transition hover:border-white hover:text-white/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50',
+                'text-xs leading-4 font-normal uppercase inline-flex border-b border-white/80 pb-0.5 text-white transition hover:border-white hover:text-white/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50',
               )}
             </div>
           </div>

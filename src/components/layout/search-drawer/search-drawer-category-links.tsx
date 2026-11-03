@@ -43,7 +43,7 @@ export function SearchDrawerCategoryLinks({
             {t('header.suggestedCategoriesUnavailable')}
           </p>
           <button
-            className="text-xs leading-4 uppercase underline underline-offset-4 hover:opacity-65 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50"
+            className="text-xs leading-4 uppercase underline underline-offset-2 hover:opacity-65 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50"
             onClick={() => void query.refetch()}
             type="button"
           >

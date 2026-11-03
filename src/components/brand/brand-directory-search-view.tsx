@@ -68,7 +68,7 @@ export function BrandDirectorySearchView({
       </p>
       {hasFilters && (
         <Button
-          className="mt-3 h-auto justify-start p-0 normal-case underline underline-offset-4 hover:bg-transparent"
+          className="mt-3 h-auto justify-start p-0 normal-case underline underline-offset-2 hover:bg-transparent"
           onClick={() => onSearchChange({})}
           variant="ghost"
         >

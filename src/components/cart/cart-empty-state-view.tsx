@@ -33,7 +33,7 @@ export function CartEmptyStateView({
           )}
           {renderPolicyLink(
             model.policyLabel,
-            'text-xs tracking-wider text-muted-foreground uppercase underline decoration-border underline-offset-4 transition hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50',
+            'text-xs tracking-wider text-muted-foreground uppercase underline decoration-border underline-offset-2 transition hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50',
           )}
         </div>
       </div>

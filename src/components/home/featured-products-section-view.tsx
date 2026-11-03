@@ -22,7 +22,7 @@ export function FeaturedProductsSectionView({
           </h2>
           {renderViewAll(
             viewAllLabel,
-            'text-xs leading-4 font-normal uppercase inline-flex border-b border-foreground/70 pb-1 text-foreground transition hover:border-foreground hover:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50',
+            'text-xs leading-4 font-normal uppercase inline-flex border-b border-foreground/70 pb-0.5 text-foreground transition hover:border-foreground hover:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50',
           )}
         </div>
       </div>

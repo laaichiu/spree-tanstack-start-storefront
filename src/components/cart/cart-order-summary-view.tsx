@@ -70,7 +70,7 @@ export function CartOrderSummaryView({
         )}
         {renderContinueShoppingLink(
           labels.continueShopping,
-          'mt-3 inline-flex w-full justify-center text-center text-xs tracking-wider text-muted-foreground uppercase underline decoration-border underline-offset-4 transition hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50',
+          'mt-3 inline-flex w-full justify-center text-center text-xs tracking-wider text-muted-foreground uppercase underline decoration-border underline-offset-2 transition hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50',
         )}
 
         <div className="mt-7 border-t border-border pt-5">
@@ -81,12 +81,12 @@ export function CartOrderSummaryView({
             {renderPolicyLink(
               'shipping-policy',
               labels.shippingPolicy,
-              'underline decoration-border underline-offset-4 transition hover:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50',
+              'underline decoration-border underline-offset-2 transition hover:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50',
             )}
             {renderPolicyLink(
               'returns-policy',
               labels.returnPolicy,
-              'underline decoration-border underline-offset-4 transition hover:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50',
+              'underline decoration-border underline-offset-2 transition hover:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50',
             )}
           </div>
         </div>

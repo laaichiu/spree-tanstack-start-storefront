@@ -23,7 +23,7 @@ export function FooterDeferredSlotView({
           role="alert"
         >
           <button
-            className="text-xs font-normal text-muted-foreground underline underline-offset-4 transition hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50"
+            className="text-xs font-normal text-muted-foreground underline underline-offset-2 transition hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50"
             onClick={onRetry}
             type="button"
           >

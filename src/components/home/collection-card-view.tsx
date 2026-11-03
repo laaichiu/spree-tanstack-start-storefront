@@ -30,7 +30,7 @@ export function CollectionCardView({
         <h3 className="text-xs leading-snug font-semibold tracking-wider break-words uppercase">
           {name}
         </h3>
-        <span className="mt-3 inline-flex border-b border-white/80 pb-1 text-xs font-light tracking-wider uppercase">
+        <span className="mt-3 inline-flex border-b border-white/80 pb-0.5 text-xs font-light tracking-wider uppercase">
           {shopAllLabel}
         </span>
       </div>

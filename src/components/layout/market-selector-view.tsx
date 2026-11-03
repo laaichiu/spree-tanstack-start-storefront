@@ -63,7 +63,7 @@ export function MarketSelectorView({
   const triggerClasses =
     variant === 'menu'
       ? 'flex w-full items-center justify-center border-t border-border px-6 py-5 text-center transition-opacity hover:opacity-70'
-      : "relative inline-flex items-center pb-1 text-left after:absolute after:bottom-0 after:left-0 after:h-px after:w-full after:origin-right after:scale-x-0 after:bg-current after:content-[''] after:transition-transform after:duration-500 after:ease-in-out hover:after:origin-left hover:after:scale-x-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50 focus-visible:after:origin-left focus-visible:after:scale-x-100 data-[underline-active=true]:after:scale-x-100 motion-reduce:after:transition-none"
+      : "relative inline-flex items-center pb-0.5 text-left after:absolute after:bottom-0 after:left-0 after:h-px after:w-full after:origin-right after:scale-x-0 after:bg-current after:content-[''] after:transition-transform after:duration-500 after:ease-in-out hover:after:origin-left hover:after:scale-x-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50 focus-visible:after:origin-left focus-visible:after:scale-x-100 data-[underline-active=true]:after:scale-x-100 motion-reduce:after:transition-none"
 
   return (
     <DialogRoot onOpenChange={openChange} open={open}>

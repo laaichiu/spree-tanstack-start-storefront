@@ -36,7 +36,7 @@ export function NewsletterVerificationContent({
             {links.signIn({
               children: copy.signIn,
               className:
-                'text-xs font-normal text-foreground underline decoration-border underline-offset-4 transition-colors hover:decoration-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50',
+                'text-xs font-normal text-foreground underline decoration-border underline-offset-2 transition-colors hover:decoration-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50',
             })}{' '}
             {copy.signInHint}
           </p>

@@ -84,7 +84,7 @@ export function NewsletterPopup({
             {slots.consent}
 
             <button
-              className="mt-6 text-xs text-foreground underline decoration-border underline-offset-4 transition hover:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50"
+              className="mt-6 text-xs text-foreground underline decoration-border underline-offset-2 transition hover:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50"
               onClick={dismiss}
               type="button"
             >

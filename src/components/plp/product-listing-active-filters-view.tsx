@@ -43,7 +43,7 @@ export function ProductListingActiveFiltersView({
         />
       ) : null}
       <button
-        className="text-xs font-normal tracking-wider text-muted-foreground uppercase underline-offset-4 transition-colors hover:text-foreground hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50"
+        className="text-xs font-normal tracking-wider text-muted-foreground uppercase underline-offset-2 transition-colors hover:text-foreground hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50"
         onClick={actions.clearAll}
         type="button"
       >

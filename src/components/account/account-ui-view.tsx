@@ -3,7 +3,7 @@ import type { HTMLAttributes, ReactNode } from 'react'
 import { cn } from '@/components/ui/utils'
 
 export const accountInlineLinkClassName =
-  'text-xs font-normal text-foreground underline decoration-border underline-offset-4 transition-colors hover:decoration-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50'
+  'text-xs font-normal text-foreground underline decoration-border underline-offset-2 transition-colors hover:decoration-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50'
 
 export const accountTextLinkClassName =
   'relative inline-flex w-fit max-w-full items-center gap-1 text-xs tracking-wider text-foreground uppercase after:absolute after:bottom-0 after:left-0 after:h-px after:w-full after:origin-center after:scale-x-0 after:bg-current after:transition-transform after:duration-200 motion-reduce:after:transition-none hover:after:scale-x-100 focus-visible:after:scale-x-100'

@@ -53,7 +53,7 @@ function SearchSuggestedItemsContent({
           {model.labels.unavailable}
         </p>
         <button
-          className="text-xs leading-4 font-normal uppercase text-foreground underline underline-offset-4 transition-opacity hover:opacity-65 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50"
+          className="text-xs leading-4 font-normal uppercase text-foreground underline underline-offset-2 transition-opacity hover:opacity-65 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50"
           onClick={actions.retry}
           type="button"
         >

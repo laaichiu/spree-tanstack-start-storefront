@@ -56,7 +56,7 @@ export function OrderPlacedDetailsView({
                         {copy.tracking}:{' '}
                         {fulfillment.trackingHref ? (
                           <a
-                            className="text-foreground underline decoration-border underline-offset-4 transition-colors hover:text-muted-foreground"
+                            className="text-foreground underline decoration-border underline-offset-2 transition-colors hover:text-muted-foreground"
                             href={fulfillment.trackingHref}
                             rel="noopener noreferrer"
                             target="_blank"

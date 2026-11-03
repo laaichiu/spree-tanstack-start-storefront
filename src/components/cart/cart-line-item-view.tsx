@@ -73,7 +73,7 @@ export function CartLineItemView({
             {quantitySelector}
             <button
               aria-label={labels.removeItem}
-              className="text-xs tracking-wider text-muted-foreground uppercase underline decoration-border underline-offset-4 transition hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:opacity-50"
+              className="text-xs tracking-wider text-muted-foreground uppercase underline decoration-border underline-offset-2 transition hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:opacity-50"
               disabled={isPending}
               onClick={() => void onRemoveItem()}
               type="button"

@@ -49,7 +49,7 @@ export function BrandDirectoryResultsView({
               <li className="min-w-0" key={brand.id}>
                 <Link
                   aria-label={`${t('brand.viewBrand')}: ${brand.name}`}
-                  className="inline-flex min-h-11 max-w-full items-center py-2 text-xs leading-5 wrap-anywhere text-foreground underline-offset-4 hover:underline focus-visible:rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50"
+                  className="inline-flex min-h-11 max-w-full items-center py-2 text-xs leading-5 wrap-anywhere text-foreground underline-offset-2 hover:underline focus-visible:rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50"
                   params={{ ...marketParams, slug: brand.slug }}
                   search={DEFAULT_BRAND_SEARCH}
                   to="/$country/$locale/$slug"

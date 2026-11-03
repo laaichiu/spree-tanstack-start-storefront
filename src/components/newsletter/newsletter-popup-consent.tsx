@@ -21,12 +21,12 @@ export function NewsletterPopupConsent({
       {model.prefix}{' '}
       {links.privacy({
         children: model.privacyLabel,
-        className: 'underline decoration-border underline-offset-4',
+        className: 'underline decoration-border underline-offset-2',
       })}{' '}
       {model.andLabel}{' '}
       {links.terms({
         children: model.termsLabel,
-        className: 'underline decoration-border underline-offset-4',
+        className: 'underline decoration-border underline-offset-2',
       })}
       .
     </p>
