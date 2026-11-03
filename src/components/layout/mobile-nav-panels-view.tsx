@@ -129,7 +129,7 @@ export function MobileNavCategoryPanelView({
       </div>
 
       <div className="flex-1 overflow-y-auto px-8 pt-8 pb-10">
-        <h2 className="text-xs font-semibold tracking-wider text-foreground uppercase">
+        <h2 className="text-xs font-semibold tracking-wide text-foreground uppercase">
           {heading}
         </h2>
 

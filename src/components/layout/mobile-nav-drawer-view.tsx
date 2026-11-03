@@ -57,7 +57,7 @@ export function MobileNavDrawerContentView({
       <BaseDialog.Backdrop className="fixed inset-x-0 top-26 bottom-0 z-40 bg-black/30 transition-opacity motion-reduce:transition-none data-[ending-style]:opacity-0 data-[starting-style]:opacity-0 xl:hidden" />
       <BaseDialog.Popup
         className={cn(
-          'fixed top-26 bottom-0 left-0 z-50 flex w-[min(26.5rem,calc(100vw-2.25rem))] flex-col border-t border-r border-border bg-popover text-popover-foreground outline-none transition-transform duration-300 ease-out motion-reduce:transition-none data-[ending-style]:-translate-x-full data-[starting-style]:-translate-x-full xl:hidden',
+          'fixed top-26 bottom-0 left-0 z-50 flex w-[min(26.5rem,calc(100vw-2.25rem))] flex-col border-t border-r border-border bg-popover text-popover-foreground tracking-wide outline-none transition-transform duration-300 ease-out motion-reduce:transition-none data-[ending-style]:-translate-x-full data-[starting-style]:-translate-x-full xl:hidden',
           className,
         )}
       >

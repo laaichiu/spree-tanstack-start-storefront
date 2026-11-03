@@ -10,8 +10,8 @@ export function ProductImageFallbackView({
       <span
         className={
           variant === 'compact'
-            ? 'text-xs leading-4 tracking-[0.08em] text-foreground uppercase'
-            : 'text-xs leading-5 tracking-[0.12em] text-foreground uppercase'
+            ? 'text-xs leading-4 tracking-wide text-foreground uppercase'
+            : 'text-xs leading-5 tracking-wide text-foreground uppercase'
         }
       >
         {label}

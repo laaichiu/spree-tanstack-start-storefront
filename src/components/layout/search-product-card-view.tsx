@@ -65,7 +65,7 @@ export function SearchPreviewRowView({
         />
         <div className="min-w-0 flex-1 space-y-2">
           {model.attribution && (
-            <p className="text-xs leading-4 tracking-wider text-muted-foreground uppercase">
+            <p className="text-xs leading-4 tracking-wide text-muted-foreground uppercase">
               {model.attribution}
             </p>
           )}
@@ -98,7 +98,7 @@ export function SearchFeaturedProductCardView({
         />
         <div className="space-y-2 px-0.5 pt-3">
           {model.attribution && (
-            <p className="text-xs leading-4 tracking-wider text-muted-foreground uppercase">
+            <p className="text-xs leading-4 tracking-wide text-muted-foreground uppercase">
               {model.attribution}
             </p>
           )}

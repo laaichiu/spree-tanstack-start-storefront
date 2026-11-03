@@ -26,7 +26,7 @@ export function MarketSelectorTriggerView({
   localeLabel,
 }: MarketSelectorTriggerProps) {
   return (
-    <span className="flex cursor-pointer items-center gap-2 text-xs leading-none font-semibold tracking-wider text-foreground uppercase">
+    <span className="flex cursor-pointer items-center gap-2 text-xs leading-none font-semibold tracking-wide text-foreground uppercase">
       {countryFlag}
       <span aria-hidden="true" className="h-3 w-px bg-muted-foreground" />
       <span>{localeLabel}</span>

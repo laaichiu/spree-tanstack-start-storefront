@@ -34,7 +34,7 @@ export function DesktopMegaMenuFeaturedLinkView({
           />
         )}
       </div>
-      <p className="pt-3 text-xs font-normal tracking-wider uppercase">
+      <p className="pt-3 text-xs font-normal tracking-wide uppercase">
         {label}
       </p>
     </>,

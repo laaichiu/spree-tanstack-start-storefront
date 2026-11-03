@@ -41,7 +41,7 @@ export function DesktopMegaMenuPanelView({
       />
       <div
         aria-label={title}
-        className="fixed inset-x-0 top-20 z-50 max-h-[calc(100dvh-5rem)] overflow-y-auto overscroll-contain border-b border-border bg-background"
+        className="fixed inset-x-0 top-20 z-50 max-h-[calc(100dvh-5rem)] overflow-y-auto overscroll-contain border-b border-border bg-background tracking-wide"
         id={activePanelId}
         onMouseEnter={actions.cancelScheduledClose}
         onMouseLeave={actions.scheduleClose}
@@ -60,7 +60,7 @@ export function DesktopMegaMenuPanelView({
             }
           >
             <div className="min-w-0">
-              <p className="text-xs font-semibold tracking-wider text-foreground uppercase">
+              <p className="text-xs font-semibold tracking-wide text-foreground uppercase">
                 {title}
               </p>
               <nav aria-label={title} className="mt-5 space-y-3.5">

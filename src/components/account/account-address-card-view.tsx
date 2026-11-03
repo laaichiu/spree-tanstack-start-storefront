@@ -54,13 +54,13 @@ export function AccountAddressCardView({
         {(address.isDefaultShipping || address.isDefaultBilling) && (
           <div className="mt-3 flex flex-wrap gap-2">
             {address.isDefaultShipping && (
-              <AccountPill className="gap-1.5 whitespace-nowrap rounded-full border-foreground/15 bg-muted px-3 py-1.5 text-xs leading-none tracking-[0.08em] text-foreground">
+              <AccountPill className="gap-1.5 whitespace-nowrap rounded-full border-foreground/15 bg-muted px-3 py-1.5 text-xs leading-none tracking-wide text-foreground">
                 <Check aria-hidden="true" className="h-3 w-3" />
                 {labels.defaultShipping}
               </AccountPill>
             )}
             {address.isDefaultBilling && (
-              <AccountPill className="gap-1.5 whitespace-nowrap rounded-full border-foreground/15 bg-muted px-3 py-1.5 text-xs leading-none tracking-[0.08em] text-foreground">
+              <AccountPill className="gap-1.5 whitespace-nowrap rounded-full border-foreground/15 bg-muted px-3 py-1.5 text-xs leading-none tracking-wide text-foreground">
                 <Check aria-hidden="true" className="h-3 w-3" />
                 {labels.defaultBilling}
               </AccountPill>

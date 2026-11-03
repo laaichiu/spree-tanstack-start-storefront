@@ -30,7 +30,7 @@ export function CheckoutLayoutShellView({
                   width={189}
                 />
               ) : (
-                <span className="text-base leading-none font-semibold uppercase tracking-[0.16em]">
+                <span className="text-base leading-none font-semibold uppercase tracking-wider">
                   {branding.name}
                 </span>
               )}
